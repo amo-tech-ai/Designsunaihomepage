@@ -13,9 +13,12 @@ import { Footer } from './Footer';
 interface HomeV1Props {
   onNavigateToWizard: () => void;
   onNavigateToDashboard?: () => void;
+  onNavigateToWhatsApp?: () => void;
+  onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
 }
 
-export function HomeV1({ onNavigateToWizard, onNavigateToDashboard }: HomeV1Props) {
+export function HomeV1({ onNavigateToWizard, onNavigateToDashboard, onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: HomeV1Props) {
   return (
     <div className="min-h-screen bg-white">
       <Hero onNavigateToWizard={onNavigateToWizard} />
@@ -28,7 +31,13 @@ export function HomeV1({ onNavigateToWizard, onNavigateToDashboard }: HomeV1Prop
       <Pricing />
       <BriefGenerator />
       <FinalCTA onNavigateToWizard={onNavigateToWizard} />
-      <Footer onNavigateToWizard={onNavigateToWizard} onNavigateToDashboard={onNavigateToDashboard} />
+      <Footer 
+        onNavigateToWizard={onNavigateToWizard} 
+        onNavigateToDashboard={onNavigateToDashboard}
+        onNavigateToWhatsApp={onNavigateToWhatsApp}
+        onNavigateToAbout={onNavigateToAbout}
+        onVersionChange={onVersionChange}
+      />
     </div>
   );
 }

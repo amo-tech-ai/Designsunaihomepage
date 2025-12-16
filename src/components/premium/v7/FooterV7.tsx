@@ -3,13 +3,14 @@ import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
 interface FooterV7Props {
   onNavigateToWhatsApp?: () => void;
   onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
 }
 
-export function FooterV7({ onNavigateToWhatsApp, onNavigateToAbout }: FooterV7Props) {
+export function FooterV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: FooterV7Props) {
   return (
     <footer className="bg-white border-t border-slate-100 py-20">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
+        <div className="grid md:grid-cols-6 gap-8 mb-16">
           
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-6">
@@ -34,10 +35,47 @@ export function FooterV7({ onNavigateToWhatsApp, onNavigateToAbout }: FooterV7Pr
              <h4 className="font-bold text-slate-900 mb-6">Product</h4>
              <ul className="space-y-3 text-sm text-slate-500">
                 <li><a href="#" className="hover:text-[#FF6A3D] transition-colors">Features</a></li>
+                <li><button onClick={() => onVersionChange?.('ai-web-dev')} className="hover:text-[#FF6A3D] transition-colors text-left">AI Web Design</button></li>
+                <li><button onClick={() => onVersionChange?.('ai-development')} className="hover:text-[#FF6A3D] transition-colors text-left">AI App Development</button></li>
+                <li><button onClick={() => onVersionChange?.('services-v2')} className="hover:text-[#FF6A3D] transition-colors text-left">Main Services V2</button></li>
+                <li><button onClick={() => onVersionChange?.('ai-sales-marketing')} className="hover:text-[#FF6A3D] transition-colors text-left">AI Sales & CRM</button></li>
+                <li><button onClick={() => onVersionChange?.('ai-agents')} className="hover:text-[#FF6A3D] transition-colors text-left">AI Agents & Automations</button></li>
+                <li><button onClick={() => onVersionChange?.('ai-mvp')} className="hover:text-[#FF6A3D] transition-colors text-left">AI MVP Development</button></li>
+                <li><button onClick={() => onVersionChange?.('ai-chatbots')} className="hover:text-[#FF6A3D] transition-colors text-left">AI Chatbots</button></li>
                 <li><button onClick={onNavigateToWhatsApp} className="hover:text-[#FF6A3D] transition-colors text-left">WhatsApp Automation</button></li>
+                <li><button onClick={() => onVersionChange?.('dashboard')} className="hover:text-[#FF6A3D] transition-colors text-left">Project Dashboard</button></li>
+                <li><button onClick={() => onVersionChange?.('wizard')} className="hover:text-[#FF6A3D] transition-colors text-left">Brief Wizard</button></li>
+                <li><button onClick={() => onVersionChange?.('process')} className="hover:text-[#FF6A3D] transition-colors text-left">Our Process</button></li>
+                <li><button onClick={() => onVersionChange?.('projects')} className="hover:text-[#FF6A3D] transition-colors text-left">Success Stories</button></li>
                 <li><a href="#" className="hover:text-[#FF6A3D] transition-colors">Integrations</a></li>
                 <li><a href="#" className="hover:text-[#FF6A3D] transition-colors">Enterprise</a></li>
              </ul>
+          </div>
+
+          <div>
+             <h4 className="font-bold text-slate-900 mb-6">Industries</h4>
+             <ul className="space-y-3 text-sm text-slate-500">
+                <li><button onClick={() => onVersionChange?.('chatbot-saas')} className="hover:text-[#FF6A3D] transition-colors text-left">SaaS Chatbots</button></li>
+                <li><button onClick={() => onVersionChange?.('chatbot-ecommerce')} className="hover:text-[#FF6A3D] transition-colors text-left">E-commerce Chatbots</button></li>
+                <li><button onClick={() => onVersionChange?.('chatbot-healthcare')} className="hover:text-[#FF6A3D] transition-colors text-left">Healthcare Chatbots</button></li>
+                <li><button onClick={() => onVersionChange?.('chatbot-real-estate')} className="hover:text-[#FF6A3D] transition-colors text-left">Real Estate Chatbots</button></li>
+                <li><button onClick={() => onVersionChange?.('chatbot-b2b')} className="hover:text-[#FF6A3D] transition-colors text-left">B2B Chatbots</button></li>
+                <li><button onClick={() => onVersionChange?.('chatbot-automotive')} className="hover:text-[#FF6A3D] transition-colors text-left">Automotive Chatbots</button></li>
+                <li><button onClick={() => onVersionChange?.('chatbot-tourism')} className="hover:text-[#FF6A3D] transition-colors text-left">Tourism Chatbots</button></li>
+             </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-slate-900 mb-6">Versions</h4>
+            <ul className="space-y-3 text-sm text-slate-500">
+              {[1, 2, 3, 4, 5, 6, 7].map((v) => (
+                 <li key={v}>
+                   <button onClick={() => onVersionChange?.(`v${v}`)} className="hover:text-[#FF6A3D] transition-colors text-left">
+                     Version {v}
+                   </button>
+                 </li>
+              ))}
+            </ul>
           </div>
 
           <div>

@@ -13,9 +13,12 @@ import { FooterV3 } from './v3/FooterV3';
 interface HomeV3Props {
   onNavigateToWizard: () => void;
   onNavigateToDashboard?: () => void;
+  onNavigateToWhatsApp?: () => void;
+  onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
 }
 
-export function HomeV3({ onNavigateToWizard, onNavigateToDashboard }: HomeV3Props) {
+export function HomeV3({ onNavigateToWizard, onNavigateToDashboard, onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: HomeV3Props) {
   return (
     <div className="min-h-screen bg-white">
       {/* Section 1 - Hero */}
@@ -49,7 +52,13 @@ export function HomeV3({ onNavigateToWizard, onNavigateToDashboard }: HomeV3Prop
       <CTAV3 onNavigateToWizard={onNavigateToWizard} />
       
       {/* Section 11 - Footer */}
-      <FooterV3 onNavigateToWizard={onNavigateToWizard} onNavigateToDashboard={onNavigateToDashboard} />
+      <FooterV3 
+        onNavigateToWizard={onNavigateToWizard} 
+        onNavigateToDashboard={onNavigateToDashboard}
+        onNavigateToWhatsApp={onNavigateToWhatsApp}
+        onNavigateToAbout={onNavigateToAbout}
+        onVersionChange={onVersionChange}
+      />
     </div>
   );
 }

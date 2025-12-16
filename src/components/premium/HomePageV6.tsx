@@ -14,9 +14,10 @@ import { FooterV6 } from './v6/FooterV6';
 interface HomePageV6Props {
   onNavigateToWhatsApp?: () => void;
   onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
 }
 
-export function HomePageV6({ onNavigateToWhatsApp, onNavigateToAbout }: HomePageV6Props) {
+export function HomePageV6({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: HomePageV6Props) {
   return (
     <main className="min-h-screen bg-white font-sans antialiased selection:bg-[#FF6A3D] selection:text-white">
       <HeroV6 />
@@ -30,7 +31,7 @@ export function HomePageV6({ onNavigateToWhatsApp, onNavigateToAbout }: HomePage
       <PricingV6 />
       <ProjectBriefV6 />
       <FinalCTAV6 />
-      <FooterV6 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} />
+      <FooterV6 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
     </main>
   );
 }

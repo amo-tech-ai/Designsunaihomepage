@@ -10,7 +10,13 @@ import { ProjectBriefV5 } from './v5/ProjectBriefV5';
 import { CTAV5 } from './v5/CTAV5';
 import { FooterV5 } from './v5/FooterV5';
 
-export function HomePageV5() {
+interface HomePageV5Props {
+  onNavigateToWhatsApp?: () => void;
+  onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
+}
+
+export function HomePageV5({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: HomePageV5Props) {
   return (
     <main className="min-h-screen bg-white selection:bg-[#FF6A3D] selection:text-white font-sans antialiased">
       <HeroV5 />
@@ -23,7 +29,7 @@ export function HomePageV5() {
       <PricingV5 />
       <ProjectBriefV5 />
       <CTAV5 />
-      <FooterV5 />      {/* Dark Section #3 */}
+      <FooterV5 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />      {/* Dark Section #3 */}
     </main>
   );
 }

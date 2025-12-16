@@ -3,13 +3,17 @@ import { Mail } from 'lucide-react';
 interface FooterProps {
   onNavigateToWizard?: () => void;
   onNavigateToDashboard?: () => void;
+  onNavigateToWhatsApp?: () => void;
+  onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
 }
 
-export function Footer({ onNavigateToWizard, onNavigateToDashboard }: FooterProps) {
+export function Footer({ onNavigateToWizard, onNavigateToDashboard, onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: FooterProps) {
   const footerSections = [
     {
       title: 'Sun AI',
       links: [
+        { label: 'About Us', href: '#', onClick: onNavigateToAbout },
         { label: 'hello@sunai.com', href: 'mailto:hello@sunai.com', onClick: undefined },
         { label: 'San Francisco, CA', href: '#', onClick: undefined },
       ],
@@ -18,9 +22,22 @@ export function Footer({ onNavigateToWizard, onNavigateToDashboard }: FooterProp
       title: 'Services',
       links: [
         { label: 'AI Applications', href: '#', onClick: undefined },
+        { label: 'WhatsApp Automation', href: '#', onClick: onNavigateToWhatsApp },
         { label: 'Automation Systems', href: '#', onClick: undefined },
         { label: 'Custom Agents', href: '#', onClick: undefined },
         { label: 'Consulting', href: '#', onClick: undefined },
+      ],
+    },
+    {
+      title: 'Versions',
+      links: [
+        { label: 'Version 1', href: '#', onClick: () => onVersionChange?.('v1') },
+        { label: 'Version 2', href: '#', onClick: () => onVersionChange?.('v2') },
+        { label: 'Version 3', href: '#', onClick: () => onVersionChange?.('v3') },
+        { label: 'Version 4', href: '#', onClick: () => onVersionChange?.('v4') },
+        { label: 'Version 5', href: '#', onClick: () => onVersionChange?.('v5') },
+        { label: 'Version 6', href: '#', onClick: () => onVersionChange?.('v6') },
+        { label: 'Version 7', href: '#', onClick: () => onVersionChange?.('v7') },
       ],
     },
     {

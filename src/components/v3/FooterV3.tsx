@@ -3,17 +3,33 @@ import { Mail, Twitter, Linkedin, Github, Send } from 'lucide-react';
 interface FooterV3Props {
   onNavigateToWizard?: () => void;
   onNavigateToDashboard?: () => void;
+  onNavigateToWhatsApp?: () => void;
+  onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
 }
 
-export function FooterV3({ onNavigateToWizard, onNavigateToDashboard }: FooterV3Props) {
+export function FooterV3({ onNavigateToWizard, onNavigateToDashboard, onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: FooterV3Props) {
   const footerColumns = [
     {
       title: 'Services',
       links: [
         { label: 'AI Applications', onClick: undefined },
+        { label: 'WhatsApp Automation', onClick: onNavigateToWhatsApp },
         { label: 'Multi-Agent Systems', onClick: undefined },
         { label: 'Automation', onClick: undefined },
         { label: 'Consulting', onClick: undefined },
+      ],
+    },
+    {
+      title: 'Versions',
+      links: [
+        { label: 'Version 1', onClick: () => onVersionChange?.('v1') },
+        { label: 'Version 2', onClick: () => onVersionChange?.('v2') },
+        { label: 'Version 3', onClick: () => onVersionChange?.('v3') },
+        { label: 'Version 4', onClick: () => onVersionChange?.('v4') },
+        { label: 'Version 5', onClick: () => onVersionChange?.('v5') },
+        { label: 'Version 6', onClick: () => onVersionChange?.('v6') },
+        { label: 'Version 7', onClick: () => onVersionChange?.('v7') },
       ],
     },
     {
@@ -38,7 +54,7 @@ export function FooterV3({ onNavigateToWizard, onNavigateToDashboard }: FooterV3
     {
       title: 'Company',
       links: [
-        { label: 'About', onClick: undefined },
+        { label: 'About', onClick: onNavigateToAbout },
         { label: 'Careers', onClick: undefined },
         { label: 'Contact', onClick: undefined },
         { label: 'Partners', onClick: undefined },

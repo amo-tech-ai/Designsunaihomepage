@@ -9,7 +9,13 @@ import { ProjectBriefV4 } from './v4/ProjectBriefV4';
 import { CTAV4 } from './v4/CTAV4';
 import { FooterV4 } from './v4/FooterV4';
 
-export function HomePageV4() {
+interface HomePageV4Props {
+  onNavigateToWhatsApp?: () => void;
+  onNavigateToAbout?: () => void;
+  onVersionChange?: (version: any) => void;
+}
+
+export function HomePageV4({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: HomePageV4Props) {
   return (
     <main className="min-h-screen bg-white selection:bg-[#FF6B2C] selection:text-white font-sans antialiased">
       <HeroV4 />
@@ -21,7 +27,7 @@ export function HomePageV4() {
       <PricingV4 />
       <ProjectBriefV4 />
       <CTAV4 />
-      <FooterV4 />
+      <FooterV4 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
     </main>
   );
 }

@@ -1,10 +1,10 @@
 import { Linkedin, Twitter, Github, Mail } from 'lucide-react';
 
-export function FooterV6({ onNavigateToWhatsApp, onNavigateToAbout }: { onNavigateToWhatsApp?: () => void, onNavigateToAbout?: () => void }) {
+export function FooterV6({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: { onNavigateToWhatsApp?: () => void, onNavigateToAbout?: () => void, onVersionChange?: (version: any) => void }) {
   return (
     <footer className="bg-[#00334F] text-white py-20 border-t border-white/10">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
+        <div className="grid md:grid-cols-5 gap-12 mb-16">
           
           <div className="md:col-span-1">
             <h3 className="text-2xl font-bold mb-6">Sun AI</h3>
@@ -43,6 +43,19 @@ export function FooterV6({ onNavigateToWhatsApp, onNavigateToAbout }: { onNaviga
                   <li key={link}><a href="#" className="hover:text-white transition-colors">{link}</a></li>
                 ))}
              </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-6">Versions</h4>
+            <ul className="space-y-3 text-sm text-slate-300">
+              {[1, 2, 3, 4, 5, 6, 7].map((v) => (
+                 <li key={v}>
+                   <button onClick={() => onVersionChange?.(`v${v}`)} className="hover:text-white transition-colors text-left">
+                     Version {v}
+                   </button>
+                 </li>
+              ))}
+            </ul>
           </div>
 
           <div>
