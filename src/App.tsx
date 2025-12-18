@@ -31,6 +31,7 @@ import { LeadsDashboard } from './components/dashboard/LeadsDashboard';
 import { LeadProvider } from './context/LeadContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LoginPage } from './components/auth/LoginPage';
+import { GlobalChatbot } from './components/GlobalChatbot';
 
 import { StartupAIArchitecturePage } from './components/premium/v7/docs/StartupAIArchitecturePage';
 import { InvestorSharePage } from './components/premium/v7/InvestorSharePage';
@@ -82,8 +83,15 @@ function MainApp() {
     setCurrentVersion('booking');
   };
 
+  // Define pages where chatbot should be hidden
+  const hideChatbotPages = ['wizard', 'processing', 'proposal', 'dashboard', 'leads', 'deck-editor'];
+  const showChatbot = !hideChatbotPages.includes(currentVersion);
+
   return (
     <LeadProvider>
+      {/* Global AI Assistant */}
+      {showChatbot && <GlobalChatbot />}
+
       {/* Side Menu */}
       <SideMenu 
         currentVersion={currentVersion}

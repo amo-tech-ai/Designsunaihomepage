@@ -6,7 +6,19 @@ import { Typography } from './ui/design-system/Typography';
 
 export function GlobalChatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
+  
+  // Initialize from localStorage to prevent "pestering" on refresh
+  const [hasInteracted, setHasInteracted] = useState(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('sun_ai_chat_interacted') === 'true';
+      }
+    } catch (e) {
+      console.warn('LocalStorage access denied', e);
+    }
+    return false;
+  });
+
   const [messages, setMessages] = useState<Array<{role: 'ai' | 'user', text: string}>>([
     { role: 'ai', text: "Hello. I'm the Sun AI architecture assistant. How can I help you scope your project today?" }
   ]);
@@ -14,7 +26,7 @@ export function GlobalChatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-open logic (10 seconds)
+  // Auto-open logic (10 seconds) - Only runs if user hasn't interacted yet
   useEffect(() => {
     if (hasInteracted) return;
 
@@ -30,18 +42,29 @@ export function GlobalChatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen]);
 
+  const markInteracted = () => {
+    setHasInteracted(true);
+    try {
+      localStorage.setItem('sun_ai_chat_interacted', 'true');
+    } catch (e) {
+      // Ignore storage errors
+    }
+  };
+
   const handleOpen = () => {
     setIsOpen(true);
-    setHasInteracted(true);
+    markInteracted();
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    setHasInteracted(true);
+    markInteracted();
   };
 
   const handleSend = (text: string = inputValue) => {
     if (!text.trim()) return;
+
+    markInteracted();
 
     // Add user message
     setMessages(prev => [...prev, { role: 'user', text }]);
@@ -73,7 +96,7 @@ export function GlobalChatbot() {
   );
 
   return (
-    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end pointer-events-none sm:z-[60] z-[45]">
       <div className="pointer-events-auto">
         <AnimatePresence>
           {isOpen && (

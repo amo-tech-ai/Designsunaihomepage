@@ -213,6 +213,7 @@
     --animate-spin: spin 1s linear infinite;
     --animate-ping: ping 1s cubic-bezier(0, 0, .2, 1) infinite;
     --animate-pulse: pulse 2s cubic-bezier(.4, 0, .6, 1) infinite;
+    --animate-bounce: bounce 1s infinite;
     --blur-sm: 8px;
     --blur-md: 12px;
     --blur-lg: 16px;
@@ -544,6 +545,10 @@
 }
 
 @layer utilities {
+  .pointer-events-auto {
+    pointer-events: auto;
+  }
+
   .pointer-events-none {
     pointer-events: none;
   }
@@ -1056,6 +1061,14 @@
     z-index: 50;
   }
 
+  .z-\[45\] {
+    z-index: 45;
+  }
+
+  .z-\[60\] {
+    z-index: 60;
+  }
+
   .order-1 {
     order: 1;
   }
@@ -1516,6 +1529,10 @@
     height: 300px;
   }
 
+  .h-\[350px\] {
+    height: 350px;
+  }
+
   .h-\[400px\] {
     height: 400px;
   }
@@ -1826,6 +1843,10 @@
 
   .w-\[300px\] {
     width: 300px;
+  }
+
+  .w-\[350px\] {
+    width: 350px;
   }
 
   .w-\[400px\] {
@@ -2175,6 +2196,10 @@
 
   .transform {
     transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
+  }
+
+  .animate-bounce {
+    animation: var(--animate-bounce);
   }
 
   .animate-in {
@@ -2579,6 +2604,10 @@
     border-top-left-radius: 0;
   }
 
+  .rounded-tl-sm {
+    border-top-left-radius: calc(var(--radius)  - 4px);
+  }
+
   .rounded-r-full {
     border-top-right-radius: 3.40282e38px;
     border-bottom-right-radius: 3.40282e38px;
@@ -2591,6 +2620,10 @@
 
   .rounded-tr-none {
     border-top-right-radius: 0;
+  }
+
+  .rounded-tr-sm {
+    border-top-right-radius: calc(var(--radius)  - 4px);
   }
 
   .rounded-br-none {
@@ -3350,6 +3383,10 @@
     background-color: var(--color-emerald-100);
   }
 
+  .bg-emerald-400 {
+    background-color: var(--color-emerald-400);
+  }
+
   .bg-emerald-500 {
     background-color: var(--color-emerald-500);
   }
@@ -3448,6 +3485,10 @@
     .bg-orange-100\/40 {
       background-color: color-mix(in oklab, var(--color-orange-100) 40%, transparent);
     }
+  }
+
+  .bg-orange-400 {
+    background-color: var(--color-orange-400);
   }
 
   .bg-orange-500 {
@@ -4986,6 +5027,11 @@
   .leading-\[1\.75\] {
     --tw-leading: 1.75;
     line-height: 1.75;
+  }
+
+  .leading-none {
+    --tw-leading: 1;
+    line-height: 1;
   }
 
   .leading-normal {
@@ -7228,6 +7274,10 @@
     border-color: var(--color-red-500);
   }
 
+  .focus\:border-slate-300:focus {
+    border-color: var(--color-slate-300);
+  }
+
   .focus\:bg-blue-50\/50:focus {
     background-color: color-mix(in srgb, oklch(.97 .014 254.604) 50%, transparent);
   }
@@ -7284,6 +7334,10 @@
 
   .focus\:ring-ring:focus {
     --tw-ring-color: var(--ring);
+  }
+
+  .focus\:ring-slate-100:focus {
+    --tw-ring-color: var(--color-slate-100);
   }
 
   .focus\:ring-offset-2:focus {
@@ -7371,6 +7425,12 @@
   @supports (color: color-mix(in lab, red, red)) {
     .data-\[state\=open\]\:bg-white\/10[data-state="open"] {
       background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+    }
+  }
+
+  @media (width >= 40rem) {
+    .sm\:z-\[60\] {
+      z-index: 60;
     }
   }
 
@@ -8923,6 +8983,18 @@ input[type="range"].slider-thumb::-moz-range-thumb:hover {
 @keyframes pulse {
   50% {
     opacity: .5;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(.8, 0, 1, 1);
+    transform: translateY(-25%);
+  }
+
+  50% {
+    animation-timing-function: cubic-bezier(0, 0, .2, 1);
+    transform: none;
   }
 }
 
