@@ -250,7 +250,7 @@ export function ProposalView() {
       </div>
 
       {/* 6. Sticky Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-2xl z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl z-50">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
            <div className="hidden md:flex items-center gap-2 text-sm text-slate-500 font-medium">
              <div className="w-20 h-1 bg-slate-100 rounded-full overflow-hidden">

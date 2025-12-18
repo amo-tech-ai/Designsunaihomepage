@@ -9,7 +9,6 @@ import { FAQV7 } from './v7/FAQV7';
 import { WizardCTA } from '../conversion/WizardCTA';
 import { FooterV7 } from './v7/FooterV7';
 import { NavbarV7 } from './v7/NavbarV7';
-import { AIChatbot } from '../AIChatbot';
 
 interface HomePageV7Props {
   onNavigateToWhatsApp?: () => void;
@@ -42,8 +41,6 @@ export function HomePageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersionC
       />
       
       <FooterV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
-      
-      <AIChatbot />
     </main>
   );
 }
