@@ -11,6 +11,7 @@ import { Badge } from './ui/design-system/Badge';
 import { cn } from './ui/design-system/utils';
 import { useLeads } from '../context/LeadContext';
 import { wizardSchema, WizardFormData } from '../lib/schemas';
+import { ArchitectureVisualizer } from './wizard/ArchitectureVisualizer';
 
 // --- Types ---
 // Re-using WizardFormData from schemas, but we keep initialData locally for the form state
@@ -32,13 +33,42 @@ interface BriefWizardProps {
 
 export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
   const { addLead } = useLeads();
-  const [step, setStep] = useState(1);
-  const [data, setData] = useState<WizardFormData>(initialData);
+  
+  // Initialize state from localStorage (Core Feature: Session Recovery)
+  const [data, setData] = useState<WizardFormData>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('sun_ai_wizard_data');
+        if (saved) return JSON.parse(saved);
+      }
+    } catch (e) { console.warn('Wizard restore failed', e); }
+    return initialData;
+  });
+
+  const [step, setStep] = useState(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('sun_ai_wizard_step');
+        if (saved) return parseInt(saved);
+      }
+    } catch (e) {}
+    return 1;
+  });
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isScanning, setIsScanning] = useState(false);
+  const [descValidation, setDescValidation] = useState<{ quality: 'low' | 'medium' | 'high'; suggestions: string[] }>({ quality: 'low', suggestions: [] });
 
   const totalSteps = 5;
   const progress = (step / totalSteps) * 100;
+
+  // Persist State
+  useEffect(() => {
+    try {
+      localStorage.setItem('sun_ai_wizard_data', JSON.stringify(data));
+      localStorage.setItem('sun_ai_wizard_step', step.toString());
+    } catch (e) {}
+  }, [data, step]);
 
   const updateData = (updates: Partial<WizardFormData>) => {
     setData(prev => ({ ...prev, ...updates }));
@@ -47,6 +77,46 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
     Object.keys(updates).forEach(key => delete newErrors[key]);
     setErrors(newErrors);
   };
+
+  // Real-time Semantic Analysis for Description
+  useEffect(() => {
+    if (!data.description) {
+      setDescValidation({ quality: 'low', suggestions: [] });
+      return;
+    }
+
+    const text = data.description.toLowerCase();
+    const suggestions: string[] = [];
+    let score = 0;
+
+    // Length Check
+    if (text.length > 30) score += 1;
+    if (text.length > 80) score += 1;
+
+    // Semantic Keywords Check
+    const hasAudience = ['user', 'client', 'customer', 'audience', 'people', 'who'].some(w => text.includes(w));
+    const hasPlatform = ['web', 'mobile', 'app', 'site', 'platform', 'ios', 'android', 'browser'].some(w => text.includes(w));
+    const hasGoal = ['goal', 'revenue', 'scale', 'automate', 'money', 'save', 'efficient', 'fast', 'sell'].some(w => text.includes(w));
+
+    if (!hasAudience) suggestions.push('target audience');
+    if (!hasPlatform) suggestions.push('platform (web/mobile)');
+    if (!hasGoal) suggestions.push('business goal');
+
+    if (hasAudience) score += 1;
+    if (hasPlatform) score += 1;
+    if (hasGoal) score += 1;
+
+    // Determine Quality
+    let quality: 'low' | 'medium' | 'high' = 'low';
+    if (score >= 4) quality = 'high';
+    else if (score >= 2) quality = 'medium';
+
+    setDescValidation({
+      quality,
+      suggestions: suggestions.length > 0 ? [`Try adding: ${suggestions.join(', ')}`] : []
+    });
+
+  }, [data.description]);
 
   const validateStep = (currentStep: number): boolean => {
     const result = wizardSchema.safeParse(data);
@@ -135,10 +205,13 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
 
       {/* --- Main Content Area --- */}
       <main className="flex-grow pt-32 pb-32 px-6 flex flex-col items-center justify-start min-h-[600px]">
-        <div className="w-full max-w-2xl mx-auto">
-          <AnimatePresence mode="wait">
-            
-            {/* Step 1: Overview */}
+        <div className="w-full max-w-6xl mx-auto grid lg:grid-cols-12 gap-12">
+          
+          {/* Left Column: Form Wizard */}
+          <div className="lg:col-span-7">
+            <AnimatePresence mode="wait">
+              
+              {/* Step 1: Overview */}
             {step === 1 && (
               <WizardStep key="step1" title="Let's start with the basics" subtitle="We'll scan your site to understand your brand.">
                 <div className="space-y-6">
@@ -228,14 +301,16 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
 
             {/* Step 3: Goals */}
             {step === 3 && (
-              <WizardStep key="step3" title="What are your main goals?" subtitle="Help us understand the outcome you want.">
+              <WizardStep key="step3" title="Project Details" subtitle="Help our AI architect understand your vision.">
                 <div className="space-y-6">
                   {errors.goals && (
                     <div className="p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
                       <AlertCircle className="w-4 h-4" /> {errors.goals}
                     </div>
                   )}
-                  <div className="flex flex-wrap gap-2">
+                  
+                  {/* Goal Chips */}
+                  <div className="flex flex-wrap gap-2 mb-6">
                     {['Increase Revenue', 'Automate Support', 'Save Time', 'Scale Operations', 'New Product Launch'].map((goal) => (
                       <Chip 
                         key={goal} 
@@ -251,19 +326,72 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
                     ))}
                   </div>
                   
-                  <div className="space-y-2">
-                    <textarea 
-                      className={cn(
-                        "w-full h-32 p-4 rounded-xl bg-slate-50 border focus:ring-1 outline-none transition-all resize-none text-slate-700",
-                        errors.description 
-                          ? "border-red-300 focus:border-red-500 focus:ring-red-500" 
-                          : "border-slate-200 focus:border-orange-500 focus:ring-orange-500"
-                      )}
-                      placeholder="Describe your project in your own words..."
-                      value={data.description}
-                      onChange={e => updateData({ description: e.target.value })}
-                    />
-                    {errors.description && <span className="text-xs text-red-500 font-medium ml-1">{errors.description}</span>}
+                  {/* Intelligent Description Input */}
+                  <div className="relative">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex justify-between">
+                      <span>Project Description</span>
+                      <span className={cn(
+                        "transition-colors duration-300",
+                        descValidation.quality === 'high' ? "text-emerald-500" : 
+                        descValidation.quality === 'medium' ? "text-orange-500" : "text-slate-300"
+                      )}>
+                        {descValidation.quality === 'high' ? 'Excellent Detail' : 
+                         descValidation.quality === 'medium' ? 'Getting there...' : 'Be specific'}
+                      </span>
+                    </label>
+                    
+                    <div className={cn(
+                      "relative rounded-xl transition-all duration-300 bg-white",
+                      descValidation.quality === 'medium' && data.description.length > 10 ? "shadow-[0_0_20px_rgba(249,115,22,0.15)] border-orange-300" :
+                      descValidation.quality === 'high' ? "border-emerald-400 shadow-sm" :
+                      "border-slate-200 focus-within:border-slate-400 focus-within:shadow-md",
+                      "border"
+                    )}>
+                      <textarea 
+                        className="w-full h-40 p-4 rounded-xl bg-transparent outline-none resize-none text-slate-700 leading-relaxed placeholder:text-slate-300"
+                        placeholder="I want to build an AI chatbot for my real estate business that helps tenants book viewings..."
+                        value={data.description}
+                        onChange={e => updateData({ description: e.target.value })}
+                      />
+                      
+                      {/* Quality Indicator Dot */}
+                      <div className="absolute top-4 right-4 flex gap-1">
+                        {[1, 2, 3].map((dot) => (
+                           <div key={dot} className={cn(
+                             "w-1.5 h-1.5 rounded-full transition-colors duration-300",
+                             (descValidation.quality === 'high' || (descValidation.quality === 'medium' && dot <= 2) || (descValidation.quality === 'low' && dot === 1)) && data.description.length > 5
+                               ? (descValidation.quality === 'high' ? "bg-emerald-400" : descValidation.quality === 'medium' ? "bg-orange-400" : "bg-slate-300")
+                               : "bg-slate-100"
+                           )} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* AI Suggestions Area */}
+                    <div className="h-8 mt-2">
+                      <AnimatePresence mode="wait">
+                        {data.description && descValidation.suggestions.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -5 }}
+                            className="flex items-center gap-2 text-xs text-orange-600 font-medium px-1"
+                          >
+                            <Sparkles className="w-3 h-3 animate-pulse" />
+                            {descValidation.suggestions[0]}
+                          </motion.div>
+                        )}
+                        {errors.description && (
+                           <motion.span 
+                             initial={{ opacity: 0 }} 
+                             animate={{ opacity: 1 }} 
+                             className="text-xs text-red-500 font-medium px-1 block"
+                           >
+                             {errors.description}
+                           </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </div>
               </WizardStep>
@@ -338,13 +466,20 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
               </WizardStep>
             )}
 
-          </AnimatePresence>
+            </AnimatePresence>
+          </div>
+
+          {/* Right Column: Visualizer (Desktop Only) */}
+          <div className="hidden lg:col-span-5 lg:block">
+            <ArchitectureVisualizer data={data} step={step} />
+          </div>
+
         </div>
       </main>
 
       {/* --- Footer Navigation --- */}
       <footer className="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-4 z-50">
-        <div className="container mx-auto max-w-2xl flex items-center justify-between gap-4">
+        <div className="container mx-auto max-w-6xl flex items-center justify-between gap-4">
           <Button 
             variant="ghost" 
             onClick={prevStep} 

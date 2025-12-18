@@ -18,36 +18,59 @@ interface LeadContextType {
 const LeadContext = createContext<LeadContextType | undefined>(undefined);
 
 export function LeadProvider({ children }: { children: ReactNode }) {
-  const [leads, setLeads] = useState<Lead[]>([
-    { 
-      id: '1', 
-      name: 'Alice Freeman', 
-      companyName: 'TechNova', 
-      status: 'New', 
-      date: 'Dec 12, 2025', 
-      value: '$25k+',
-      website: 'https://technova.io',
-      services: ['AI Web App', 'Consulting'],
-      goals: ['Scale Operations'],
-      description: 'We need to automate our internal reporting tool.',
-      budget: 25000,
-      timeline: '1-2 Months'
-    },
-    { 
-      id: '2', 
-      name: 'Bob Smith', 
-      companyName: 'LogiChain', 
-      status: 'Proposal Sent', 
-      date: 'Dec 10, 2025', 
-      value: '$45k+',
-      website: 'https://logichain.com',
-      services: ['Workflow Automation'],
-      goals: ['Save Time'],
-      description: 'Logistics optimization using AI agents.',
-      budget: 45000,
-      timeline: '3-6 Months'
+  // Initialize state from localStorage if available
+  const [leads, setLeads] = useState<Lead[]>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('sun_ai_leads');
+        if (saved) {
+          return JSON.parse(saved);
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load leads from localStorage', e);
     }
-  ]);
+    // Default mock data
+    return [
+      { 
+        id: '1', 
+        name: 'Alice Freeman', 
+        companyName: 'TechNova', 
+        status: 'New', 
+        date: 'Dec 12, 2025', 
+        value: '$25k+',
+        website: 'https://technova.io',
+        services: ['AI Web App', 'Consulting'],
+        goals: ['Scale Operations'],
+        description: 'We need to automate our internal reporting tool.',
+        budget: 25000,
+        timeline: '1-2 Months'
+      },
+      { 
+        id: '2', 
+        name: 'Bob Smith', 
+        companyName: 'LogiChain', 
+        status: 'Proposal Sent', 
+        date: 'Dec 10, 2025', 
+        value: '$45k+',
+        website: 'https://logichain.com',
+        services: ['Workflow Automation'],
+        goals: ['Save Time'],
+        description: 'Logistics optimization using AI agents.',
+        budget: 45000,
+        timeline: '3-6 Months'
+      }
+    ];
+  });
+
+  // Persist to localStorage whenever leads change
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('sun_ai_leads', JSON.stringify(leads));
+    } catch (e) {
+      console.warn('Failed to save leads to localStorage', e);
+    }
+  }, [leads]);
 
   const addLead = (data: WizardFormData) => {
     const newLead: Lead = {

@@ -27,7 +27,11 @@ import { StyleGuide } from './components/ui/design-system/StyleGuide';
 import { BookingPage } from './components/booking/BookingPage';
 import { Sitemap } from './components/docs/Sitemap';
 import { SitemapV2 } from './components/docs/SitemapV2';
-import { LeadsDashboard } from './components/dashboard/LeadsDashboard';
+import { CRMLeadsDashboard } from './components/crm/CRMLeadsDashboard';
+import { AgentControlRoom } from './components/ops/AgentControlRoom';
+import { AutomationMapPage } from './components/ops/AutomationMapPage';
+import { SettingsPage } from './components/crm/SettingsPage';
+import { AdminLayout } from './components/crm/AdminLayout';
 import { LeadProvider } from './context/LeadContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LoginPage } from './components/auth/LoginPage';
@@ -37,6 +41,7 @@ import { StartupAIArchitecturePage } from './components/premium/v7/docs/StartupA
 import { InvestorSharePage } from './components/premium/v7/InvestorSharePage';
 import { DeckEditorPage } from './components/premium/v7/deck/DeckEditorPage';
 import { EventHubPage } from './components/premium/v7/events/EventHubPage';
+import { Toaster } from 'sonner@2.0.3';
 
 // Protected Route Wrapper
 function ProtectedRoute({ children, fallback }: { children: React.ReactNode, fallback: React.ReactNode }) {
@@ -49,7 +54,7 @@ function ProtectedRoute({ children, fallback }: { children: React.ReactNode, fal
 }
 
 function MainApp() {
-  const [currentVersion, setCurrentVersion] = useState<'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'projects' | 'ai-web-dev' | 'ai-development' | 'process' | 'services-v2' | 'ai-sales-marketing' | 'ai-agents' | 'ai-mvp' | 'ai-chatbots' | 'chatbot-saas' | 'chatbot-ecommerce' | 'chatbot-healthcare' | 'chatbot-real-estate' | 'chatbot-b2b' | 'chatbot-automotive' | 'chatbot-tourism' | 'style-guide' | 'booking' | 'sitemap' | 'startup-ai-docs' | 'share-investor' | 'deck-editor' | 'event-hub'>('sitemap');
+  const [currentVersion, setCurrentVersion] = useState<'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'ops' | 'workflow' | 'settings' | 'whatsapp' | 'about' | 'projects' | 'ai-web-dev' | 'ai-development' | 'process' | 'services-v2' | 'ai-sales-marketing' | 'ai-agents' | 'ai-mvp' | 'ai-chatbots' | 'chatbot-saas' | 'chatbot-ecommerce' | 'chatbot-healthcare' | 'chatbot-real-estate' | 'chatbot-b2b' | 'chatbot-automotive' | 'chatbot-tourism' | 'style-guide' | 'booking' | 'sitemap' | 'startup-ai-docs' | 'share-investor' | 'deck-editor' | 'event-hub'>('sitemap');
 
   const navigateToWizard = () => {
     setCurrentVersion('wizard');
@@ -84,13 +89,14 @@ function MainApp() {
   };
 
   // Define pages where chatbot should be hidden
-  const hideChatbotPages = ['wizard', 'processing', 'proposal', 'dashboard', 'leads', 'deck-editor'];
+  const hideChatbotPages = ['wizard', 'processing', 'proposal', 'dashboard', 'leads', 'ops', 'workflow', 'deck-editor'];
   const showChatbot = !hideChatbotPages.includes(currentVersion);
 
   return (
     <LeadProvider>
+      <Toaster position="top-right" />
       {/* Global AI Assistant */}
-      {showChatbot && <GlobalChatbot />}
+      {showChatbot && <GlobalChatbot onNavigate={setCurrentVersion} />}
 
       {/* Side Menu */}
       <SideMenu 
@@ -139,9 +145,33 @@ function MainApp() {
           <ProjectDashboard onClose={navigateToHome} />
         </ProtectedRoute>
       )}
+      
       {currentVersion === 'leads' && (
         <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
-          <LeadsDashboard />
+          <AdminLayout activePage="leads" onNavigate={(page) => setCurrentVersion(page)}>
+            <CRMLeadsDashboard />
+          </AdminLayout>
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'ops' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+           <AdminLayout activePage="ops" onNavigate={(page) => setCurrentVersion(page)}>
+            <AgentControlRoom />
+          </AdminLayout>
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'workflow' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+           <AdminLayout activePage="workflow" onNavigate={(page) => setCurrentVersion(page)}>
+            <AutomationMapPage />
+          </AdminLayout>
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'settings' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+           <AdminLayout activePage="settings" onNavigate={(page) => setCurrentVersion(page)}>
+            <SettingsPage />
+          </AdminLayout>
         </ProtectedRoute>
       )}
       

@@ -107,7 +107,9 @@ const sitemapData: SitemapNode = {
           route: 'leads',
           primaryCTA: 'Review Leads',
           children: [
-            { id: 'lead-detail', label: 'Lead Detail View', type: 'admin', route: 'leads' }
+            { id: 'lead-detail', label: 'Lead Detail View', type: 'admin', route: 'leads' },
+            { id: 'ops-room', label: 'Ops Control Room', type: 'admin', route: 'ops', description: 'AI Agent Monitoring' },
+            { id: 'workflow-map', label: 'Workflow Logic Map', type: 'admin', route: 'workflow', description: 'Visual Logic Graph' }
           ]
         }
       ]

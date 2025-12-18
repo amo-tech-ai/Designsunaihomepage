@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   CheckCircle2, FileText, Calendar, ArrowRight, Sparkles, Clock, 
-  DollarSign, Target, Shield, Zap, Download, MessageSquare 
+  DollarSign, Target, Shield, Zap, Download, MessageSquare, Layers, AlertTriangle, ChevronRight
 } from 'lucide-react';
 import { Button } from './ui/design-system/Button';
 import { Card } from './ui/design-system/Card';
@@ -19,9 +19,9 @@ interface ProposalReadyScreenProps {
 export function ProposalReadyScreen({ onViewProposal, onGoToDashboard }: ProposalReadyScreenProps) {
   const [showConfetti, setShowConfetti] = useState(true);
   const { leads } = useLeads();
-  const currentLead = leads[0]; // The most recently added lead
+  const currentLead = leads[leads.length - 1]; // Use the most recent lead
   
-  // Generate dynamic proposal or fallback to default if no lead exists (e.g. direct access)
+  // Generate dynamic proposal or fallback to default if no lead exists
   const proposal = currentLead ? generateProposal(currentLead) : {
     title: "Custom AI Roadmap",
     summary: "Based on your goals for automation and efficiency.",
@@ -35,191 +35,204 @@ export function ProposalReadyScreen({ onViewProposal, onGoToDashboard }: Proposa
     ],
     aiInsights: {
        nextStep: "Schedule a kickoff call.",
-       risks: [],
-       recommendations: []
+       risks: ['Data privacy compliance required', 'Integration with legacy API needed'],
+       recommendations: ['Use vector database for faster retrieval', 'Implement edge caching']
     }
   };
 
   useEffect(() => {
-    // Disable confetti/glow after a few seconds
     const timer = setTimeout(() => setShowConfetti(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="min-h-screen bg-warm-white text-slate-900 pb-24">
+    <div className="min-h-screen bg-[#F8F9FA] text-slate-900 pb-32">
       
-      {/* --- Header --- */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4">
-        <div className="container mx-auto flex items-center justify-between">
+      {/* --- Sticky Header (Minimal) --- */}
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 shadow-sm">
+        <div className="container mx-auto max-w-4xl flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold">S</div>
-            <Typography variant="h5" className="hidden sm:block">Proposal #AI-2024-882</Typography>
-            <Badge variant="success" className="ml-2">Ready</Badge>
+            <div>
+              <Typography variant="h5" className="text-sm">Proposal #AI-2024-882</Typography>
+              <div className="text-[10px] text-slate-500 font-medium">Generated just now</div>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-             <Button variant="ghost" size="sm" leftIcon={<Download className="w-4 h-4" />}>PDF</Button>
-             <Button variant="outline" size="sm" onClick={onGoToDashboard}>Save</Button>
+          <div className="flex items-center gap-3">
+             <Button variant="ghost" size="sm" leftIcon={<Download className="w-4 h-4" />}>Download PDF</Button>
+             <Button variant="primary" size="sm" onClick={onViewProposal}>Book Strategy Call</Button>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
-          {/* --- Left Column: Content (2/3) --- */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-2 space-y-12"
-          >
-            {/* Hero Card */}
-            <div className="relative">
-              {showConfetti && (
-                 <motion.div 
-                   initial={{ opacity: 0 }} 
-                   animate={{ opacity: 1 }} 
-                   exit={{ opacity: 0 }}
-                   className="absolute -inset-4 bg-orange-500/20 blur-3xl rounded-full pointer-events-none"
-                 />
-              )}
+      {/* --- Main Document Container --- */}
+      <div className="container mx-auto px-4 py-12 flex justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full max-w-4xl relative"
+        >
+           {/* Ambient Glow */}
+           <div className="absolute -top-20 inset-x-0 h-64 bg-gradient-to-b from-orange-100/50 to-transparent -z-10 blur-3xl rounded-[100px]" />
+
+           <Card variant="solid" className="bg-white shadow-xl border-slate-100 overflow-hidden min-h-[800px] flex flex-col">
               
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 mb-2">
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                  >
-                    <CheckCircle2 className="w-12 h-12 text-orange-500" />
-                  </motion.div>
-                  <div>
-                    <Typography variant="h1" className="text-4xl md:text-5xl">{proposal.title}</Typography>
-                    <Typography variant="body" className="text-slate-500 text-lg">
-                      {proposal.summary}
-                    </Typography>
-                  </div>
+              {/* Document Header */}
+              <div className="p-12 border-b border-slate-100 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-5">
+                   <Sparkles className="w-64 h-64" />
+                </div>
+
+                <div className="relative z-10">
+                   <Badge variant="outline" className="mb-6 border-orange-200 text-orange-600 bg-orange-50">
+                     Preliminary Assessment
+                   </Badge>
+                   <Typography variant="h1" className="text-5xl font-serif tracking-tight text-slate-900 mb-4">
+                     {proposal.title}
+                   </Typography>
+                   <Typography variant="body" className="text-xl text-slate-500 max-w-2xl leading-relaxed">
+                     {proposal.summary}
+                   </Typography>
+
+                   {/* Quick Stats Grid */}
+                   <div className="grid grid-cols-3 gap-8 mt-12 border-t border-slate-100 pt-8">
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Timeline</div>
+                        <div className="text-2xl font-serif text-slate-900">{proposal.timeline}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Investment</div>
+                        <div className="text-2xl font-serif text-slate-900">{proposal.budgetRange}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Deliverables</div>
+                        <div className="text-2xl font-serif text-slate-900">{proposal.deliverables} Core Modules</div>
+                      </div>
+                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Executive Summary */}
-            <section className="space-y-4">
-              <Typography variant="h3">Executive Summary</Typography>
-              <Card variant="solid" className="p-8 bg-white space-y-4">
-                <p className="font-body text-slate-600 leading-relaxed">
-                  We have analyzed your requirements for <strong>{currentLead?.companyName || 'your company'}</strong>. 
-                  Our strategy focuses on implementing {currentLead?.services.join(' and ') || 'custom AI solutions'} to help you achieve 
-                  {currentLead?.goals.join(' and ') || 'your business goals'}.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-                  <div className="p-4 bg-slate-50 rounded-xl">
-                     <Zap className="w-5 h-5 text-orange-500 mb-2" />
-                     <div className="font-bold text-slate-900">2.5x Faster</div>
-                     <div className="text-xs text-slate-500">Processing Time</div>
-                  </div>
-                  <div className="p-4 bg-slate-50 rounded-xl">
-                     <Shield className="w-5 h-5 text-orange-500 mb-2" />
-                     <div className="font-bold text-slate-900">Enterprise</div>
-                     <div className="text-xs text-slate-500">Security Grade</div>
-                  </div>
-                  <div className="p-4 bg-slate-50 rounded-xl">
-                     <Target className="w-5 h-5 text-orange-500 mb-2" />
-                     <div className="font-bold text-slate-900">Scalable</div>
-                     <div className="text-xs text-slate-500">Architecture</div>
-                  </div>
-                </div>
-              </Card>
-            </section>
-
-            {/* Implementation Timeline (Gantt) */}
-            <section className="space-y-4">
-              <Typography variant="h3">Implementation Timeline</Typography>
-              <Card variant="solid" className="p-8 bg-white overflow-hidden">
-                <div className="space-y-6">
-                  {proposal.phases.map((phase, index) => (
-                    <div className="relative" key={index}>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="font-bold text-slate-900">Phase {index + 1}: {phase.name}</span>
-                        <span className="text-slate-500">{phase.duration}</span>
+              {/* Document Body */}
+              <div className="p-12 space-y-12">
+                
+                {/* 1. Recommended Tech Stack */}
+                <section>
+                   <div className="flex items-center gap-3 mb-6">
+                      <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                        <Layers className="w-4 h-4 text-orange-600" />
                       </div>
-                      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <motion.div 
-                          initial={{ width: 0 }} 
-                          whileInView={{ width: '100%' }} 
-                          transition={{ duration: 1, delay: index * 0.2 }}
-                          className={`h-full ${index === 0 ? 'bg-slate-900' : index === 1 ? 'bg-orange-500' : 'bg-slate-400'}`}
-                        />
+                      <Typography variant="h3">Recommended Architecture</Typography>
+                   </div>
+                   
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <StackCard 
+                        title="Frontend Core" 
+                        tech="Next.js 14 + React" 
+                        desc="Server-side rendering for optimal SEO and performance." 
+                      />
+                      <StackCard 
+                        title="AI Orchestration" 
+                        tech="LangChain + OpenAI GPT-4" 
+                        desc="Advanced reasoning engine with context awareness." 
+                      />
+                      <StackCard 
+                        title="Data Layer" 
+                        tech="Supabase + Vector" 
+                        desc="Real-time database with semantic search capabilities." 
+                      />
+                      <StackCard 
+                        title="Infrastructure" 
+                        tech="Vercel Edge Network" 
+                        desc="Global low-latency deployment with auto-scaling." 
+                      />
+                   </div>
+                </section>
+
+                <div className="h-px bg-slate-100" />
+
+                {/* 2. Implementation Roadmap */}
+                <section>
+                   <div className="flex items-center gap-3 mb-6">
+                      <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                        <Calendar className="w-4 h-4 text-orange-600" />
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </section>
-          </motion.div>
-
-          {/* --- Right Column: Action Panel (Sticky) --- */}
-          <div className="lg:col-span-1">
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="sticky top-24 space-y-6"
-            >
-              <Card variant="glass" className="p-6 border-orange-200 shadow-orange-500/5 bg-white/80">
-                <div className="mb-6 pb-6 border-b border-slate-100">
-                  <Typography variant="caption" className="text-slate-500 mb-2">Estimated Investment</Typography>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold text-slate-900">{proposal.budgetRange}</span>
-                    <span className="text-slate-500">USD</span>
-                  </div>
-                  <Typography variant="body-sm" className="text-slate-400 mt-2">
-                    Includes design, development, and {proposal.phases.length > 3 ? '6 months' : '3 months'} support.
-                  </Typography>
-                </div>
-
-                <div className="space-y-3">
-                   <Button 
-                     variant="primary" 
-                     className="w-full" 
-                     onClick={onViewProposal} // Using this prop for the Booking action
-                   >
-                     Secure Design Slot
-                   </Button>
-                   <Button 
-                     variant="outline" 
-                     className="w-full"
-                     leftIcon={<MessageSquare className="w-4 h-4" />}
-                   >
-                     Book Strategy Call
-                   </Button>
-                </div>
-
-                <div className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-400">
-                  <Shield className="w-3 h-3" />
-                  <span>Secure 256-bit Encryption</span>
-                </div>
-              </Card>
-
-              <Card variant="solid" className="p-6 bg-slate-900 text-white">
-                 <div className="flex items-start gap-4">
-                   <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center">
-                     <Sparkles className="w-5 h-5 text-orange-500" />
+                      <Typography variant="h3">Phased Roadmap</Typography>
                    </div>
-                   <div>
-                     <div className="font-bold text-sm mb-1">Why Sun AI?</div>
-                     <p className="text-xs text-slate-400 leading-relaxed">
-                       We don't just write code. We build intelligent systems that generate revenue from Day 1.
-                     </p>
+
+                   <div className="space-y-4">
+                      {proposal.phases.map((phase, i) => (
+                        <div key={i} className="flex items-center gap-4 p-4 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors bg-slate-50/50">
+                           <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                             {i + 1}
+                           </div>
+                           <div className="flex-grow">
+                             <div className="font-bold text-slate-900">{phase.name}</div>
+                             <div className="text-xs text-slate-500">Key Milestone: Prototype Approval</div>
+                           </div>
+                           <div className="text-sm font-medium text-slate-600 bg-white px-3 py-1 rounded-md border border-slate-100 shadow-sm">
+                             {phase.duration}
+                           </div>
+                        </div>
+                      ))}
                    </div>
+                </section>
+
+                <div className="h-px bg-slate-100" />
+
+                {/* 3. Risk Assessment */}
+                <section>
+                   <div className="flex items-center gap-3 mb-6">
+                      <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                        <AlertTriangle className="w-4 h-4 text-orange-600" />
+                      </div>
+                      <Typography variant="h3">Key Risks & Mitigation</Typography>
+                   </div>
+
+                   <div className="bg-orange-50/50 rounded-xl p-6 border border-orange-100">
+                      <ul className="space-y-3">
+                        {(proposal.aiInsights?.risks || ['Data privacy compliance required', 'Integration with legacy systems']).map((risk, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
+                            <div className="mt-1 w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
+                            {risk}
+                          </li>
+                        ))}
+                      </ul>
+                   </div>
+                </section>
+
+              </div>
+
+              {/* Document Footer */}
+              <div className="bg-slate-50 p-12 text-center border-t border-slate-100 mt-auto">
+                 <Typography variant="h4" className="mb-2">Ready to move forward?</Typography>
+                 <Typography variant="body" className="text-slate-500 mb-6 max-w-md mx-auto">
+                   This proposal is valid for 14 days. Book a strategy call to refine the scope and begin development.
+                 </Typography>
+                 
+                 <div className="flex items-center justify-center gap-4">
+                    <Button variant="outline" onClick={() => window.print()}>
+                       Print Proposal
+                    </Button>
+                    <Button variant="primary" onClick={onViewProposal} rightIcon={<ChevronRight className="w-4 h-4" />}>
+                       Book Strategy Call
+                    </Button>
                  </div>
-              </Card>
+              </div>
 
-            </motion.div>
-          </div>
-
-        </div>
+           </Card>
+        </motion.div>
       </div>
+    </div>
+  );
+}
+
+function StackCard({ title, tech, desc }: { title: string, tech: string, desc: string }) {
+  return (
+    <div className="p-4 rounded-xl border border-slate-100 hover:border-orange-200 transition-colors group bg-white">
+      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{title}</div>
+      <div className="font-bold text-slate-900 mb-1 group-hover:text-orange-600 transition-colors">{tech}</div>
+      <div className="text-xs text-slate-500 leading-relaxed">{desc}</div>
     </div>
   );
 }

@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquare, X, Send, Sparkles, ChevronRight, ArrowRight } from 'lucide-react';
 import { Button } from './ui/design-system/Button';
 import { Typography } from './ui/design-system/Typography';
+import { getSmartResponse } from './chatbot/ChatbotLogic';
 
-export function GlobalChatbot() {
+export function GlobalChatbot({ onNavigate }: { onNavigate?: (version: any) => void }) {
   const [isOpen, setIsOpen] = useState(false);
   
   // Initialize from localStorage to prevent "pestering" on refresh
@@ -19,7 +20,7 @@ export function GlobalChatbot() {
     return false;
   });
 
-  const [messages, setMessages] = useState<Array<{role: 'ai' | 'user', text: string}>>([
+  const [messages, setMessages] = useState<Array<{role: 'ai' | 'user', text: string, action?: 'wizard' | 'booking' | 'contact'}>>([
     { role: 'ai', text: "Hello. I'm the Sun AI architecture assistant. How can I help you scope your project today?" }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -74,16 +75,16 @@ export function GlobalChatbot() {
     // Simulate AI response
     setTimeout(() => {
       setIsTyping(false);
-      let response = "I can help with that. Our system recommends starting with a Brief to analyze your specific requirements.";
-      
-      if (text.toLowerCase().includes('price') || text.toLowerCase().includes('cost')) {
-        response = "Our projects typically range from $15k to $50k depending on complexity. You can get an exact estimate by completing the Brief Wizard.";
-      } else if (text.toLowerCase().includes('agent')) {
-        response = "We specialize in autonomous AI agents. Are you looking for customer support agents or internal workflow automation?";
-      }
+      const response = getSmartResponse(text);
+      setMessages(prev => [...prev, { role: 'ai', text: response.text, action: response.action }]);
+    }, 1000);
+  };
 
-      setMessages(prev => [...prev, { role: 'ai', text: response }]);
-    }, 1500);
+  const handleActionClick = (action: string) => {
+    if (onNavigate) {
+      onNavigate(action);
+      setIsOpen(false); // Close chat when navigating
+    }
   };
 
   const QuickAction = ({ label, query }: { label: string, query: string }) => (
@@ -132,7 +133,7 @@ export function GlobalChatbot() {
               {/* Chat Area */}
               <div className="h-[350px] overflow-y-auto p-4 bg-slate-50 space-y-4">
                 {messages.map((msg, i) => (
-                  <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div key={i} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                     <div 
                       className={`
                         max-w-[85%] p-3 rounded-2xl text-sm leading-relaxed
@@ -144,6 +145,24 @@ export function GlobalChatbot() {
                     >
                       {msg.text}
                     </div>
+                    {/* Render Action Button if present */}
+                    {msg.role === 'ai' && msg.action && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-2"
+                      >
+                        <Button 
+                          variant="secondary" 
+                          size="sm" 
+                          onClick={() => handleActionClick(msg.action!)}
+                          rightIcon={<ChevronRight className="w-3 h-3" />}
+                          className="bg-orange-50 text-orange-700 border-orange-100 hover:bg-orange-100 h-8 text-xs"
+                        >
+                          {msg.action === 'wizard' ? 'Start Project Brief' : msg.action === 'booking' ? 'Book a Call' : 'Contact Us'}
+                        </Button>
+                      </motion.div>
+                    )}
                   </div>
                 ))}
                 
