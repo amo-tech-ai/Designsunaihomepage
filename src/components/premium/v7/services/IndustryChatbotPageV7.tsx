@@ -427,7 +427,7 @@ export function IndustryChatbotPageV7({
 
   return (
     <main className="min-h-screen bg-white font-sans antialiased text-slate-900 selection:bg-[#FF6A3D] selection:text-white">
-      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} />
+      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
       
       <IndustryHero data={data} onNavigateToWizard={handleWizard} onNavigateToProjects={handleProjects} />
       {/* We integrated features and flow into the Hero/Demo, so separate sections are simplified or removed to avoid redundancy if not needed, 

@@ -2,8 +2,8 @@ import { Home, Menu, X, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 interface SideMenuProps {
-  currentVersion: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'whatsapp' | 'about';
-  onVersionChange: (version: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'whatsapp' | 'about') => void;
+  currentVersion: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking';
+  onVersionChange: (version: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking') => void;
 }
 
 export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
@@ -14,7 +14,7 @@ export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-6 left-6 z-50 w-12 h-12 bg-[#00334F] text-white rounded-full shadow-lg hover:bg-[#00334F]/90 transition-all flex items-center justify-center"
+        className="fixed top-32 left-8 z-50 w-12 h-12 bg-[#00334F] text-white rounded-full shadow-lg hover:bg-[#00334F]/90 transition-all flex items-center justify-center"
       >
         {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
@@ -335,6 +335,96 @@ export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
                 )}
               </div>
             </button>
+
+            {/* Docs & System */}
+             <div className="pt-4 pb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              Docs & System
+            </div>
+
+            <button
+              onClick={() => {
+                onVersionChange('sitemap');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'sitemap'
+                  ? 'bg-slate-900 text-white shadow-md'
+                  : 'bg-white border border-slate-100 text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[15px] font-semibold mb-1">Architecture</div>
+                  <div className={`text-[13px] ${currentVersion === 'sitemap' ? 'text-slate-300' : 'text-slate-500'}`}>
+                    Sitemap & Routing
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                onVersionChange('style-guide');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'style-guide'
+                  ? 'bg-slate-900 text-white shadow-md'
+                  : 'bg-white border border-slate-100 text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[15px] font-semibold mb-1">Style Guide</div>
+                  <div className={`text-[13px] ${currentVersion === 'style-guide' ? 'text-slate-300' : 'text-slate-500'}`}>
+                    Design Tokens & Components
+                  </div>
+                </div>
+              </div>
+            </button>
+            
+            <button
+              onClick={() => {
+                onVersionChange('booking');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'booking'
+                  ? 'bg-slate-900 text-white shadow-md'
+                  : 'bg-white border border-slate-100 text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[15px] font-semibold mb-1">Booking & Payment</div>
+                  <div className={`text-[13px] ${currentVersion === 'booking' ? 'text-slate-300' : 'text-slate-500'}`}>
+                    Stripe Integration Mockup
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                onVersionChange('leads');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'leads'
+                  ? 'bg-slate-900 text-white shadow-md'
+                  : 'bg-white border border-slate-100 text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[15px] font-semibold mb-1">Internal CRM</div>
+                  <div className={`text-[13px] ${currentVersion === 'leads' ? 'text-slate-300' : 'text-slate-500'}`}>
+                    Lead Dashboard Mockup
+                  </div>
+                </div>
+              </div>
+            </button>
+
           </div>
 
           {/* Info */}

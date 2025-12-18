@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import {
   LayoutDashboard,
@@ -31,64 +31,62 @@ import { ProposalView } from './ProposalView';
 import { RequirementsPageClean } from './RequirementsPageClean';
 import { TimelinePage } from './TimelinePage';
 import { DeliverablesPage } from './DeliverablesPage';
+import { useLeads } from '../context/LeadContext';
+import { generateProposal } from '../lib/ai-proposal-generator';
+import { Button } from './ui/design-system/Button';
+import { Card } from './ui/design-system/Card';
+import { Badge } from './ui/design-system/Badge';
+import { Typography } from './ui/design-system/Typography';
 
 interface ProjectDashboardProps {
   onClose?: () => void;
 }
 
-// Mock project data (would come from form submission)
-const projectData = {
-  title: 'AI-Powered Customer Support Platform',
-  status: 'Draft',
-  createdDate: 'today',
-  company: {
-    name: 'TechCorp Inc.',
-    website: 'https://techcorp.com',
-    linkedin: 'https://linkedin.com/company/techcorp',
-    teamSize: '16-50',
-    industry: 'Technology & SaaS',
-  },
-  summary: 'A complete AI customer support solution with intelligent routing, automated responses, and real-time analytics designed to reduce support ticket volume by 60% while improving customer satisfaction scores.',
-  goals: [
-    'Automate 60% of common support queries',
-    'Reduce average response time from 4 hours to 5 minutes',
-    'Improve customer satisfaction score to 4.5+/5',
-  ],
-  keyFeatures: [
-    'AI Chat Bot with natural language processing',
-    'Knowledge Base with semantic search',
-    'Analytics Dashboard with real-time metrics',
-    'CRM Integration (HubSpot, Salesforce)',
-    'Multi-language support',
-  ],
-  proposal: {
-    timeline: '8-10 weeks',
-    budget: '$45,000 - $65,000',
-    deliverablesCount: 12,
-    phases: [
-      { name: 'Discovery & Planning', duration: '2 weeks', status: 'upcoming' },
-      { name: 'Design & Development', duration: '5 weeks', status: 'upcoming' },
-      { name: 'Testing & Launch', duration: '2 weeks', status: 'upcoming' },
-    ],
-  },
-  aiNotes: {
-    nextStep: 'Schedule a kickoff call to align on project scope and timeline',
-    risks: ['Integration complexity with legacy CRM system may require additional time'],
-    recommendations: ['Consider adding Slack integration for internal team notifications', 'Plan for user training sessions during launch phase'],
-  },
-  stats: {
-    requirements: 0,
-    files: 0,
-    messages: 0,
-  },
-};
-
-type TabType = 'overview' | 'proposal' | 'requirements' | 'timeline' | 'deliverables' | 'files' | 'chat';
-
 export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
-  const [projectStatus, setProjectStatus] = useState(projectData.status);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+  const { leads } = useLeads();
+  const currentLead = leads[0]; // Get the most recent lead
+
+  // Generate dynamic project data based on the lead
+  const projectData = useMemo(() => {
+    if (!currentLead) return null;
+    
+    const proposal = generateProposal(currentLead);
+    
+    return {
+      title: proposal.title,
+      status: currentLead.status,
+      createdDate: currentLead.date,
+      company: {
+        name: currentLead.companyName,
+        website: currentLead.website || 'Not specified',
+        linkedin: '#', // Placeholder
+        teamSize: 'Unknown', // Not collected in wizard
+        industry: 'Unknown', // Not collected in wizard
+      },
+      summary: proposal.summary,
+      goals: currentLead.goals,
+      keyFeatures: currentLead.services,
+      proposal: {
+        timeline: proposal.timeline,
+        budget: proposal.budgetRange,
+        deliverablesCount: proposal.deliverables,
+        phases: proposal.phases,
+        generatedDeliverables: proposal.generatedDeliverables
+      },
+      aiNotes: proposal.aiInsights,
+      stats: {
+        requirements: 0,
+        files: 0,
+        messages: 0,
+      },
+    };
+  }, [currentLead]);
+
+  const [projectStatus, setProjectStatus] = useState(projectData?.status || 'Draft');
+
+  if (!projectData) return null; // Or a loading/empty state
 
   const tabs = [
     { id: 'overview' as TabType, label: 'Overview', icon: LayoutDashboard },
@@ -105,43 +103,43 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Draft':
-        return 'bg-slate-100 text-slate-700';
+        return 'bg-slate-100 text-slate-700 border-slate-200';
       case 'In Progress':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-blue-50 text-blue-700 border-blue-200';
       case 'Review':
-        return 'bg-orange-100 text-orange-700';
+        return 'bg-orange-50 text-orange-700 border-orange-200';
       case 'Completed':
-        return 'bg-green-100 text-green-700';
+        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
       default:
-        return 'bg-slate-100 text-slate-700';
+        return 'bg-slate-100 text-slate-700 border-slate-200';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F7F9FB] via-white to-[#F7F9FB]">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
       {/* Header */}
-      <header className="bg-white border-b border-[#E9EAEE] sticky top-0 z-40">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1400px] mx-auto px-6 py-5">
-          <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex items-start justify-between gap-4 mb-6">
             {/* Left: Project Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
-                <h1 
-                  className="text-[28px] text-[#202020] truncate"
-                  style={{ fontWeight: 600 }}
-                >
+                <Typography variant="h2" className="text-2xl font-bold truncate">
                   {projectData.title}
-                </h1>
+                </Typography>
                 <button
                   onClick={onClose}
-                  className="flex-shrink-0 p-1 text-[#999] hover:text-[#202020] transition-colors"
+                  className="flex-shrink-0 p-1 text-slate-400 hover:text-slate-900 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <p className="text-[14px] text-[#999]">
-                Created {projectData.createdDate} · AI Proposal Ready
-              </p>
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Created {projectData.createdDate}</span>
+                <span className="w-1 h-1 rounded-full bg-slate-300 mx-1" />
+                <Badge variant="success" className="h-5 text-[10px] px-2 py-0">AI Proposal Ready</Badge>
+              </div>
             </div>
 
             {/* Right: Actions */}
@@ -150,10 +148,9 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
               <div className="relative">
                 <button
                   onClick={() => setShowStatusDropdown(!showStatusDropdown)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${getStatusColor(projectStatus)}`}
-                  style={{ fontWeight: 500 }}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ${getStatusColor(projectStatus)}`}
                 >
-                  <span className="text-[14px]">{projectStatus}</span>
+                  <span>{projectStatus}</span>
                   <ChevronDown className="w-4 h-4" />
                 </button>
 
@@ -163,7 +160,7 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
                       className="fixed inset-0 z-10"
                       onClick={() => setShowStatusDropdown(false)}
                     />
-                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-[#E9EAEE] py-2 z-20">
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1 z-20">
                       {statusOptions.map((status) => (
                         <button
                           key={status}
@@ -171,7 +168,7 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
                             setProjectStatus(status);
                             setShowStatusDropdown(false);
                           }}
-                          className="w-full px-4 py-2 text-left text-[14px] text-[#202020] hover:bg-[#F7F9FB] transition-colors"
+                          className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 transition-colors"
                         >
                           {status}
                         </button>
@@ -182,22 +179,20 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
               </div>
 
               {/* Share Button */}
-              <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-[#E9EAEE] text-[#555] hover:bg-[#F7F9FB] transition-all text-[14px]">
-                <Share2 className="w-4 h-4" />
+              <Button variant="outline" size="sm" className="h-9" leftIcon={<Share2 className="w-4 h-4" />}>
                 <span className="hidden sm:inline">Share</span>
-              </button>
+              </Button>
 
               {/* Start Project Button */}
-              <button className="flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-[#FF6A3D] to-[#FF8A4F] text-white hover:shadow-lg transition-all text-[14px]">
-                <Play className="w-4 h-4" />
-                <span className="hidden sm:inline" style={{ fontWeight: 600 }}>Start Project</span>
-                <span className="sm:hidden" style={{ fontWeight: 600 }}>Start</span>
-              </button>
+              <Button variant="primary" size="sm" className="h-9 shadow-lg shadow-orange-500/20" leftIcon={<Play className="w-4 h-4" />}>
+                <span className="hidden sm:inline">Start Project</span>
+                <span className="sm:hidden">Start</span>
+              </Button>
             </div>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-1 -mb-px scrollbar-hide">
+          <div className="flex gap-1 overflow-x-auto pb-1 -mb-px scrollbar-hide border-b border-transparent">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -205,19 +200,18 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex items-center gap-2 px-4 py-2 rounded-t-lg transition-all whitespace-nowrap ${
+                  className={`relative flex items-center gap-2 px-4 py-2.5 rounded-t-lg transition-all whitespace-nowrap text-sm font-medium ${
                     isActive
-                      ? 'bg-gradient-to-b from-[#FF6A3D]/10 to-transparent text-[#FF6A3D]'
-                      : 'text-[#555] hover:bg-[#F7F9FB]'
+                      ? 'text-orange-600 bg-orange-50/50'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                   }`}
-                  style={{ fontWeight: isActive ? 600 : 500 }}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-[14px]">{tab.label}</span>
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-orange-500' : 'text-slate-400'}`} />
+                  <span>{tab.label}</span>
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#FF6A3D] to-[#FF8A4F]"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500"
                     />
                   )}
                 </button>
@@ -229,14 +223,14 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
 
       {/* Main Content */}
       <div className="max-w-[1400px] mx-auto px-6 py-8">
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content Area */}
           <div className="flex-1 min-w-0">
-            {activeTab === 'overview' && <OverviewTab />}
+            {activeTab === 'overview' && <OverviewTab data={projectData} />}
             {activeTab === 'proposal' && <ProposalTab />}
             {activeTab === 'requirements' && <RequirementsTab />}
             {activeTab === 'timeline' && <TimelineTab />}
-            {activeTab === 'deliverables' && <DeliverablesTab />}
+            {activeTab === 'deliverables' && <DeliverablesTab data={projectData.proposal.generatedDeliverables} />}
             {activeTab === 'files' && <FilesTab />}
             {activeTab === 'chat' && <ChatTab />}
           </div>
@@ -244,7 +238,7 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
           {/* Sidebar */}
           {activeTab !== 'timeline' && (
             <aside className="hidden lg:block w-80 flex-shrink-0">
-              <Sidebar />
+              <Sidebar data={projectData} />
             </aside>
           )}
         </div>
@@ -254,240 +248,186 @@ export function ProjectDashboard({ onClose }: ProjectDashboardProps) {
 }
 
 // Overview Tab Component
-function OverviewTab() {
+function OverviewTab({ data }: { data: any }) {
   return (
     <div className="space-y-6">
       {/* Project Summary Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="bg-white rounded-2xl p-8 shadow-md"
-      >
-        <div className="flex items-start gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00334F] to-[#005578] flex items-center justify-center">
-            <Target className="w-5 h-5 text-white" />
+      <Card variant="solid" className="p-8">
+        <div className="flex items-start gap-4 mb-6">
+          <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center shadow-lg shadow-slate-900/20">
+            <Target className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h2 className="text-[20px] text-[#202020] mb-2" style={{ fontWeight: 600 }}>
-              Project Summary
-            </h2>
-            <p className="text-[15px] text-[#555] leading-[1.7] mb-6">
-              {projectData.summary}
+            <Typography variant="h3" className="mb-2">Project Summary</Typography>
+            <p className="text-slate-600 leading-relaxed text-base mb-6">
+              {data.summary}
             </p>
 
-            {/* Goals */}
-            <div className="mb-6">
-              <h3 className="text-[14px] text-[#999] mb-3" style={{ fontWeight: 600 }}>
-                Project Goals
-              </h3>
-              <ul className="space-y-2">
-                {projectData.goals.map((goal, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-[#FF6A3D] flex-shrink-0 mt-0.5" />
-                    <span className="text-[14px] text-[#555]">{goal}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Goals */}
+              <div>
+                <Typography variant="caption" className="text-slate-400 mb-3">Core Objectives</Typography>
+                <ul className="space-y-3">
+                  {data.goals.map((goal: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="mt-1 w-5 h-5 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                         <CheckCircle2 className="w-3.5 h-3.5 text-orange-500" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-700">{goal}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            {/* Key Features */}
-            <div>
-              <h3 className="text-[14px] text-[#999] mb-3" style={{ fontWeight: 600 }}>
-                Key Features
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {projectData.keyFeatures.map((feature, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1.5 rounded-lg bg-[#F7F9FB] text-[#00334F] text-[13px]"
-                    style={{ fontWeight: 500 }}
-                  >
-                    {feature}
-                  </span>
-                ))}
+              {/* Key Features */}
+              <div>
+                <Typography variant="caption" className="text-slate-400 mb-3">Key Features</Typography>
+                <div className="flex flex-wrap gap-2">
+                  {data.keyFeatures.map((feature: string, i: number) => (
+                    <Badge key={i} variant="outline" className="bg-slate-50 text-slate-600 border-slate-200">
+                      {feature}
+                    </Badge>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </motion.div>
+      </Card>
 
       {/* Proposal Snapshot */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        className="bg-white rounded-2xl p-8 shadow-md"
-      >
+      <Card variant="outline" className="p-8 bg-white">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-[20px] text-[#202020]" style={{ fontWeight: 600 }}>
-            Proposal Snapshot
-          </h2>
-          <button className="text-[14px] text-[#FF6A3D] hover:text-[#FF8A4F] transition-colors flex items-center gap-1">
-            <span style={{ fontWeight: 500 }}>Open Full Proposal</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <Typography variant="h3">Proposal Snapshot</Typography>
+          <Button variant="ghost" size="sm" className="text-orange-600 hover:text-orange-700 hover:bg-orange-50">
+            Open Full Proposal <ArrowRight className="w-4 h-4 ml-1" />
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Timeline */}
-          <div className="p-5 rounded-xl bg-gradient-to-br from-[#F7F9FB] to-white border border-[#E9EAEE]">
+          <div className="p-5 rounded-xl bg-slate-50 border border-slate-100 hover:border-orange-200 hover:bg-orange-50/30 transition-colors group">
             <div className="flex items-center gap-2 mb-2">
-              <Calendar className="w-5 h-5 text-[#FF6A3D]" />
-              <span className="text-[13px] text-[#999]" style={{ fontWeight: 600 }}>
-                Timeline
-              </span>
+              <Calendar className="w-4 h-4 text-slate-400 group-hover:text-orange-500" />
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Timeline</span>
             </div>
-            <p className="text-[22px] text-[#00334F]" style={{ fontWeight: 700 }}>
-              {projectData.proposal.timeline}
+            <p className="text-2xl font-bold text-slate-900">
+              {data.proposal.timeline}
             </p>
           </div>
 
           {/* Budget */}
-          <div className="p-5 rounded-xl bg-gradient-to-br from-[#F7F9FB] to-white border border-[#E9EAEE]">
+          <div className="p-5 rounded-xl bg-slate-50 border border-slate-100 hover:border-orange-200 hover:bg-orange-50/30 transition-colors group">
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign className="w-5 h-5 text-[#FF6A3D]" />
-              <span className="text-[13px] text-[#999]" style={{ fontWeight: 600 }}>
-                Budget
-              </span>
+              <DollarSign className="w-4 h-4 text-slate-400 group-hover:text-orange-500" />
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Budget</span>
             </div>
-            <p className="text-[22px] text-[#00334F]" style={{ fontWeight: 700 }}>
-              {projectData.proposal.budget}
+            <p className="text-2xl font-bold text-slate-900">
+              {data.proposal.budget}
             </p>
           </div>
 
           {/* Deliverables */}
-          <div className="p-5 rounded-xl bg-gradient-to-br from-[#F7F9FB] to-white border border-[#E9EAEE]">
+          <div className="p-5 rounded-xl bg-slate-50 border border-slate-100 hover:border-orange-200 hover:bg-orange-50/30 transition-colors group">
             <div className="flex items-center gap-2 mb-2">
-              <Package className="w-5 h-5 text-[#FF6A3D]" />
-              <span className="text-[13px] text-[#999]" style={{ fontWeight: 600 }}>
-                Deliverables
-              </span>
+              <Package className="w-4 h-4 text-slate-400 group-hover:text-orange-500" />
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Deliverables</span>
             </div>
-            <p className="text-[22px] text-[#00334F]" style={{ fontWeight: 700 }}>
-              {projectData.proposal.deliverablesCount} items
+            <p className="text-2xl font-bold text-slate-900">
+              {data.proposal.deliverablesCount} items
             </p>
           </div>
         </div>
-      </motion.div>
+      </Card>
 
       {/* Timeline & Milestones */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.2 }}
-        className="bg-white rounded-2xl p-8 shadow-md"
-      >
-        <h2 className="text-[20px] text-[#202020] mb-6" style={{ fontWeight: 600 }}>
-          Timeline & Milestones
-        </h2>
+      <Card variant="solid" className="p-8">
+        <Typography variant="h3" className="mb-6">Timeline & Milestones</Typography>
 
-        <div className="space-y-4">
-          {projectData.proposal.phases.map((phase, i) => (
-            <div key={i} className="relative">
+        <div className="space-y-0">
+          {data.proposal.phases.map((phase: any, i: number) => (
+            <div key={i} className="relative pl-8 pb-8 last:pb-0">
               {/* Connector Line */}
-              {i < projectData.proposal.phases.length - 1 && (
-                <div className="absolute left-5 top-12 bottom-0 w-0.5 bg-[#E9EAEE]" />
+              {i < data.proposal.phases.length - 1 && (
+                <div className="absolute left-[11px] top-3 bottom-0 w-px bg-slate-200" />
               )}
 
-              <div className="flex items-start gap-4">
-                {/* Phase Number */}
-                <div className="relative z-10 w-10 h-10 rounded-full bg-gradient-to-br from-[#FF6A3D] to-[#FF8A4F] flex items-center justify-center text-white flex-shrink-0">
-                  <span className="text-[14px]" style={{ fontWeight: 600 }}>
-                    {i + 1}
-                  </span>
-                </div>
+              {/* Dot */}
+              <div className="absolute left-0 top-1.5 w-[22px] h-[22px] rounded-full border-2 border-white bg-slate-900 text-white flex items-center justify-center text-[10px] font-bold shadow-sm z-10">
+                {i + 1}
+              </div>
 
-                {/* Phase Content */}
-                <div className="flex-1 pb-6">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-[16px] text-[#202020]" style={{ fontWeight: 600 }}>
-                      {phase.name}
-                    </h3>
-                    <span className="text-[13px] text-[#999]">{phase.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-[#999]" />
-                    <span className="text-[13px] text-[#999] capitalize">
-                      {phase.status}
-                    </span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 mb-1">
+                    {phase.name}
+                  </h3>
+                  <div className="flex items-center gap-3 text-xs text-slate-500">
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {phase.duration}</span>
                   </div>
                 </div>
+                <Badge variant="secondary" className="w-fit text-[10px] uppercase tracking-wider bg-slate-100 text-slate-500">
+                  {phase.status}
+                </Badge>
               </div>
             </div>
           ))}
         </div>
-      </motion.div>
+      </Card>
 
       {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.3 }}
-        className="bg-white rounded-2xl p-8 shadow-md"
-      >
-        <h2 className="text-[20px] text-[#202020] mb-6" style={{ fontWeight: 600 }}>
-          Quick Actions
-        </h2>
+      <Card variant="outline" className="p-8 border-slate-200">
+        <Typography variant="h3" className="mb-6">Quick Actions</Typography>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="flex flex-col items-center gap-3 p-6 rounded-xl bg-[#F7F9FB] hover:bg-gradient-to-br hover:from-[#FF6A3D]/10 hover:to-[#FF8A4F]/10 transition-all group">
-            <div className="w-12 h-12 rounded-xl bg-white group-hover:bg-gradient-to-br group-hover:from-[#FF6A3D] group-hover:to-[#FF8A4F] flex items-center justify-center transition-all shadow-sm">
-              <Plus className="w-6 h-6 text-[#555] group-hover:text-white transition-colors" />
-            </div>
-            <span className="text-[13px] text-[#555] text-center" style={{ fontWeight: 500 }}>
-              Add Requirement
-            </span>
-          </button>
-
-          <button className="flex flex-col items-center gap-3 p-6 rounded-xl bg-[#F7F9FB] hover:bg-gradient-to-br hover:from-[#FF6A3D]/10 hover:to-[#FF8A4F]/10 transition-all group">
-            <div className="w-12 h-12 rounded-xl bg-white group-hover:bg-gradient-to-br group-hover:from-[#FF6A3D] group-hover:to-[#FF8A4F] flex items-center justify-center transition-all shadow-sm">
-              <Upload className="w-6 h-6 text-[#555] group-hover:text-white transition-colors" />
-            </div>
-            <span className="text-[13px] text-[#555] text-center" style={{ fontWeight: 500 }}>
-              Upload File
-            </span>
-          </button>
-
-          <button className="flex flex-col items-center gap-3 p-6 rounded-xl bg-[#F7F9FB] hover:bg-gradient-to-br hover:from-[#FF6A3D]/10 hover:to-[#FF8A4F]/10 transition-all group">
-            <div className="w-12 h-12 rounded-xl bg-white group-hover:bg-gradient-to-br group-hover:from-[#FF6A3D] group-hover:to-[#FF8A4F] flex items-center justify-center transition-all shadow-sm">
-              <Sparkles className="w-6 h-6 text-[#555] group-hover:text-white transition-colors" />
-            </div>
-            <span className="text-[13px] text-[#555] text-center" style={{ fontWeight: 500 }}>
-              Ask AI
-            </span>
-          </button>
-
-          <button className="flex flex-col items-center gap-3 p-6 rounded-xl bg-[#F7F9FB] hover:bg-gradient-to-br hover:from-[#FF6A3D]/10 hover:to-[#FF8A4F]/10 transition-all group">
-            <div className="w-12 h-12 rounded-xl bg-white group-hover:bg-gradient-to-br group-hover:from-[#FF6A3D] group-hover:to-[#FF8A4F] flex items-center justify-center transition-all shadow-sm">
-              <Edit2 className="w-6 h-6 text-[#555] group-hover:text-white transition-colors" />
-            </div>
-            <span className="text-[13px] text-[#555] text-center" style={{ fontWeight: 500 }}>
-              Edit Project Info
-            </span>
-          </button>
+          <ActionButton icon={Plus} label="Add Requirement" />
+          <ActionButton icon={Upload} label="Upload File" />
+          <ActionButton icon={Sparkles} label="Ask AI Assistant" highlight />
+          <ActionButton icon={Edit2} label="Edit Project Info" />
         </div>
-      </motion.div>
+      </Card>
     </div>
+  );
+}
+
+function ActionButton({ icon: Icon, label, highlight }: { icon: any, label: string, highlight?: boolean }) {
+  return (
+    <button className={`
+      flex flex-col items-center gap-3 p-6 rounded-xl border transition-all group
+      ${highlight 
+        ? 'bg-orange-50 border-orange-100 hover:border-orange-300 hover:shadow-md hover:shadow-orange-500/10' 
+        : 'bg-slate-50 border-slate-100 hover:border-slate-300 hover:bg-white hover:shadow-sm'
+      }
+    `}>
+      <div className={`
+        w-10 h-10 rounded-lg flex items-center justify-center transition-all
+        ${highlight ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-white text-slate-400 group-hover:text-slate-900 border border-slate-200'}
+      `}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <span className={`text-xs font-bold text-center ${highlight ? 'text-orange-700' : 'text-slate-600'}`}>
+        {label}
+      </span>
+    </button>
   );
 }
 
 // Empty State Component
 function EmptyState({ icon: Icon, title, description, actionLabel }: { icon: any; title: string; description: string; actionLabel: string }) {
   return (
-    <div className="bg-white rounded-2xl p-12 shadow-md text-center">
-      <div className="inline-flex w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F7F9FB] to-[#E9EAEE] items-center justify-center mb-4">
-        <Icon className="w-8 h-8 text-[#999]" />
+    <div className="bg-white rounded-2xl p-16 shadow-sm border border-slate-200 text-center flex flex-col items-center">
+      <div className="w-20 h-20 rounded-2xl bg-slate-50 flex items-center justify-center mb-6">
+        <Icon className="w-10 h-10 text-slate-300" />
       </div>
-      <h3 className="text-[18px] text-[#202020] mb-2" style={{ fontWeight: 600 }}>
+      <h3 className="text-lg font-bold text-slate-900 mb-2">
         {title}
       </h3>
-      <p className="text-[14px] text-[#555] mb-6 max-w-md mx-auto">
+      <p className="text-slate-500 mb-8 max-w-md mx-auto leading-relaxed">
         {description}
       </p>
-      <button className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#FF6A3D] to-[#FF8A4F] text-white hover:shadow-lg transition-all text-[14px]" style={{ fontWeight: 600 }}>
+      <Button variant="primary">
         {actionLabel}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -511,9 +451,9 @@ function TimelineTab() {
   );
 }
 
-function DeliverablesTab() {
+function DeliverablesTab({ data }: { data: any[] }) {
   return (
-    <DeliverablesPage />
+    <DeliverablesPage data={data} />
   );
 }
 
@@ -540,137 +480,89 @@ function ChatTab() {
 }
 
 // Sidebar Component
-function Sidebar() {
+function Sidebar({ data }: { data: any }) {
   return (
     <div className="space-y-6">
       {/* Project Metadata Card */}
-      <div className="bg-white rounded-2xl p-6 shadow-md">
-        <h3 className="text-[16px] text-[#202020] mb-4" style={{ fontWeight: 600 }}>
-          Project Metadata
-        </h3>
+      <Card variant="outline" className="p-6 bg-white">
+        <Typography variant="h4" className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-400">
+          Metadata
+        </Typography>
 
         <div className="space-y-4">
-          {/* Company */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Building2 className="w-4 h-4 text-[#999]" />
-              <span className="text-[12px] text-[#999]" style={{ fontWeight: 600 }}>
-                COMPANY
-              </span>
-            </div>
-            <p className="text-[14px] text-[#202020] pl-6" style={{ fontWeight: 500 }}>
-              {projectData.company.name}
-            </p>
-          </div>
-
-          {/* Website */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Globe className="w-4 h-4 text-[#999]" />
-              <span className="text-[12px] text-[#999]" style={{ fontWeight: 600 }}>
-                WEBSITE
-              </span>
-            </div>
-            <a
-              href={projectData.company.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[13px] text-[#FF6A3D] hover:text-[#FF8A4F] pl-6 block truncate"
-            >
-              {projectData.company.website}
-            </a>
-          </div>
-
-          {/* Team Size */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Users className="w-4 h-4 text-[#999]" />
-              <span className="text-[12px] text-[#999]" style={{ fontWeight: 600 }}>
-                TEAM SIZE
-              </span>
-            </div>
-            <p className="text-[14px] text-[#202020] pl-6">
-              {projectData.company.teamSize}
-            </p>
-          </div>
-
-          {/* Industry */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="w-4 h-4 text-[#999]" />
-              <span className="text-[12px] text-[#999]" style={{ fontWeight: 600 }}>
-                INDUSTRY
-              </span>
-            </div>
-            <p className="text-[14px] text-[#202020] pl-6">
-              {projectData.company.industry}
-            </p>
-          </div>
+          <MetaItem icon={Building2} label="COMPANY" value={data.company.name} />
+          <MetaItem 
+            icon={Globe} 
+            label="WEBSITE" 
+            value={data.company.website} 
+            href={data.company.website}
+            className="text-orange-600 hover:underline"
+          />
+          <MetaItem icon={Users} label="TEAM SIZE" value={data.company.teamSize} />
+          <MetaItem icon={Target} label="INDUSTRY" value={data.company.industry} />
         </div>
-      </div>
+      </Card>
 
       {/* AI Notes Card */}
-      <div className="bg-gradient-to-br from-[#00334F]/5 to-[#FF6A3D]/5 rounded-2xl p-6 border border-[#E9EAEE]">
-        <div className="flex items-center gap-2 mb-4">
-          <Sparkles className="w-5 h-5 text-[#FF6A3D]" />
-          <h3 className="text-[16px] text-[#202020]" style={{ fontWeight: 600 }}>
-            AI Insights
+      <Card variant="solid" className="p-6 bg-slate-900 text-white border-slate-800">
+        <div className="flex items-center gap-2 mb-6">
+          <Sparkles className="w-5 h-5 text-orange-500" />
+          <h3 className="font-bold text-base">
+            AI Assistant Notes
           </h3>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Next Step */}
-          <div className="p-4 bg-white rounded-xl">
-            <div className="flex items-start gap-2 mb-2">
-              <Lightbulb className="w-4 h-4 text-[#FF6A3D] flex-shrink-0 mt-0.5" />
-              <span className="text-[12px] text-[#999]" style={{ fontWeight: 600 }}>
-                NEXT STEP
-              </span>
-            </div>
-            <p className="text-[13px] text-[#555] leading-[1.6]">
-              {projectData.aiNotes.nextStep}
-            </p>
+          <div className="space-y-2">
+             <div className="flex items-center gap-2 text-orange-400 text-xs font-bold uppercase tracking-wider">
+               <Lightbulb className="w-3 h-3" /> Next Best Action
+             </div>
+             <p className="text-sm text-slate-300 leading-relaxed">
+               {data.aiNotes.nextStep}
+             </p>
           </div>
 
-          {/* Risks */}
-          {projectData.aiNotes.risks.length > 0 && (
-            <div className="p-4 bg-white rounded-xl">
-              <div className="flex items-start gap-2 mb-2">
-                <AlertCircle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                <span className="text-[12px] text-[#999]" style={{ fontWeight: 600 }}>
-                  POTENTIAL RISKS
-                </span>
-              </div>
-              <ul className="space-y-2">
-                {projectData.aiNotes.risks.map((risk, i) => (
-                  <li key={i} className="text-[13px] text-[#555] leading-[1.6]">
-                    • {risk}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <div className="h-px bg-white/10" />
 
-          {/* Recommendations */}
-          {projectData.aiNotes.recommendations.length > 0 && (
-            <div className="p-4 bg-white rounded-xl">
-              <div className="flex items-start gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-[#00334F] flex-shrink-0 mt-0.5" />
-                <span className="text-[12px] text-[#999]" style={{ fontWeight: 600 }}>
-                  RECOMMENDATIONS
-                </span>
-              </div>
-              <ul className="space-y-2">
-                {projectData.aiNotes.recommendations.map((rec, i) => (
-                  <li key={i} className="text-[13px] text-[#555] leading-[1.6]">
-                    • {rec}
+          {/* Risks */}
+          {data.aiNotes.risks.length > 0 && (
+            <div className="space-y-2">
+               <div className="flex items-center gap-2 text-red-400 text-xs font-bold uppercase tracking-wider">
+                 <AlertCircle className="w-3 h-3" /> Risk Analysis
+               </div>
+               <ul className="space-y-2">
+                {data.aiNotes.risks.map((risk: string, i: number) => (
+                  <li key={i} className="text-xs text-slate-400 leading-relaxed flex items-start gap-2">
+                    <span className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
+                    {risk}
                   </li>
                 ))}
               </ul>
             </div>
           )}
         </div>
+      </Card>
+    </div>
+  );
+}
+
+function MetaItem({ icon: Icon, label, value, href, className }: { icon: any, label: string, value: string, href?: string, className?: string }) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-1">
+        <Icon className="w-3 h-3 text-slate-400" />
+        <span className="text-[10px] font-bold text-slate-400">{label}</span>
       </div>
+      {href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={`text-sm font-medium block truncate ${className}`}>
+          {value}
+        </a>
+      ) : (
+        <p className="text-sm font-medium text-slate-900 pl-5">
+          {value}
+        </p>
+      )}
     </div>
   );
 }

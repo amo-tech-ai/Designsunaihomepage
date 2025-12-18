@@ -26,6 +26,7 @@ import {
   Quote
 } from 'lucide-react';
 import { NavbarV7 } from './NavbarV7';
+import { FooterV7 } from './FooterV7';
 
 // --- Shared Components (Styled according to Guide) ---
 
@@ -725,7 +726,7 @@ interface ProjectsPageV7Props {
 export function ProjectsPageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: ProjectsPageV7Props) {
   return (
     <main className="min-h-screen bg-white font-sans antialiased text-slate-900 selection:bg-[#FF6A3D] selection:text-white">
-      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} />
+      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
       <ProjectsHero />
       <SuccessStories />
       <TimelineCalculator />
@@ -733,7 +734,7 @@ export function ProjectsPageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVers
       <TrackRecord />
       <ProjectsTestimonials />
       <ProjectsFinalCTA />
-      <ProjectsFooter onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
+      <FooterV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
     </main>
   );
 }

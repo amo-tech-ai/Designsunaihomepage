@@ -536,7 +536,7 @@ export function AIAgentsPageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVers
 
   return (
     <main className="min-h-screen bg-white font-sans antialiased text-slate-900 selection:bg-[#FF6A3D] selection:text-white">
-      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} />
+      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
       
       <AgentsHero onNavigateToWizard={handleWizard} onNavigateToProjects={handleProjects} />
       <AgentsComparison />

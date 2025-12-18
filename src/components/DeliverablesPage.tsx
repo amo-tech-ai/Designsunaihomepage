@@ -365,8 +365,8 @@ const getDaysUntilDue = (dueDate: string) => {
   return diffDays;
 };
 
-export function DeliverablesPage() {
-  const [deliverables, setDeliverables] = useState<Deliverable[]>(mockDeliverables);
+export function DeliverablesPage({ data }: { data?: Deliverable[] }) {
+  const [deliverables, setDeliverables] = useState<Deliverable[]>(data || mockDeliverables);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');

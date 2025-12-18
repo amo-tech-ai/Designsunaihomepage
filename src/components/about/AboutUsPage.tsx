@@ -20,11 +20,18 @@ import {
   Globe,
   Layers
 } from 'lucide-react';
-import { FooterV6 } from '../premium/v6/FooterV6';
+import { FooterV7 } from '../premium/v7/FooterV7';
+import { NavbarV7 } from '../premium/v7/NavbarV7';
 
-export function AboutUsPage() {
+interface AboutUsPageProps {
+  onNavigateToWhatsApp?: () => void;
+  onVersionChange?: (version: any) => void;
+}
+
+export function AboutUsPage({ onNavigateToWhatsApp, onVersionChange }: AboutUsPageProps) {
   return (
     <div className="min-h-screen font-sans bg-slate-50 text-slate-900 selection:bg-[#FF6A3D] selection:text-white">
+      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onVersionChange={onVersionChange} />
       <HeroSection />
       <MissionSection />
       <SolutionsSection />
@@ -33,7 +40,7 @@ export function AboutUsPage() {
       <UseCasesSection />
       <WhyChooseSection />
       <FinalCTASection />
-      <FooterV6 />
+      <FooterV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onVersionChange={onVersionChange} />
     </div>
   );
 }

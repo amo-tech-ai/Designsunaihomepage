@@ -6,9 +6,10 @@ import { StatsV7 } from './v7/StatsV7';
 import { PricingV7 } from './v7/PricingV7';
 import { TestimonialsV7 } from './v7/TestimonialsV7';
 import { FAQV7 } from './v7/FAQV7';
-import { FinalCTAV7 } from './v7/FinalCTAV7';
+import { WizardCTA } from '../conversion/WizardCTA';
 import { FooterV7 } from './v7/FooterV7';
 import { NavbarV7 } from './v7/NavbarV7';
+import { AIChatbot } from '../AIChatbot';
 
 interface HomePageV7Props {
   onNavigateToWhatsApp?: () => void;
@@ -18,9 +19,14 @@ interface HomePageV7Props {
 
 export function HomePageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: HomePageV7Props) {
   return (
-    <main className="min-h-screen bg-white font-sans antialiased text-slate-900 selection:bg-[#FF6A3D] selection:text-white">
-      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} />
-      <HeroV7 />
+    <main className="min-h-screen bg-warm-white font-sans antialiased text-slate-900 selection:bg-orange-500 selection:text-white">
+      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
+      
+      <HeroV7 
+        onStartProject={() => onVersionChange?.('wizard')} 
+        onTalkToExpert={onNavigateToWhatsApp} 
+      />
+      
       <StatsV7 />
       <HowItWorksV7 />
       <FeaturesV7 />
@@ -28,8 +34,16 @@ export function HomePageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersionC
       <PricingV7 />
       <TestimonialsV7 />
       <FAQV7 />
-      <FinalCTAV7 />
+      
+      {/* New High-Conversion CTA Component */}
+      <WizardCTA 
+        variant="section" 
+        onNavigate={() => onVersionChange?.('wizard')} 
+      />
+      
       <FooterV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
+      
+      <AIChatbot />
     </main>
   );
 }

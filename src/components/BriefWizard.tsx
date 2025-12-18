@@ -1,75 +1,28 @@
-import { useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, Bot, Code, Zap, MessageSquare, Sparkles, Users, Wrench, Edit2, Clock, DollarSign } from 'lucide-react';
-import {
-  PillSelector,
-  TagSelector,
-  ServiceCard,
-  TextField,
-  UrlInput,
-  AiInsightCard,
-  SectionCard,
-  BudgetSlider,
-} from './wizard/FormComponents';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  ArrowLeft, ArrowRight, Check, Sparkles, Lock, Clock, 
+  Globe, Building2, User2, MapPin, Target, DollarSign, Calendar, AlertCircle
+} from 'lucide-react';
+import { Button } from './ui/design-system/Button';
+import { Card } from './ui/design-system/Card';
+import { Typography } from './ui/design-system/Typography';
+import { Badge } from './ui/design-system/Badge';
+import { cn } from './ui/design-system/utils';
+import { useLeads } from '../context/LeadContext';
+import { wizardSchema, WizardFormData } from '../lib/schemas';
 
-// Form data interface
-interface BriefFormData {
-  // Screen 1
-  websiteUrl: string;
-  linkedinUrl: string;
-  instagramUrl: string;
-  additionalUrls: string[];
-  companyName: string;
-  about: string;
-  industries: string[];
-  location: string;
-  teamSize: string;
-  
-  // Screen 2
-  selectedServices: string[];
-  integrations: string[];
-  
-  // Screen 3
-  mainGoals: string[];
-  idealOutcome: string;
-  problemSolved: string;
-  keyFeatures: string;
-  targetUsers: string[];
-  
-  // Screen 4
-  technicalRequirements: string[];
-  budget: number;
-  timeline: string;
-  
-  // AI Insights (generated)
-  aiInsights: {
-    detectedIndustry: string;
-    brandVoice: string;
-    keyOfferings: string[];
-    audienceType: string;
-  } | null;
-}
-
-const initialFormData: BriefFormData = {
-  websiteUrl: '',
-  linkedinUrl: '',
-  instagramUrl: '',
-  additionalUrls: [],
+// --- Types ---
+// Re-using WizardFormData from schemas, but we keep initialData locally for the form state
+const initialData: WizardFormData = {
+  name: '',
+  website: '',
   companyName: '',
-  about: '',
-  industries: [],
-  location: '',
-  teamSize: '',
-  selectedServices: [],
-  integrations: [],
-  mainGoals: [],
-  idealOutcome: '',
-  problemSolved: '',
-  keyFeatures: '',
-  targetUsers: [],
-  technicalRequirements: [],
-  budget: 25000,
-  timeline: '',
-  aiInsights: null,
+  services: [],
+  goals: [],
+  description: '',
+  budget: 5000,
+  timeline: ''
 };
 
 interface BriefWizardProps {
@@ -78,755 +31,424 @@ interface BriefWizardProps {
 }
 
 export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<BriefFormData>(initialFormData);
+  const { addLead } = useLeads();
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState<WizardFormData>(initialData);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isScanning, setIsScanning] = useState(false);
 
   const totalSteps = 5;
-  const progress = (currentStep / totalSteps) * 100;
+  const progress = (step / totalSteps) * 100;
 
-  const updateFormData = (updates: Partial<BriefFormData>) => {
-    setFormData((prev) => ({ ...prev, ...updates }));
+  const updateData = (updates: Partial<WizardFormData>) => {
+    setData(prev => ({ ...prev, ...updates }));
+    // Clear errors for fields being updated
+    const newErrors = { ...errors };
+    Object.keys(updates).forEach(key => delete newErrors[key]);
+    setErrors(newErrors);
   };
 
-  const handleNext = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const goToStep = (step: number) => {
-    if (step <= currentStep || step === 1) {
-      setCurrentStep(step);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const getStepTitle = () => {
-    const titles = [
-      'Company Overview',
-      'Select AI Services',
-      'Project Goals',
-      'Requirements & Budget',
-      'Review & Generate',
-    ];
-    return titles[currentStep - 1];
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-slate-900">Sun AI Brief Wizard</h1>
-              <p className="text-slate-600 mt-1 text-sm sm:text-base">
-                Step {currentStep} of {totalSteps}: {getStepTitle()}
-              </p>
-            </div>
-            {onClose && (
-              <button
-                onClick={onClose}
-                className="text-slate-500 hover:text-slate-700 transition-colors px-3 py-2 text-sm sm:text-base"
-              >
-                Close
-              </button>
-            )}
-          </div>
-          
-          {/* Progress bar */}
-          <div className="relative h-2 bg-slate-200 rounded-full overflow-hidden">
-            <div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00334F] to-[#FF6B2C] transition-all duration-500 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          
-          {/* Step indicators */}
-          <div className="flex justify-between mt-4 gap-2">
-            {[1, 2, 3, 4, 5].map((step) => (
-              <div
-                key={step}
-                className={`flex items-center gap-1 sm:gap-2 ${
-                  step < currentStep
-                    ? 'text-[#00334F]'
-                    : step === currentStep
-                    ? 'text-[#FF6B2C]'
-                    : 'text-slate-400'
-                }`}
-              >
-                <div
-                  className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm transition-all ${
-                    step < currentStep
-                      ? 'bg-[#00334F] text-white'
-                      : step === currentStep
-                      ? 'bg-[#FF6B2C] text-white ring-4 ring-orange-100'
-                      : 'bg-slate-200 text-slate-500'
-                  }`}
-                >
-                  {step < currentStep ? <Check className="w-3 h-3 sm:w-4 sm:h-4" /> : step}
-                </div>
-                <span className="text-[10px] sm:text-xs hidden md:inline">
-                  {step === 1 && 'Overview'}
-                  {step === 2 && 'Services'}
-                  {step === 3 && 'Goals'}
-                  {step === 4 && 'Budget'}
-                  {step === 5 && 'Review'}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {currentStep === 1 && (
-          <Screen1 formData={formData} updateFormData={updateFormData} />
-        )}
-        {currentStep === 2 && (
-          <Screen2 formData={formData} updateFormData={updateFormData} />
-        )}
-        {currentStep === 3 && (
-          <Screen3 formData={formData} updateFormData={updateFormData} />
-        )}
-        {currentStep === 4 && (
-          <Screen4 formData={formData} updateFormData={updateFormData} />
-        )}
-        {currentStep === 5 && (
-          <Screen5 formData={formData} updateFormData={updateFormData} goToStep={goToStep} />
-        )}
-      </div>
-
-      {/* Navigation */}
-      <div className="sticky bottom-0 bg-white border-t border-slate-200 shadow-lg">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
-          <button
-            onClick={handleBack}
-            disabled={currentStep === 1}
-            className={`flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full transition-all text-sm sm:text-base ${
-              currentStep === 1
-                ? 'text-slate-400 cursor-not-allowed'
-                : 'text-slate-700 hover:bg-slate-100'
-            }`}
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Back</span>
-          </button>
-
-          <div className="text-xs sm:text-sm text-slate-500">
-            {currentStep} / {totalSteps}
-          </div>
-
-          {currentStep < totalSteps ? (
-            <button
-              onClick={handleNext}
-              className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-r from-[#00334F] to-[#00334F] hover:from-[#004060] hover:to-[#004060] text-white transition-all shadow-md hover:shadow-lg text-sm sm:text-base"
-            >
-              <span className="hidden sm:inline">Next</span>
-              <span className="sm:hidden">Next</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                // Generate proposal logic here
-                console.log('Generate Proposal', formData);
-                onSubmit?.();
-              }}
-              className="flex items-center gap-2 px-4 sm:px-8 py-2 sm:py-3 rounded-full bg-gradient-to-r from-[#FF6B2C] to-[#FF8A4F] text-white transition-all shadow-md hover:shadow-lg hover:scale-105 text-sm sm:text-base"
-            >
-              <span className="hidden sm:inline">Generate AI Proposal</span>
-              <span className="sm:hidden">Generate</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Placeholder screen components (to be implemented next)
-function Screen1({ formData, updateFormData }: { formData: BriefFormData; updateFormData: (data: Partial<BriefFormData>) => void }) {
-  const handleUrlChange = (urls: string[]) => {
-    updateFormData({
-      websiteUrl: urls[0] || '',
-      linkedinUrl: urls[1] || '',
-      instagramUrl: urls[2] || '',
-      additionalUrls: urls.slice(3),
-    });
+  const validateStep = (currentStep: number): boolean => {
+    const result = wizardSchema.safeParse(data);
     
-    // Mock AI analysis when URLs are provided
-    if (urls[0] && urls[0].length > 10) {
-      setTimeout(() => {
-        updateFormData({
-          aiInsights: {
-            detectedIndustry: 'Technology & AI Services',
-            brandVoice: 'Professional, Modern, Innovative',
-            keyOfferings: ['AI Development', 'Automation', 'Consulting'],
-            audienceType: 'B2B Enterprise & Startups',
-          },
-        });
-      }, 500);
+    if (result.success) {
+      setErrors({});
+      return true;
     }
+
+    // Filter errors relevant to current step
+    const stepFields: Record<number, string[]> = {
+      1: ['name', 'website', 'companyName'],
+      2: ['services'],
+      3: ['goals', 'description'],
+      4: ['budget', 'timeline'],
+      5: [] // Review step doesn't need validation
+    };
+
+    const currentFields = stepFields[currentStep];
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    result.error.issues.forEach(issue => {
+      const fieldName = issue.path[0] as string;
+      if (currentFields.includes(fieldName)) {
+        newErrors[fieldName] = issue.message;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
   };
 
-  const urls = [
-    formData.websiteUrl,
-    formData.linkedinUrl,
-    formData.instagramUrl,
-    ...formData.additionalUrls,
-  ];
-
-  const industryOptions = [
-    'Technology',
-    'Healthcare',
-    'Finance',
-    'E-commerce',
-    'Education',
-    'Marketing',
-    'Manufacturing',
-    'Real Estate',
-    'Other',
-  ];
-
-  return (
-    <div className="space-y-6">
-      {/* Section A - URLs */}
-      <SectionCard
-        title="URL Context Search"
-        description="Sun AI will analyze your brand tone, industry, messaging, products, and social presence automatically."
-      >
-        <UrlInput
-          urls={urls}
-          onChange={handleUrlChange}
-          labels={['Website URL', 'LinkedIn URL', 'Instagram URL']}
-        />
-      </SectionCard>
-
-      {/* Section C - AI Insights (moved up for better flow) */}
-      <AiInsightCard insights={formData.aiInsights} />
-
-      {/* Section B - Company Details */}
-      <SectionCard title="Company Details">
-        <div className="space-y-6">
-          <TextField
-            label="Company Name"
-            value={formData.companyName}
-            onChange={(value) => updateFormData({ companyName: value })}
-            placeholder="Enter your company name"
-            required
-          />
-
-          <TextField
-            label="Short About"
-            value={formData.about}
-            onChange={(value) => updateFormData({ about: value })}
-            placeholder="Describe your company in 1-2 sentences"
-            multiline
-            rows={3}
-          />
-
-          <div>
-            <label className="block text-slate-700 mb-3">
-              Industry <span className="text-slate-400 text-sm">(select all that apply)</span>
-            </label>
-            <TagSelector
-              options={industryOptions}
-              selected={formData.industries}
-              onChange={(value) => updateFormData({ industries: value })}
-            />
-          </div>
-
-          <TextField
-            label="Location"
-            value={formData.location}
-            onChange={(value) => updateFormData({ location: value })}
-            placeholder="City, Country"
-          />
-
-          <div>
-            <label className="block text-slate-700 mb-3">Team Size</label>
-            <PillSelector
-              options={['Solo', '2-5', '6-15', '16-50', '50+']}
-              selected={formData.teamSize}
-              onChange={(value) => updateFormData({ teamSize: value as string })}
-            />
-          </div>
-        </div>
-      </SectionCard>
-    </div>
-  );
-}
-
-function Screen2({ formData, updateFormData }: { formData: BriefFormData; updateFormData: (data: Partial<BriefFormData>) => void }) {
-  const services = [
-    { title: 'AI Web App Development', icon: <Code className="w-6 h-6" /> },
-    { title: 'AI Chatbot / Virtual Assistant', icon: <MessageSquare className="w-6 h-6" /> },
-    { title: 'Business Automation', icon: <Zap className="w-6 h-6" /> },
-    { title: 'AI Social Media Marketing', icon: <Sparkles className="w-6 h-6" /> },
-    { title: 'AI Content Creation', icon: <Bot className="w-6 h-6" /> },
-    { title: 'Custom AI Project', icon: <Wrench className="w-6 h-6" /> },
-  ];
-
-  const integrationOptions = [
-    'Webflow',
-    'Shopify',
-    'HubSpot',
-    'Notion',
-    'Stripe',
-    'Slack',
-    'Zapier',
-    'Custom API',
-  ];
-
-  const toggleService = (service: string) => {
-    const current = formData.selectedServices;
-    if (current.includes(service)) {
-      updateFormData({ selectedServices: current.filter((s) => s !== service) });
-    } else {
-      if (current.length < 3) {
-        updateFormData({ selectedServices: [...current, service] });
+  const nextStep = () => {
+    if (validateStep(step)) {
+      if (step < totalSteps) setStep(s => s + 1);
+      else {
+        // Submit Logic
+        addLead(data);
+        onSubmit?.();
       }
     }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Section A - Primary Service Selection */}
-      <SectionCard
-        title="Select AI Services"
-        description="Choose up to 3 primary services you need (you can select multiple)"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {services.map((service) => (
-            <ServiceCard
-              key={service.title}
-              title={service.title}
-              icon={service.icon}
-              selected={formData.selectedServices.includes(service.title)}
-              onClick={() => toggleService(service.title)}
-            />
-          ))}
-        </div>
-        
-        {formData.selectedServices.length > 0 && (
-          <p className="text-sm text-slate-500 mt-4">
-            {formData.selectedServices.length} of 3 selected
-          </p>
-        )}
-      </SectionCard>
-
-      {/* Section B - Integration Targets */}
-      <SectionCard
-        title="Integration Targets"
-        description="Select any platforms or tools you need to integrate with (optional)"
-      >
-        <TagSelector
-          options={integrationOptions}
-          selected={formData.integrations}
-          onChange={(value) => updateFormData({ integrations: value })}
-        />
-      </SectionCard>
-    </div>
-  );
-}
-
-function Screen3({ formData, updateFormData }: { formData: BriefFormData; updateFormData: (data: Partial<BriefFormData>) => void }) {
-  const goalOptions = [
-    'Automate workflows',
-    'Improve customer support',
-    'Increase revenue',
-    'Replace manual processes',
-    'Build internal AI tools',
-    'Create marketing content',
-    'Launch new AI product',
-  ];
-
-  const userOptions = [
-    'Customers',
-    'Employees',
-    'Partners',
-    'Internal teams',
-    'Support team',
-    'Developers / Engineers',
-  ];
-
-  return (
-    <div className="space-y-6">
-      {/* Section A - Main Goals */}
-      <SectionCard
-        title="Main Goals"
-        description="What are you trying to achieve? (select up to 3)"
-      >
-        <TagSelector
-          options={goalOptions}
-          selected={formData.mainGoals}
-          onChange={(value) => updateFormData({ mainGoals: value })}
-          maxSelections={3}
-        />
-      </SectionCard>
-
-      {/* Section B - Narrative Inputs */}
-      <SectionCard title="Project Purpose">
-        <div className="space-y-6">
-          <TextField
-            label="Describe your ideal outcome"
-            value={formData.idealOutcome}
-            onChange={(value) => updateFormData({ idealOutcome: value })}
-            placeholder="What does success look like for this project?"
-            multiline
-            rows={4}
-            required
-          />
-
-          <TextField
-            label="What problem does this solve?"
-            value={formData.problemSolved}
-            onChange={(value) => updateFormData({ problemSolved: value })}
-            placeholder="Describe the main challenge or pain point"
-            multiline
-            rows={4}
-            required
-          />
-
-          <TextField
-            label="Key features you already know you need"
-            value={formData.keyFeatures}
-            onChange={(value) => updateFormData({ keyFeatures: value })}
-            placeholder="List any specific features or capabilities (optional)"
-            multiline
-            rows={3}
-          />
-        </div>
-      </SectionCard>
-
-      {/* Section C - Target Users */}
-      <SectionCard
-        title="Who will use this?"
-        description="Select all user types that apply"
-      >
-        <TagSelector
-          options={userOptions}
-          selected={formData.targetUsers}
-          onChange={(value) => updateFormData({ targetUsers: value })}
-        />
-      </SectionCard>
-    </div>
-  );
-}
-
-function Screen4({ formData, updateFormData }: { formData: BriefFormData; updateFormData: (data: Partial<BriefFormData>) => void }) {
-  const requirementOptions = [
-    'AI chat',
-    'Dashboard',
-    'Automation workflows',
-    'CRM automation',
-    'Analytics',
-    'API integrations',
-    'Payments',
-    'Authentication',
-    'Admin panel',
-    'Multi-user roles',
-  ];
-
-  const timelineOptions = ['ASAP', '1-2 months', '3-6 months', 'Exploring'];
-
-  const getUrgencyTag = () => {
-    if (formData.timeline === 'ASAP') return { text: 'High Priority', color: 'bg-red-100 text-red-700' };
-    if (formData.timeline === '1-2 months') return { text: 'Medium Priority', color: 'bg-orange-100 text-orange-700' };
-    if (formData.timeline === '3-6 months' || formData.timeline === 'Exploring') return { text: 'Flexible Timeline', color: 'bg-blue-100 text-blue-700' };
-    return null;
+  const prevStep = () => {
+    if (step > 1) setStep(s => s - 1);
   };
 
-  const urgency = getUrgencyTag();
+  // Mock URL Scanning Effect
+  useEffect(() => {
+    if (data.website && data.website.length > 8 && !isScanning) {
+      setIsScanning(true);
+      setTimeout(() => setIsScanning(false), 2000);
+    }
+  }, [data.website]);
 
   return (
-    <div className="space-y-6">
-      {/* Section A - Technical Requirements */}
-      <SectionCard
-        title="Technical & Functional Requirements"
-        description="Select all capabilities your project needs"
-      >
-        <TagSelector
-          options={requirementOptions}
-          selected={formData.technicalRequirements}
-          onChange={(value) => updateFormData({ technicalRequirements: value })}
-        />
-      </SectionCard>
-
-      {/* Section B - Budget Slider */}
-      <SectionCard title="Budget Range">
-        <BudgetSlider
-          value={formData.budget}
-          onChange={(value) => updateFormData({ budget: value })}
-        />
-      </SectionCard>
-
-      {/* Section C - Timeline */}
-      <SectionCard title="Project Timeline">
-        <PillSelector
-          options={timelineOptions}
-          selected={formData.timeline}
-          onChange={(value) => updateFormData({ timeline: value as string })}
-        />
+    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 flex flex-col font-sans">
+      
+      {/* --- Header (Progress & Trust) --- */}
+      <header className="fixed top-0 inset-x-0 z-50 bg-[#FDFDFD]/80 backdrop-blur-md border-b border-slate-100">
+        <div className="h-1 bg-slate-100 w-full">
+          <motion.div 
+            className="h-full bg-orange-500" 
+            initial={{ width: 0 }} 
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5 }}
+          />
+        </div>
         
-        {/* Section D - Urgency Indicator */}
-        {urgency && (
-          <div className="mt-6 flex items-center gap-3">
-            <Clock className="w-5 h-5 text-slate-400" />
-            <span className={`px-4 py-2 rounded-full text-sm ${urgency.color}`} style={{ fontWeight: 600 }}>
-              {urgency.text}
-            </span>
-          </div>
-        )}
-      </SectionCard>
-    </div>
-  );
-}
-
-function Screen5({ formData, updateFormData, goToStep }: { formData: BriefFormData; updateFormData: (data: Partial<BriefFormData>) => void; goToStep: (step: number) => void }) {
-  const formatCurrency = (val: number) => {
-    if (val >= 100000) return '$100K+';
-    return `$${(val / 1000).toFixed(0)}K`;
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* Company Overview */}
-      <SectionCard title="Company Overview">
-        <div className="space-y-4">
-          <div>
-            <div className="text-sm text-slate-500">Company Name</div>
-            <div className="text-slate-900 mt-1" style={{ fontWeight: 600 }}>
-              {formData.companyName || 'Not provided'}
+        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
+            <div className="hidden md:flex items-center gap-4 text-xs font-medium text-slate-500">
+              <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> ~3 mins</span>
+              <span className="flex items-center gap-1"><Lock className="w-3 h-3" /> Private & Encrypted</span>
             </div>
           </div>
           
-          <div>
-            <div className="text-sm text-slate-500">About</div>
-            <div className="text-slate-900 mt-1">
-              {formData.about || 'Not provided'}
-            </div>
-          </div>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-900 transition-colors text-sm font-medium">
+            Exit
+          </button>
+        </div>
+      </header>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-sm text-slate-500">Location</div>
-              <div className="text-slate-900 mt-1">
-                {formData.location || 'Not provided'}
-              </div>
-            </div>
+      {/* --- Main Content Area --- */}
+      <main className="flex-grow pt-32 pb-32 px-6 flex flex-col items-center justify-start min-h-[600px]">
+        <div className="w-full max-w-2xl mx-auto">
+          <AnimatePresence mode="wait">
             
-            <div>
-              <div className="text-sm text-slate-500">Team Size</div>
-              <div className="text-slate-900 mt-1">
-                {formData.teamSize || 'Not provided'}
-              </div>
-            </div>
-          </div>
-
-          {formData.industries.length > 0 && (
-            <div>
-              <div className="text-sm text-slate-500 mb-2">Industries</div>
-              <div className="flex flex-wrap gap-2">
-                {formData.industries.map((industry) => (
-                  <span
-                    key={industry}
-                    className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm"
+            {/* Step 1: Overview */}
+            {step === 1 && (
+              <WizardStep key="step1" title="Let's start with the basics" subtitle="We'll scan your site to understand your brand.">
+                <div className="space-y-6">
+                  <InputGroup 
+                    label="Your Name" 
+                    icon={<User2 className="w-5 h-5" />}
+                    error={errors.name}
                   >
-                    {industry}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </SectionCard>
+                    <input 
+                      type="text" 
+                      placeholder="Jane Doe" 
+                      className="w-full bg-transparent outline-none text-lg text-slate-900 placeholder:text-slate-300"
+                      value={data.name}
+                      onChange={e => updateData({ name: e.target.value })}
+                      autoFocus
+                    />
+                  </InputGroup>
 
-      {/* AI Insights */}
-      {formData.aiInsights && (
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200">
-          <div className="flex items-center gap-3 mb-4">
-            <Sparkles className="w-5 h-5 text-[#00334F]" />
-            <h3 className="text-[#00334F]" style={{ fontWeight: 600 }}>
-              AI-Detected Insights
-            </h3>
-          </div>
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div>
-              <span className="text-slate-600">Industry: </span>
-              <span className="text-slate-900" style={{ fontWeight: 600 }}>
-                {formData.aiInsights.detectedIndustry}
-              </span>
-            </div>
-            <div>
-              <span className="text-slate-600">Voice: </span>
-              <span className="text-slate-900" style={{ fontWeight: 600 }}>
-                {formData.aiInsights.brandVoice}
-              </span>
-            </div>
-            <div>
-              <span className="text-slate-600">Audience: </span>
-              <span className="text-slate-900" style={{ fontWeight: 600 }}>
-                {formData.aiInsights.audienceType}
-              </span>
-            </div>
-            <div>
-              <span className="text-slate-600">Offerings: </span>
-              <span className="text-slate-900" style={{ fontWeight: 600 }}>
-                {formData.aiInsights.keyOfferings.join(', ')}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
+                  <InputGroup 
+                    label="Company Name" 
+                    icon={<Building2 className="w-5 h-5" />}
+                    error={errors.companyName}
+                  >
+                    <input 
+                      type="text" 
+                      placeholder="Acme Inc." 
+                      className="w-full bg-transparent outline-none text-lg text-slate-900 placeholder:text-slate-300"
+                      value={data.companyName}
+                      onChange={e => updateData({ companyName: e.target.value })}
+                    />
+                  </InputGroup>
+                  
+                  <InputGroup 
+                    label="Company Website (Optional)" 
+                    icon={<Globe className="w-5 h-5" />}
+                    error={errors.website}
+                  >
+                     <div className="flex flex-col w-full">
+                        <div className="flex items-center w-full">
+                          <input 
+                            type="url" 
+                            placeholder="https://example.com" 
+                            className="flex-grow bg-transparent outline-none text-lg text-slate-900 placeholder:text-slate-300"
+                            value={data.website}
+                            onChange={e => updateData({ website: e.target.value })}
+                          />
+                          {isScanning && (
+                            <span className="text-xs font-bold text-orange-500 animate-pulse flex items-center gap-1">
+                              <Sparkles className="w-3 h-3" /> Scanning...
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[10px] text-slate-400 mt-2 flex items-center gap-1">
+                          <Lock className="w-3 h-3" /> We analyze your site to tailor recommendations. No data is stored.
+                        </p>
+                     </div>
+                  </InputGroup>
+                </div>
+              </WizardStep>
+            )}
 
-      {/* Services Selected */}
-      {formData.selectedServices.length > 0 && (
-        <SectionCard title="AI Services Selected">
-          <div className="flex flex-wrap gap-2">
-            {formData.selectedServices.map((service) => (
-              <span
-                key={service}
-                className="px-4 py-2 bg-[#00334F] text-white rounded-lg text-sm"
-                style={{ fontWeight: 600 }}
-              >
-                {service}
-              </span>
-            ))}
-          </div>
+            {/* Step 2: Services */}
+            {step === 2 && (
+              <WizardStep key="step2" title="What are you looking to build?" subtitle="Select all that apply.">
+                {errors.services && (
+                  <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" /> {errors.services}
+                  </div>
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {['AI Web App', 'Custom Chatbot', 'Workflow Automation', 'Consulting / Strategy'].map((svc) => (
+                    <SelectionCard 
+                      key={svc}
+                      label={svc}
+                      selected={data.services.includes(svc)}
+                      onClick={() => {
+                        const newServices = data.services.includes(svc) 
+                          ? data.services.filter(s => s !== svc)
+                          : [...data.services, svc];
+                        updateData({ services: newServices });
+                      }}
+                    />
+                  ))}
+                </div>
+              </WizardStep>
+            )}
+
+            {/* Step 3: Goals */}
+            {step === 3 && (
+              <WizardStep key="step3" title="What are your main goals?" subtitle="Help us understand the outcome you want.">
+                <div className="space-y-6">
+                  {errors.goals && (
+                    <div className="p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4" /> {errors.goals}
+                    </div>
+                  )}
+                  <div className="flex flex-wrap gap-2">
+                    {['Increase Revenue', 'Automate Support', 'Save Time', 'Scale Operations', 'New Product Launch'].map((goal) => (
+                      <Chip 
+                        key={goal} 
+                        label={goal} 
+                        selected={data.goals.includes(goal)}
+                        onClick={() => {
+                          const newGoals = data.goals.includes(goal)
+                            ? data.goals.filter(g => g !== goal)
+                            : [...data.goals, goal];
+                          updateData({ goals: newGoals });
+                        }}
+                      />
+                    ))}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <textarea 
+                      className={cn(
+                        "w-full h-32 p-4 rounded-xl bg-slate-50 border focus:ring-1 outline-none transition-all resize-none text-slate-700",
+                        errors.description 
+                          ? "border-red-300 focus:border-red-500 focus:ring-red-500" 
+                          : "border-slate-200 focus:border-orange-500 focus:ring-orange-500"
+                      )}
+                      placeholder="Describe your project in your own words..."
+                      value={data.description}
+                      onChange={e => updateData({ description: e.target.value })}
+                    />
+                    {errors.description && <span className="text-xs text-red-500 font-medium ml-1">{errors.description}</span>}
+                  </div>
+                </div>
+              </WizardStep>
+            )}
+
+            {/* Step 4: Constraints */}
+            {step === 4 && (
+              <WizardStep key="step4" title="Budget & Timeline" subtitle="This helps us recommend the right solution.">
+                 <div className="space-y-8">
+                    <div>
+                      <label className="flex justify-between text-sm font-bold text-slate-700 mb-4">
+                        <span>Estimated Budget</span>
+                        <span className="text-orange-600">${data.budget.toLocaleString()}+</span>
+                      </label>
+                      <input 
+                        type="range" 
+                        min="5000" 
+                        max="100000" 
+                        step="5000"
+                        value={data.budget}
+                        onChange={e => updateData({ budget: parseInt(e.target.value) })}
+                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                      />
+                      <div className="flex justify-between text-xs text-slate-400 mt-2 font-medium">
+                        <span>$5k</span>
+                        <span>$50k</span>
+                        <span>$100k+</span>
+                      </div>
+                      {errors.budget && <span className="text-xs text-red-500 font-medium block mt-1">{errors.budget}</span>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-4">Target Launch</label>
+                      {errors.timeline && (
+                         <div className="mb-2 text-xs text-red-500 font-medium flex items-center gap-1">
+                           <AlertCircle className="w-3 h-3" /> {errors.timeline}
+                         </div>
+                      )}
+                      <div className="grid grid-cols-2 gap-4">
+                        {['ASAP', '1-2 Months', '3-6 Months', 'Flexible'].map(t => (
+                           <button
+                             key={t}
+                             onClick={() => updateData({ timeline: t })}
+                             className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                               data.timeline === t 
+                                 ? 'bg-slate-900 text-white border-slate-900' 
+                                 : 'bg-white border-slate-200 text-slate-600 hover:border-orange-500'
+                             }`}
+                           >
+                             {t}
+                           </button>
+                        ))}
+                      </div>
+                    </div>
+                 </div>
+              </WizardStep>
+            )}
+
+            {/* Step 5: Review */}
+            {step === 5 && (
+              <WizardStep key="step5" title="Ready to generate proposal?" subtitle="Review your details below.">
+                <Card variant="solid" className="bg-slate-50 border-slate-200 p-6 space-y-4">
+                   <ReviewItem label="Project" value={data.services.join(', ') || 'Not specified'} icon={<Target className="w-4 h-4" />} />
+                   <ReviewItem label="Goal" value={data.goals[0] || 'Not specified'} icon={<Sparkles className="w-4 h-4" />} />
+                   <ReviewItem label="Budget" value={`$${data.budget.toLocaleString()}+`} icon={<DollarSign className="w-4 h-4" />} />
+                   <ReviewItem label="Timeline" value={data.timeline || 'Flexible'} icon={<Calendar className="w-4 h-4" />} />
+                   <div className="pt-4 border-t border-slate-200 mt-4">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">Description</span>
+                      <p className="text-sm text-slate-600 italic">"{data.description}"</p>
+                   </div>
+                </Card>
+              </WizardStep>
+            )}
+
+          </AnimatePresence>
+        </div>
+      </main>
+
+      {/* --- Footer Navigation --- */}
+      <footer className="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-4 z-50">
+        <div className="container mx-auto max-w-2xl flex items-center justify-between gap-4">
+          <Button 
+            variant="ghost" 
+            onClick={prevStep} 
+            disabled={step === 1}
+            className={step === 1 ? 'opacity-0 pointer-events-none' : ''}
+          >
+            Back
+          </Button>
           
-          {formData.integrations.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-slate-200">
-              <div className="text-sm text-slate-500 mb-2">Integrations</div>
-              <div className="flex flex-wrap gap-2">
-                {formData.integrations.map((integration) => (
-                  <span
-                    key={integration}
-                    className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs"
-                  >
-                    {integration}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </SectionCard>
-      )}
-
-      {/* Goals & Purpose */}
-      <SectionCard title="Project Goals & Purpose">
-        {formData.mainGoals.length > 0 && (
-          <div className="mb-4">
-            <div className="text-sm text-slate-500 mb-2">Main Goals</div>
-            <div className="flex flex-wrap gap-2">
-              {formData.mainGoals.map((goal) => (
-                <span
-                  key={goal}
-                  className="px-3 py-1 bg-[#FF6B2C] text-white rounded-lg text-sm"
-                  style={{ fontWeight: 600 }}
-                >
-                  {goal}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {formData.idealOutcome && (
-          <div className="mb-4">
-            <div className="text-sm text-slate-500">Ideal Outcome</div>
-            <div className="text-slate-900 mt-1">{formData.idealOutcome}</div>
-          </div>
-        )}
-
-        {formData.problemSolved && (
-          <div className="mb-4">
-            <div className="text-sm text-slate-500">Problem to Solve</div>
-            <div className="text-slate-900 mt-1">{formData.problemSolved}</div>
-          </div>
-        )}
-
-        {formData.targetUsers.length > 0 && (
-          <div>
-            <div className="text-sm text-slate-500 mb-2">Target Users</div>
-            <div className="flex flex-wrap gap-2">
-              {formData.targetUsers.map((user) => (
-                <span
-                  key={user}
-                  className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs"
-                >
-                  {user}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </SectionCard>
-
-      {/* Requirements & Budget */}
-      <SectionCard title="Requirements & Budget">
-        {formData.technicalRequirements.length > 0 && (
-          <div className="mb-4">
-            <div className="text-sm text-slate-500 mb-2">Technical Requirements</div>
-            <div className="flex flex-wrap gap-2">
-              {formData.technicalRequirements.map((req) => (
-                <span
-                  key={req}
-                  className="px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm"
-                >
-                  {req}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-slate-50 rounded-xl">
-            <div className="text-sm text-slate-500 mb-1">Budget</div>
-            <div className="text-[#00334F] text-[24px]" style={{ fontWeight: 700 }}>
-              {formatCurrency(formData.budget)}
-            </div>
-          </div>
-
-          {formData.timeline && (
-            <div className="p-4 bg-slate-50 rounded-xl">
-              <div className="text-sm text-slate-500 mb-1">Timeline</div>
-              <div className="text-[#00334F] text-[24px]" style={{ fontWeight: 700 }}>
-                {formData.timeline}
-              </div>
-            </div>
-          )}
+          <Button 
+            variant="primary" 
+            onClick={nextStep}
+            className="w-full sm:w-auto min-w-[140px]"
+            rightIcon={step === 5 ? <Sparkles className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+          >
+            {step === 5 ? 'Generate Proposal' : 'Continue'}
+          </Button>
         </div>
-      </SectionCard>
+      </footer>
 
-      {/* Footer */}
-      <div className="p-6 bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl border-2 border-slate-200">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#FF6B2C] flex items-center justify-center flex-shrink-0">
-            <Sparkles className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h3 className="text-slate-900 mb-2" style={{ fontWeight: 600 }}>
-              Ready to Generate Your Proposal
-            </h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              AI will generate a detailed proposal including scope, deliverables, timeline, tech stack, and project plan tailored to your needs.
-            </p>
-          </div>
-        </div>
+    </div>
+  );
+}
+
+// --- Helper Components ---
+
+function WizardStep({ title, subtitle, children }: { title: string, subtitle: string, children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="text-center mb-10">
+        <Typography variant="h2" className="text-slate-900 mb-2">{title}</Typography>
+        <Typography variant="body" className="text-slate-500">{subtitle}</Typography>
       </div>
+      {children}
+    </motion.div>
+  );
+}
+
+function InputGroup({ label, icon, children, error }: { label: string, icon: React.ReactNode, children: React.ReactNode, error?: string }) {
+  return (
+    <div className={cn(
+      "p-4 bg-white rounded-2xl border shadow-sm transition-all flex items-center gap-4",
+      error 
+        ? "border-red-300 ring-1 ring-red-200" 
+        : "border-slate-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500"
+    )}>
+      <div className={cn("text-slate-400", error && "text-red-400")}>{icon}</div>
+      <div className="flex-grow">
+        <div className="flex justify-between items-center mb-1">
+          <label className={cn("block text-xs font-bold uppercase tracking-wider", error ? "text-red-500" : "text-slate-500")}>{label}</label>
+          {error && <span className="text-[10px] text-red-500 font-medium">{error}</span>}
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function SelectionCard({ label, selected, onClick }: { label: string, selected: boolean, onClick: () => void }) {
+  return (
+    <div 
+      onClick={onClick}
+      className={cn(
+        "p-6 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between group",
+        selected 
+          ? "border-slate-900 bg-slate-900 text-white" 
+          : "border-slate-100 bg-white text-slate-600 hover:border-orange-500 hover:shadow-md"
+      )}
+    >
+      <span className="font-bold text-lg">{label}</span>
+      {selected && <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white"><Check className="w-4 h-4" /></div>}
+    </div>
+  );
+}
+
+function Chip({ label, selected, onClick }: { label: string, selected: boolean, onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "px-4 py-2 rounded-full text-sm font-bold transition-all border",
+        selected
+          ? "bg-orange-500 text-white border-orange-500 shadow-md"
+          : "bg-white text-slate-600 border-slate-200 hover:border-orange-400"
+      )}
+    >
+      {label}
+    </button>
+  );
+}
+
+function ReviewItem({ label, value, icon }: { label: string, value: string, icon: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-between py-2 border-b border-slate-200 last:border-0">
+      <div className="flex items-center gap-2 text-slate-500 text-sm">
+        {icon}
+        <span>{label}</span>
+      </div>
+      <span className="font-bold text-slate-900">{value}</span>
     </div>
   );
 }

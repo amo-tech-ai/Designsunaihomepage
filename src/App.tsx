@@ -23,12 +23,51 @@ import { ProposalReadyScreen } from './components/ProposalReadyScreen';
 import { ProjectDashboard } from './components/ProjectDashboard';
 import { WhatsAppAutomationPage } from './components/whatsapp/WhatsAppAutomationPage';
 import { AboutUsPage } from './components/about/AboutUsPage';
+import { StyleGuide } from './components/ui/design-system/StyleGuide';
+import { BookingPage } from './components/booking/BookingPage';
+import { Sitemap } from './components/docs/Sitemap';
+import { SitemapV2 } from './components/docs/SitemapV2';
+import { LeadsDashboard } from './components/dashboard/LeadsDashboard';
+import { LeadProvider } from './context/LeadContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { LoginPage } from './components/auth/LoginPage';
 
-export default function App() {
-  const [currentVersion, setCurrentVersion] = useState<'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'whatsapp' | 'about' | 'projects' | 'ai-web-dev' | 'ai-development' | 'process' | 'services-v2' | 'ai-sales-marketing' | 'ai-agents' | 'ai-mvp' | 'ai-chatbots' | 'chatbot-saas' | 'chatbot-ecommerce' | 'chatbot-healthcare' | 'chatbot-real-estate' | 'chatbot-b2b' | 'chatbot-automotive' | 'chatbot-tourism'>('v7');
+import { StartupAIArchitecturePage } from './components/premium/v7/docs/StartupAIArchitecturePage';
+import { InvestorSharePage } from './components/premium/v7/InvestorSharePage';
+import { DeckEditorPage } from './components/premium/v7/deck/DeckEditorPage';
+import { EventHubPage } from './components/premium/v7/events/EventHubPage';
+
+// Protected Route Wrapper
+function ProtectedRoute({ children, fallback }: { children: React.ReactNode, fallback: React.ReactNode }) {
+  const { isAuthenticated, isLoading } = useAuth();
+  
+  if (isLoading) return null; // Or a loading spinner
+  if (!isAuthenticated) return <>{fallback}</>;
+  
+  return <>{children}</>;
+}
+
+function MainApp() {
+  const [currentVersion, setCurrentVersion] = useState<'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'projects' | 'ai-web-dev' | 'ai-development' | 'process' | 'services-v2' | 'ai-sales-marketing' | 'ai-agents' | 'ai-mvp' | 'ai-chatbots' | 'chatbot-saas' | 'chatbot-ecommerce' | 'chatbot-healthcare' | 'chatbot-real-estate' | 'chatbot-b2b' | 'chatbot-automotive' | 'chatbot-tourism' | 'style-guide' | 'booking' | 'sitemap' | 'startup-ai-docs' | 'share-investor' | 'deck-editor' | 'event-hub'>('sitemap');
 
   const navigateToWizard = () => {
     setCurrentVersion('wizard');
+  };
+
+  const navigateToDashboard = () => {
+    setCurrentVersion('dashboard');
+  };
+  
+  const navigateToWhatsApp = () => {
+    setCurrentVersion('whatsapp');
+  };
+  
+  const navigateToAbout = () => {
+    setCurrentVersion('about');
+  };
+  
+  const navigateToHome = () => {
+    setCurrentVersion('v7'); // Default to v7 as per new plan
   };
 
   const navigateToProcessing = () => {
@@ -39,24 +78,12 @@ export default function App() {
     setCurrentVersion('proposal');
   };
 
-  const navigateToDashboard = () => {
-    setCurrentVersion('dashboard');
-  };
-
-  const navigateToHome = () => {
-    setCurrentVersion('v6');
-  };
-
-  const navigateToWhatsApp = () => {
-    setCurrentVersion('whatsapp');
-  };
-
-  const navigateToAbout = () => {
-    setCurrentVersion('about');
+  const navigateToBooking = () => {
+    setCurrentVersion('booking');
   };
 
   return (
-    <>
+    <LeadProvider>
       {/* Side Menu */}
       <SideMenu 
         currentVersion={currentVersion}
@@ -64,6 +91,13 @@ export default function App() {
       />
 
       {/* Render Current Version */}
+      {currentVersion === 'sitemap' && <SitemapV2 onNavigate={setCurrentVersion} />}
+      {currentVersion === 'startup-ai-docs' && <StartupAIArchitecturePage onVersionChange={setCurrentVersion} />}
+      {currentVersion === 'share-investor' && <InvestorSharePage onNavigateToBooking={navigateToBooking} onNavigateToHome={navigateToHome} onVersionChange={setCurrentVersion} />}
+      {currentVersion === 'deck-editor' && <DeckEditorPage onNavigate={setCurrentVersion} onVersionChange={setCurrentVersion} />}
+      {currentVersion === 'event-hub' && <EventHubPage onNavigate={setCurrentVersion} onVersionChange={setCurrentVersion} />}
+      {currentVersion === 'style-guide' && <StyleGuide onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
+      {currentVersion === 'booking' && <BookingPage onNavigateToHome={navigateToHome} onVersionChange={setCurrentVersion} onConfirm={navigateToDashboard} />}
       {currentVersion === 'v1' && <HomeV1 onNavigateToWizard={navigateToWizard} onNavigateToDashboard={navigateToDashboard} onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'v2' && <HomeV2 onNavigateToWizard={navigateToWizard} onNavigateToDashboard={navigateToDashboard} onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'v3' && <HomeV3 onNavigateToWizard={navigateToWizard} onNavigateToDashboard={navigateToDashboard} onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
@@ -89,10 +123,30 @@ export default function App() {
       {currentVersion === 'process' && <ProcessPageV2 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'wizard' && <BriefWizard onClose={navigateToHome} onSubmit={navigateToProcessing} />}
       {currentVersion === 'processing' && <AIProcessingScreen onComplete={navigateToProposal} />}
-      {currentVersion === 'proposal' && <ProposalReadyScreen onViewProposal={navigateToDashboard} onGoToDashboard={navigateToDashboard} />}
-      {currentVersion === 'dashboard' && <ProjectDashboard onClose={navigateToHome} />}
+      {currentVersion === 'proposal' && <ProposalReadyScreen onViewProposal={navigateToBooking} onGoToDashboard={navigateToDashboard} />}
+      
+      {/* Protected Routes */}
+      {currentVersion === 'dashboard' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+          <ProjectDashboard onClose={navigateToHome} />
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'leads' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+          <LeadsDashboard />
+        </ProtectedRoute>
+      )}
+      
       {currentVersion === 'whatsapp' && <WhatsAppAutomationPage />}
       {currentVersion === 'about' && <AboutUsPage />}
-    </>
+    </LeadProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
   );
 }

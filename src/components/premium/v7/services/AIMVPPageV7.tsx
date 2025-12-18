@@ -507,7 +507,7 @@ export function AIMVPPageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersion
 
   return (
     <main className="min-h-screen bg-white font-sans antialiased text-slate-900 selection:bg-[#FF6A3D] selection:text-white">
-      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} />
+      <NavbarV7 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
       
       <MVPHero onNavigateToWizard={handleWizard} onNavigateToProjects={handleProjects} />
       <MVPComparison />
