@@ -1,0 +1,139 @@
+---
+alwaysApply: false
+---
+
+# Safe GitHub Update - Preserve Local Files
+
+When updating from GitHub, **NEVER DELETE** protected folders and files. Always preserve local changes.
+
+## ⚠️ CRITICAL RULES
+
+1. **NEVER DELETE** `.cursor/` folder (includes all rules, especially `github-update-safe.mdc`)
+2. **NEVER DELETE** `plan/` folder
+3. **NEVER DELETE** `screenshots/` folder
+4. **NEVER DELETE** `claude.md` or `prd.md` files
+5. **ALWAYS preserve local changes** - Local work takes precedence
+6. **Stash ALL changes** (tracked + untracked) before pulling
+7. **Restore ALL stashed changes** after pulling
+
+## 🔄 Safe Update Workflow
+
+```bash
+# 1. Backup critical folders and files
+BACKUP_DIR=".backup-$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+[ -d .cursor ] && cp -r .cursor "$BACKUP_DIR/"
+[ -d plan ] && cp -r plan "$BACKUP_DIR/"
+[ -d screenshots ] && cp -r screenshots "$BACKUP_DIR/" 2>/dev/null
+[ -d docs ] && cp -r docs "$BACKUP_DIR/" 2>/dev/null
+[ -d src/docs ] && cp -r src/docs "$BACKUP_DIR/src-docs/" 2>/dev/null
+[ -f claude.md ] && cp claude.md "$BACKUP_DIR/" 2>/dev/null
+[ -f prd.md ] && cp prd.md "$BACKUP_DIR/" 2>/dev/null
+
+# 2. Stash ALL local changes (including untracked)
+git stash push -m "Local changes before update" --include-untracked
+
+# 3. Pull from GitHub
+git pull origin main --no-rebase
+
+# 4. Restore critical folders/files if missing
+[ ! -d .cursor ] && [ -d "$BACKUP_DIR/.cursor" ] && cp -r "$BACKUP_DIR/.cursor" .
+[ ! -d plan ] && [ -d "$BACKUP_DIR/plan" ] && cp -r "$BACKUP_DIR/plan" .
+[ ! -d plan/errors ] && [ -d "$BACKUP_DIR/plan/errors" ] && cp -r "$BACKUP_DIR/plan/errors" plan/
+[ ! -d screenshots ] && [ -d "$BACKUP_DIR/screenshots" ] && cp -r "$BACKUP_DIR/screenshots" .
+[ ! -d docs ] && [ -d "$BACKUP_DIR/docs" ] && cp -r "$BACKUP_DIR/docs" .
+[ ! -d src/docs ] && [ -d "$BACKUP_DIR/src-docs" ] && cp -r "$BACKUP_DIR/src-docs" src/docs
+[ ! -f claude.md ] && [ -f "$BACKUP_DIR/claude.md" ] && cp "$BACKUP_DIR/claude.md" .
+[ ! -f prd.md ] && [ -f "$BACKUP_DIR/prd.md" ] && cp "$BACKUP_DIR/prd.md" .
+
+# 5. Restore ALL stashed changes
+git stash pop
+
+# 6. For conflicts in protected files: ALWAYS keep local
+git checkout --ours .cursor/
+git checkout --ours plan/
+git checkout --ours plan/errors/ 2>/dev/null
+git checkout --ours screenshots/ 2>/dev/null
+git checkout --ours docs/ 2>/dev/null
+git checkout --ours src/docs/ 2>/dev/null
+git checkout --ours claude.md 2>/dev/null
+git checkout --ours prd.md 2>/dev/null
+git add .cursor/ plan/ plan/errors/ screenshots/ docs/ src/docs/ claude.md prd.md 2>/dev/null
+```
+
+## 🛡️ Protected Folders & Files (NEVER DELETE)
+
+- `.cursor/` - **CRITICAL** Cursor configuration and rules (including `github-update-safe.mdc`)
+- `plan/` - **CRITICAL** Planning documents (includes audit reports and fix prompts)
+- `plan/errors/` - **CRITICAL** Audit reports and fix prompts (01-audit.md, 02-prompts-fix.md, 03-prompt-*.md)
+- `screenshots/` - Screenshot references
+- `claude.md` - Claude documentation
+- `prd.md` - Product Requirements Document
+- `docs/` - Documentation (if exists)
+- `src/docs/` - Source documentation (if exists)
+
+## 🔧 Conflict Resolution
+
+**For protected folders (`.cursor/`, `plan/`, `plan/errors/`):**
+- **ALWAYS keep local version**
+```bash
+git checkout --ours .cursor/
+git checkout --ours plan/
+git checkout --ours plan/errors/
+```
+
+**For source code conflicts:**
+- Prefer local if unsure
+- Review both versions manually
+
+## ❌ NEVER DO
+
+- ❌ `git reset --hard` (destroys local changes)
+- ❌ `git clean -fd` (deletes untracked files)
+- ❌ Delete `.cursor/`, `plan/`, `plan/errors/`, `docs/`, or `screenshots/` folders
+- ❌ Delete `claude.md` or `prd.md` files
+- ❌ Skip backup step
+- ❌ Skip restoring stashed changes
+
+## ✅ ALWAYS DO
+
+- ✅ Backup before update
+- ✅ Stash with `--include-untracked`
+- ✅ Restore critical folders if missing
+- ✅ **Restore ALL stashed changes** after pull
+- ✅ Keep local versions for protected files
+- ✅ Verify folders exist after update
+
+## 🚨 Emergency Restore
+
+If folders are deleted:
+
+```bash
+# Restore from backup
+BACKUP_DIR=".backup-XXXXXXXX"  # Use your backup dir
+[ -d "$BACKUP_DIR/.cursor" ] && cp -r "$BACKUP_DIR/.cursor" .
+[ -d "$BACKUP_DIR/plan" ] && cp -r "$BACKUP_DIR/plan" .
+[ -d "$BACKUP_DIR/plan/errors" ] && cp -r "$BACKUP_DIR/plan/errors" plan/
+[ -d "$BACKUP_DIR/screenshots" ] && cp -r "$BACKUP_DIR/screenshots" .
+[ -d "$BACKUP_DIR/docs" ] && cp -r "$BACKUP_DIR/docs" .
+[ -d "$BACKUP_DIR/src-docs" ] && cp -r "$BACKUP_DIR/src-docs" src/docs
+[ -f "$BACKUP_DIR/claude.md" ] && cp "$BACKUP_DIR/claude.md" .
+[ -f "$BACKUP_DIR/prd.md" ] && cp "$BACKUP_DIR/prd.md" .
+
+# Or restore from stash
+git checkout stash@{0} -- .cursor plan plan/errors screenshots docs src/docs claude.md prd.md
+```
+
+## 📋 Quick Checklist
+
+- [ ] Backup `.cursor/`, `plan/`, `plan/errors/`, `docs/`, `src/docs/`, `screenshots/`, `claude.md`, `prd.md`
+- [ ] Stash all changes (including untracked)
+- [ ] Pull from GitHub
+- [ ] Restore folders/files if missing
+- [ ] Pop stash to restore local changes
+- [ ] Resolve conflicts (keep local for protected files)
+- [ ] Verify `.cursor/`, `plan/`, `plan/errors/`, `docs/`, `screenshots/`, `claude.md`, `prd.md` still exist
+
+---
+
+**Remember:** Local work takes precedence. When in doubt, preserve local over remote.

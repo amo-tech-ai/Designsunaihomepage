@@ -1,0 +1,317 @@
+---
+description: Guidelines for using Cursor Browser Agent for testing, debugging, and automation
+globs: ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/e2e/**", "**/__tests__/**"]
+alwaysApply: false
+---
+
+# Cursor Browser Agent - Testing & Automation Rule
+
+## Overview
+
+Agent can control a web browser to test applications, audit accessibility, debug issues, and automate comprehensive testing workflows. With full access to console logs and network traffic, Agent provides powerful debugging capabilities.
+
+## Browser Capabilities
+
+### Available Tools
+
+| Tool | Purpose |
+|------|---------|
+| `Navigate` | Navigate to URLs |
+| `Click` | Click elements on page |
+| `Type` | Type text into inputs |
+| `Scroll` | Scroll page or elements |
+| `Screenshot` | Capture visual state |
+| `Console Output` | Access browser console logs |
+| `Network Traffic` | Monitor network requests |
+
+### Session Persistence
+
+Browser state persists between sessions per workspace:
+- **Cookies**: Authentication and session data retained
+- **Local Storage**: `localStorage` and `sessionStorage` persist
+- **IndexedDB**: Database content retained
+- **Isolation**: Each workspace has separate storage
+
+## Testing Strategy Pattern
+
+### Standard Test Flow
+
+```
+1. Check for running dev server (don't start duplicate)
+2. Navigate to target URL
+3. Take screenshot for baseline
+4. Check console for errors
+5. Perform user interactions
+6. Verify expected outcomes
+7. Check network requests
+8. Document results
+```
+
+### Example Commands
+
+```
+# Navigate and screenshot
+@browser Navigate to http://localhost:5000
+@browser Take screenshot
+
+# Form testing
+@browser Click the "Sign Up" button
+@browser Type "test@example.com" in email field
+@browser Take screenshot
+
+# Console debugging
+@browser Check console for errors
+@browser Show network requests
+
+# Accessibility audit
+@browser Check color contrast ratios
+@browser Verify semantic HTML and ARIA labels
+@browser Test keyboard navigation
+```
+
+## Use Cases
+
+### 1. Web Development Testing
+
+```
+@browser Navigate to http://localhost:5000
+@browser Fill out forms with test data
+@browser Click through workflows
+@browser Test responsive designs
+@browser Validate error messages
+@browser Monitor console for JavaScript errors
+```
+
+### 2. Accessibility Audit (WCAG)
+
+```
+@browser Check color contrast ratios
+@browser Verify semantic HTML and ARIA labels
+@browser Test keyboard navigation
+@browser Identify missing alt text
+@browser Verify focus indicators
+```
+
+### 3. Visual Regression Testing
+
+```
+@browser Take screenshot of homepage
+@browser Navigate to /dashboard
+@browser Take screenshot of dashboard
+@browser Compare current UI against design
+@browser Adjust spacing, colors, typography to match
+```
+
+### 4. E2E User Journey Testing
+
+```
+@browser Navigate to http://localhost:5000
+@browser Click "Create Your Profile" button
+@browser Fill signup form with test data
+@browser Submit form
+@browser Verify redirect to dashboard
+@browser Check for success toast notification
+```
+
+### 5. Debug Console Errors
+
+```
+@browser Navigate to http://localhost:5000/editor
+@browser Check console for errors
+@browser Show network requests with status >= 400
+@browser Take screenshot of error state
+```
+
+## Best Practices
+
+### ✅ DO
+
+1. **Check for running servers first**
+   ```
+   # Check if dev server is running before starting
+   @browser Navigate to http://localhost:5000
+   # If 404/connection refused, start server
+   ```
+
+2. **Take screenshots at key states**
+   ```
+   @browser Take screenshot  # Before action
+   @browser Click submit button
+   @browser Take screenshot  # After action
+   ```
+
+3. **Check console after navigation**
+   ```
+   @browser Navigate to /dashboard
+   @browser Check console for errors
+   ```
+
+4. **Monitor network for API calls**
+   ```
+   @browser Show network requests
+   # Filter for failed requests (4xx, 5xx)
+   ```
+
+5. **Test with realistic data**
+   ```
+   @browser Type "john.doe@company.com" in email field
+   @browser Type "SecurePass123!" in password field
+   ```
+
+### ❌ DON'T
+
+1. **Don't start duplicate servers**
+   - Always check if server is already running
+   - Use correct port from existing server
+
+2. **Don't skip error checking**
+   - Always verify console after navigation
+   - Check network requests for failures
+
+3. **Don't test without screenshots**
+   - Visual verification is critical
+   - Screenshots document test state
+
+4. **Don't ignore loading states**
+   - Wait for async operations
+   - Verify loading indicators work
+
+## React/Vite Testing Notes
+
+### Known Limitations
+
+1. **Controlled Inputs**: Browser automation may not trigger React's `onChange` events properly when typing directly into controlled inputs
+   - **Workaround**: Use direct navigation or verify state via console
+
+2. **Auth-Protected Routes**: Routes behind authentication will redirect to login
+   - **Solution**: Test auth flow first, or use existing session
+
+3. **State-Based Navigation**: Apps using state-based routing (not URL routing) require clicking navigation elements
+   - **Solution**: Click sidebar/nav items instead of direct URL navigation
+
+### Port Detection
+
+```
+# Common dev server ports
+- Vite: 3000, 3001, 3002, 5173
+- Next.js: 3000
+- Create React App: 3000
+
+# Check terminal for running server port
+# Don't guess - verify before navigating
+```
+
+## Testing Checklist
+
+### Before Testing
+- [ ] Dev server running on correct port
+- [ ] Database seeded with test data
+- [ ] Environment variables configured
+- [ ] Auth tokens available (if needed)
+
+### During Testing
+- [ ] Screenshot before each major action
+- [ ] Check console after navigation
+- [ ] Monitor network requests
+- [ ] Verify expected UI changes
+- [ ] Test error states
+
+### After Testing
+- [ ] Document all errors found
+- [ ] Save screenshots for reference
+- [ ] Update test documentation
+- [ ] Report blocking issues
+
+## Integration with Chrome DevTools MCP
+
+For advanced debugging, combine Browser Agent with Chrome DevTools MCP:
+
+```
+# Browser Agent for navigation and interaction
+@browser Navigate to http://localhost:5000
+
+# Chrome DevTools MCP for detailed debugging
+@chrome-devtools list_console_messages
+@chrome-devtools list_network_requests
+@chrome-devtools performance_start_trace
+```
+
+## Security Notes
+
+1. **Tool Approval**: Browser tools require approval by default
+2. **Review Actions**: Always review before Agent executes
+3. **Sensitive Data**: Don't auto-run with untrusted code
+4. **Session Isolation**: Each workspace has separate storage
+
+## Recommended Models
+
+For best browser automation performance:
+- Claude Sonnet 4.5
+- GPT-5
+- Auto (adaptive selection)
+
+## Quick Reference
+
+### Navigation
+```
+@browser Navigate to http://localhost:5000
+@browser Click back button
+```
+
+### Interaction
+```
+@browser Click "Submit" button
+@browser Type "test@example.com" in email field
+@browser Scroll down 500 pixels
+```
+
+### Debugging
+```
+@browser Take screenshot
+@browser Check console for errors
+@browser Show network requests
+```
+
+### Testing
+```
+@browser Fill out form with test data
+@browser Verify success message appears
+@browser Test responsive design at 375px width
+```
+
+## Example: Full E2E Test
+
+```
+# 1. Setup
+@browser Navigate to http://localhost:5000
+@browser Take screenshot
+
+# 2. Auth Flow
+@browser Click "Sign Up" button
+@browser Type "testuser@example.com" in email
+@browser Type "TestPass123!" in password
+@browser Click "Create Account"
+@browser Check console for errors
+
+# 3. Verify Dashboard
+@browser Wait for redirect to dashboard
+@browser Take screenshot
+@browser Verify "Welcome" message appears
+
+# 4. Feature Test
+@browser Click "Create New Deck" button
+@browser Fill wizard form
+@browser Click "Generate"
+@browser Wait for generation to complete
+@browser Take screenshot of result
+
+# 5. Cleanup
+@browser Check console for errors
+@browser Show network requests with failures
+@browser Document test results
+```
+
+---
+
+*Browser Testing Rule v1.0*
+*For use with Cursor Browser Agent*
