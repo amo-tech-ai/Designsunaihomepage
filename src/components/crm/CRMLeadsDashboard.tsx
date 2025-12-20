@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { 
   Search, Filter, ArrowUpRight, MoreHorizontal, Clock, 
-  Building2, User, Zap, Mail, Shield, AlertCircle, CheckCircle2,
-  LayoutGrid, List
+  Building2, List, LayoutGrid
 } from 'lucide-react';
 import { useLeads, Lead } from '../../context/LeadContext';
 import { Typography } from '../ui/design-system/Typography';
@@ -14,6 +13,8 @@ import { cn } from '../ui/design-system/utils';
 import { LeadProfileView } from './LeadProfileView';
 import { ProposalGenerator } from './ProposalGenerator';
 import { PipelineHealth } from './PipelineHealth';
+import { LeadEnrichmentFlow } from './enrichment/LeadEnrichmentFlow';
+import { SunScoreBadge } from './SunScoreBadge';
 
 // --- Types & Mock Data Generators ---
 
@@ -38,17 +39,17 @@ const enhanceLead = (lead: Lead): EnhancedLead => {
     industry: INDUSTRIES[hash % INDUSTRIES.length],
     sunScore: 40 + (hash % 60), // Score between 40 and 99
     lastActive: `${(hash % 24) + 1}h ago`,
-    // Mock avatar color based on hash
     avatarUrl: undefined 
   };
 };
 
 export function CRMLeadsDashboard() {
-  const { leads } = useLeads();
+  const { leads, addLead } = useLeads();
   const [filter, setFilter] = useState<'all' | 'hot' | 'warm' | 'cold'>('all');
   const [search, setSearch] = useState('');
   const [selectedLead, setSelectedLead] = useState<EnhancedLead | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'detail' | 'proposal' | 'pipeline'>('list');
+  const [showAddLead, setShowAddLead] = useState(false);
 
   // Transform and Filter Leads
   const enhancedLeads = useMemo(() => {
@@ -100,6 +101,30 @@ export function CRMLeadsDashboard() {
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
       
+      {/* Add Lead Flow Overlay */}
+      {showAddLead && (
+        <LeadEnrichmentFlow 
+          onClose={() => setShowAddLead(false)}
+          onComplete={(data) => {
+            // Add the new lead to context
+            addLead({
+              name: data.name,
+              email: data.email,
+              companyName: data.company,
+              status: 'New',
+              services: [],
+              goals: [],
+              budget: 0,
+              timeline: 'Flexible',
+              description: data.aiSummary,
+              value: 'Potential',
+              date: new Date().toISOString()
+            });
+            setShowAddLead(false);
+          }}
+        />
+      )}
+
       {/* Sticky Header */}
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -162,7 +187,12 @@ export function CRMLeadsDashboard() {
              <Button variant="outline" size="sm" leftIcon={<Filter className="w-4 h-4" />}>
                Filters
              </Button>
-             <Button variant="primary" size="sm" leftIcon={<ArrowUpRight className="w-4 h-4" />}>
+             <Button 
+               variant="primary" 
+               size="sm" 
+               leftIcon={<ArrowUpRight className="w-4 h-4" />}
+               onClick={() => setShowAddLead(true)}
+             >
                Add Lead
              </Button>
           </div>
@@ -271,50 +301,6 @@ function LeadRow({ lead, onClick }: { lead: EnhancedLead, onClick: () => void })
          </button>
       </td>
     </motion.tr>
-  );
-}
-
-function SunScoreBadge({ score }: { score: number }) {
-  let colorClass = "bg-slate-100 text-slate-600 border-slate-200";
-  let ringClass = "ring-slate-100";
-  
-  if (score >= 80) {
-    colorClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
-    ringClass = "ring-emerald-100";
-  } else if (score >= 50) {
-    colorClass = "bg-amber-50 text-amber-700 border-amber-200";
-    ringClass = "ring-amber-100";
-  }
-
-  return (
-    <div className="relative group/score">
-       <div className={cn(
-         "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 ring-4 ring-opacity-50 transition-all",
-         colorClass, ringClass
-       )}>
-         {score}
-       </div>
-       
-       {/* Hover Tooltip (Luxury Interaction) */}
-       <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-slate-900 text-white p-3 rounded-xl shadow-xl opacity-0 group-hover/score:opacity-100 transition-all pointer-events-none z-50 scale-95 group-hover/score:scale-100 origin-bottom">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Score Analysis</div>
-          <div className="space-y-1">
-             {score >= 80 && <ScoreFactor label="Clear Timeline" points="+20" />}
-             {score >= 50 && <ScoreFactor label="Budget Aligned" points="+15" />}
-             <ScoreFactor label="Corporate Email" points="+10" />
-          </div>
-          <div className="w-2 h-2 bg-slate-900 absolute -bottom-1 left-1/2 -translate-x-1/2 rotate-45" />
-       </div>
-    </div>
-  );
-}
-
-function ScoreFactor({ label, points }: { label: string, points: string }) {
-  return (
-    <div className="flex justify-between text-xs">
-      <span className="text-slate-300">{label}</span>
-      <span className="text-emerald-400 font-mono">{points}</span>
-    </div>
   );
 }
 

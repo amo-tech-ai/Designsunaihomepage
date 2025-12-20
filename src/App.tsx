@@ -41,6 +41,13 @@ import { StartupAIArchitecturePage } from './components/premium/v7/docs/StartupA
 import { InvestorSharePage } from './components/premium/v7/InvestorSharePage';
 import { DeckEditorPage } from './components/premium/v7/deck/DeckEditorPage';
 import { EventHubPage } from './components/premium/v7/events/EventHubPage';
+import { CallIngestion } from './components/crm/intelligence/CallIngestion';
+import { AnalysisState } from './components/crm/intelligence/AnalysisState';
+import { CallBrief } from './components/crm/intelligence/CallBrief';
+import { CommandBar } from './components/crm/intelligence/CommandBar';
+import { SearchResults } from './components/crm/intelligence/SearchResults';
+import { CommandBarProvider } from './context/CommandBarContext';
+import { IntelligenceProvider } from './context/IntelligenceContext';
 import { Toaster } from 'sonner@2.0.3';
 
 // Protected Route Wrapper
@@ -54,7 +61,7 @@ function ProtectedRoute({ children, fallback }: { children: React.ReactNode, fal
 }
 
 function MainApp() {
-  const [currentVersion, setCurrentVersion] = useState<'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'ops' | 'workflow' | 'settings' | 'whatsapp' | 'about' | 'projects' | 'ai-web-dev' | 'ai-development' | 'process' | 'services-v2' | 'ai-sales-marketing' | 'ai-agents' | 'ai-mvp' | 'ai-chatbots' | 'chatbot-saas' | 'chatbot-ecommerce' | 'chatbot-healthcare' | 'chatbot-real-estate' | 'chatbot-b2b' | 'chatbot-automotive' | 'chatbot-tourism' | 'style-guide' | 'booking' | 'sitemap' | 'startup-ai-docs' | 'share-investor' | 'deck-editor' | 'event-hub'>('sitemap');
+  const [currentVersion, setCurrentVersion] = useState<'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'ops' | 'workflow' | 'settings' | 'whatsapp' | 'about' | 'projects' | 'ai-web-dev' | 'ai-development' | 'process' | 'services-v2' | 'ai-sales-marketing' | 'ai-agents' | 'ai-mvp' | 'ai-chatbots' | 'chatbot-saas' | 'chatbot-ecommerce' | 'chatbot-healthcare' | 'chatbot-real-estate' | 'chatbot-b2b' | 'chatbot-automotive' | 'chatbot-tourism' | 'style-guide' | 'booking' | 'sitemap' | 'startup-ai-docs' | 'share-investor' | 'deck-editor' | 'event-hub' | 'intelligence-ingest' | 'intelligence-analysis' | 'intelligence-brief' | 'intelligence-search' | 'intelligence-command'>('sitemap');
 
   const navigateToWizard = () => {
     setCurrentVersion('wizard');
@@ -95,6 +102,7 @@ function MainApp() {
   return (
     <LeadProvider>
       <Toaster position="top-right" />
+      <CommandBar onSearch={() => setCurrentVersion('intelligence-search')} />
       {/* Global AI Assistant */}
       {showChatbot && <GlobalChatbot onNavigate={setCurrentVersion} />}
 
@@ -174,6 +182,45 @@ function MainApp() {
           </AdminLayout>
         </ProtectedRoute>
       )}
+
+      {/* Sales Intelligence Routes */}
+      {currentVersion === 'intelligence-ingest' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+           <AdminLayout activePage="leads" onNavigate={(page) => setCurrentVersion(page)}>
+            <CallIngestion onUploadComplete={() => setCurrentVersion('intelligence-analysis')} />
+          </AdminLayout>
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'intelligence-analysis' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+           <AdminLayout activePage="leads" onNavigate={(page) => setCurrentVersion(page)}>
+            <AnalysisState onComplete={() => setCurrentVersion('intelligence-brief')} />
+          </AdminLayout>
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'intelligence-brief' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+           <AdminLayout activePage="leads" onNavigate={(page) => setCurrentVersion(page)}>
+            <CallBrief />
+          </AdminLayout>
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'intelligence-search' && (
+        <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+           <AdminLayout activePage="leads" onNavigate={(page) => setCurrentVersion(page)}>
+            <SearchResults onViewBrief={() => setCurrentVersion('intelligence-brief')} />
+          </AdminLayout>
+        </ProtectedRoute>
+      )}
+      {currentVersion === 'intelligence-command' && (
+         <ProtectedRoute fallback={<LoginPage onLoginSuccess={() => {}} />}>
+            <AdminLayout activePage="leads" onNavigate={(page) => setCurrentVersion(page)}>
+              <div className="relative h-[80vh] w-full">
+                <CommandBar />
+              </div>
+           </AdminLayout>
+         </ProtectedRoute>
+      )}
       
       {currentVersion === 'whatsapp' && <WhatsAppAutomationPage />}
       {currentVersion === 'about' && <AboutUsPage />}
@@ -184,7 +231,11 @@ function MainApp() {
 export default function App() {
   return (
     <AuthProvider>
-      <MainApp />
+      <CommandBarProvider>
+        <IntelligenceProvider>
+          <MainApp />
+        </IntelligenceProvider>
+      </CommandBarProvider>
     </AuthProvider>
   );
 }
