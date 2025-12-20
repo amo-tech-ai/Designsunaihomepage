@@ -1,46 +1,39 @@
-import { useState } from 'react';
-import { SideMenu } from './components/SideMenu';
-import { HomeV1 } from './components/HomeV1';
-import { HomeV2 } from './components/HomeV2';
-import { HomeV3 } from './components/HomeV3';
-import { HomePageV4 } from './components/premium/HomePageV4';
-import { HomePageV5 } from './components/premium/HomePageV5';
-import { HomePageV6 } from './components/premium/HomePageV6';
+import React, { useState } from 'react';
 import { HomePageV7 } from './components/premium/HomePageV7';
+import { HomePageV6 } from './components/premium/HomePageV6';
+import { HomePageV5 } from './components/premium/HomePageV5';
+import { HomePageV4 } from './components/premium/HomePageV4';
+import { HomeV3 } from './components/HomeV3';
+import { HomeV2 } from './components/HomeV2';
+import { HomeV1 } from './components/HomeV1';
+import { BriefWizard } from './components/BriefWizard';
+import { AIProcessingScreen } from './components/AIProcessingScreen';
+import { ProposalReadyScreen } from './components/ProposalReadyScreen';
+import { CRMLeadsDashboard } from './components/crm/CRMLeadsDashboard';
+import { LeadsDashboard } from './components/dashboard/LeadsDashboard';
+import { WorkflowAutomationHub } from './components/crm/workflows/WorkflowAutomationHub';
+import { LeadProvider } from './context/LeadContext';
+import { SettingsPage } from './components/crm/SettingsPage';
+import { WhatsAppAutomationPage } from './components/whatsapp/WhatsAppAutomationPage';
+import { AboutUsPage } from './components/about/AboutUsPage';
+import { BookingPage } from './components/booking/BookingPage';
+import { SitemapV2 } from './components/docs/SitemapV2';
 import { ProjectsPageV7 } from './components/premium/v7/ProjectsPageV7';
 import { AIWebDevPageV7 } from './components/premium/v7/services/AIWebDevPageV7';
 import { AIDevelopmentPageV7 } from './components/premium/v7/services/AIDevelopmentPageV7';
+import { ProcessPageV2 } from './components/premium/v7/process/ProcessPageV2';
 import { ServicesPageV2 } from './components/premium/v7/services/ServicesPageV2';
 import { AISalesMarketingPageV7 } from './components/premium/v7/services/AISalesMarketingPageV7';
 import { AIAgentsPageV7 } from './components/premium/v7/services/AIAgentsPageV7';
 import { AIMVPPageV7 } from './components/premium/v7/services/AIMVPPageV7';
 import { AIChatbotsPageV7 } from './components/premium/v7/services/AIChatbotsPageV7';
 import { IndustryChatbotPageV7 } from './components/premium/v7/services/IndustryChatbotPageV7';
-import { ProcessPageV2 } from './components/premium/v7/process/ProcessPageV2';
-import { BriefWizard } from './components/BriefWizard';
-import { AIProcessingScreen } from './components/AIProcessingScreen';
-import { ProposalReadyScreen } from './components/ProposalReadyScreen';
-import { ProjectDashboard } from './components/ProjectDashboard';
-import { WhatsAppAutomationPage } from './components/whatsapp/WhatsAppAutomationPage';
-import { AboutUsPage } from './components/about/AboutUsPage';
-import { StyleGuide } from './components/ui/design-system/StyleGuide';
-import { BookingPage } from './components/booking/BookingPage';
-import { Sitemap } from './components/docs/Sitemap';
-import { SitemapV2 } from './components/docs/SitemapV2';
-import { CRMLeadsDashboard } from './components/crm/CRMLeadsDashboard';
-import { AgentControlRoom } from './components/ops/AgentControlRoom';
-import { AutomationMapPage } from './components/ops/AutomationMapPage';
-import { SettingsPage } from './components/crm/SettingsPage';
-import { AdminLayout } from './components/crm/AdminLayout';
-import { LeadProvider } from './context/LeadContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import { LoginPage } from './components/auth/LoginPage';
-import { GlobalChatbot } from './components/GlobalChatbot';
-
+import { StyleGuideV6 } from './components/premium/v6/docs/StyleGuideV6';
 import { StartupAIArchitecturePage } from './components/premium/v7/docs/StartupAIArchitecturePage';
 import { InvestorSharePage } from './components/premium/v7/InvestorSharePage';
 import { DeckEditorPage } from './components/premium/v7/deck/DeckEditorPage';
 import { EventHubPage } from './components/premium/v7/events/EventHubPage';
+import { AutomationMapPage } from './components/ops/AutomationMapPage';
 import { CallIngestion } from './components/crm/intelligence/CallIngestion';
 import { AnalysisState } from './components/crm/intelligence/AnalysisState';
 import { CallBrief } from './components/crm/intelligence/CallBrief';
@@ -48,7 +41,14 @@ import { CommandBar } from './components/crm/intelligence/CommandBar';
 import { SearchResults } from './components/crm/intelligence/SearchResults';
 import { CommandBarProvider } from './context/CommandBarContext';
 import { IntelligenceProvider } from './context/IntelligenceContext';
-import { Toaster } from 'sonner@2.0.3';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Toaster } from 'sonner';
+import { GlobalChatbot } from './components/GlobalChatbot';
+import { SideMenu } from './components/SideMenu';
+import { ProjectDashboard } from './components/ProjectDashboard';
+import { AdminLayout } from './components/crm/AdminLayout';
+import { AgentControlRoom } from './components/ops/AgentControlRoom';
+import { LoginPage } from './components/auth/LoginPage';
 
 // Protected Route Wrapper
 function ProtectedRoute({ children, fallback }: { children: React.ReactNode, fallback: React.ReactNode }) {
@@ -118,7 +118,7 @@ function MainApp() {
       {currentVersion === 'share-investor' && <InvestorSharePage onNavigateToBooking={navigateToBooking} onNavigateToHome={navigateToHome} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'deck-editor' && <DeckEditorPage onNavigate={setCurrentVersion} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'event-hub' && <EventHubPage onNavigate={setCurrentVersion} onVersionChange={setCurrentVersion} />}
-      {currentVersion === 'style-guide' && <StyleGuide onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
+      {currentVersion === 'style-guide' && <StyleGuideV6 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'booking' && <BookingPage onNavigateToHome={navigateToHome} onVersionChange={setCurrentVersion} onConfirm={navigateToDashboard} />}
       {currentVersion === 'v1' && <HomeV1 onNavigateToWizard={navigateToWizard} onNavigateToDashboard={navigateToDashboard} onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'v2' && <HomeV2 onNavigateToWizard={navigateToWizard} onNavigateToDashboard={navigateToDashboard} onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
@@ -129,7 +129,7 @@ function MainApp() {
       {currentVersion === 'v7' && <HomePageV7 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'projects' && <ProjectsPageV7 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'ai-web-dev' && <AIWebDevPageV7 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
-      {currentVersion === 'ai-development' && <ServicesPageV2 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
+      {currentVersion === 'ai-development' && <AIDevelopmentPageV7 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'services-v2' && <ServicesPageV2 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'ai-sales-marketing' && <AISalesMarketingPageV7 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}
       {currentVersion === 'ai-agents' && <AIAgentsPageV7 onNavigateToWhatsApp={navigateToWhatsApp} onNavigateToAbout={navigateToAbout} onVersionChange={setCurrentVersion} />}

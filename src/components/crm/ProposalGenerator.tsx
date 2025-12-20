@@ -10,7 +10,7 @@ import { Card } from '../ui/design-system/Card';
 import { Badge } from '../ui/design-system/Badge';
 import { cn } from '../ui/design-system/utils';
 import { Lead } from '../../context/LeadContext';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface ProposalGeneratorProps {
   lead: Lead;
