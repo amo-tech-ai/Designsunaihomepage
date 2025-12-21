@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavbarV7 } from './NavbarV7';
-import { FooterV7 } from './FooterV7';
+import { NavbarV7 } from '../NavbarV7';
+import { FooterV7 } from '../FooterV7';
 import { Button } from '../../ui/design-system/Button';
 import { Card } from '../../ui/design-system/Card';
 import { Badge } from '../../ui/design-system/Badge';

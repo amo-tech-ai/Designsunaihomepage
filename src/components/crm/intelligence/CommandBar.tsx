@@ -1,19 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
   Sparkles, 
-  CornerDownLeft, 
-  Command, 
-  User, 
-  Building2, 
   ArrowRight,
+  FileText,
+  Users,
+  Phone,
+  Calendar,
   TrendingUp,
-  Clock
+  MessageSquare,
+  Settings,
+  Zap,
+  X
 } from 'lucide-react';
 import { Typography } from '../../ui/design-system/Typography';
 import { useCommandBar } from '../../../context/CommandBarContext';
-import { useIntelligence } from '../../../context/IntelligenceContext';
+import { useNLSearch } from '../../../hooks/useNLSearch';
 
 // Mock Suggestions (Keep these for "Quick Actions")
 const SUGGESTED_QUERIES = [
@@ -23,14 +26,14 @@ const SUGGESTED_QUERIES = [
 ];
 
 const PREDICTIVE_RESULTS = [
-  { id: 1, type: 'lead', title: 'Fintech CEOs in NY', subtitle: '32 leads matched', icon: User, score: 98 },
-  { id: 2, type: 'company', title: 'Companies > $50M Revenue', subtitle: '15 accounts matched', icon: Building2, score: 92 },
+  { id: 1, type: 'lead', title: 'Fintech CEOs in NY', subtitle: '32 leads matched', icon: Users, score: 98 },
+  { id: 2, type: 'company', title: 'Companies > $50M Revenue', subtitle: '15 accounts matched', icon: FileText, score: 92 },
   { id: 3, type: 'insight', title: 'Recent High-Intent Signals', subtitle: 'From last 7 days', icon: TrendingUp, score: 85 },
 ];
 
 export function CommandBar({ onSearch }: { onSearch?: (query: string) => void }) {
   const { isOpen, closeCommandBar } = useCommandBar();
-  const { runSearch, isThinking: isGlobalThinking } = useIntelligence();
+  const { runSearch, isThinking: isGlobalThinking } = useNLSearch();
   
   const [query, setQuery] = useState('');
   const [isThinking, setIsThinking] = useState(false);
@@ -159,7 +162,7 @@ export function CommandBar({ onSearch }: { onSearch?: (query: string) => void })
                           }}
                         >
                           <span className="flex items-center gap-3">
-                            <Clock className="w-4 h-4 text-slate-300 group-hover:text-indigo-400" />
+                            <Calendar className="w-4 h-4 text-slate-300 group-hover:text-indigo-400" />
                             {suggestion}
                           </span>
                           <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
@@ -204,7 +207,7 @@ export function CommandBar({ onSearch }: { onSearch?: (query: string) => void })
                               
                               <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <span className="text-xs font-medium text-slate-400">Run Query</span>
-                                <CornerDownLeft className="w-4 h-4 text-slate-400" />
+                                <Zap className="w-4 h-4 text-slate-400" />
                               </div>
                             </div>
                           ))}
@@ -229,7 +232,7 @@ export function CommandBar({ onSearch }: { onSearch?: (query: string) => void })
                 <span>AI Semantic Search Active</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1"><Command className="w-3 h-3" /> K to open</span>
+                <span className="flex items-center gap-1"><Settings className="w-3 h-3" /> K to open</span>
               </div>
             </div>
           </motion.div>

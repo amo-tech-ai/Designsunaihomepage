@@ -19,7 +19,8 @@ import { Typography } from '../../ui/design-system/Typography';
 import { Badge } from '../../ui/design-system/Badge';
 import { Button } from '../../ui/design-system/Button';
 import { cn } from '../../ui/design-system/utils';
-import { useIntelligence } from '../../../context/IntelligenceContext';
+import { useCallAnalysis } from '../../../hooks/useCallAnalysis';
+import { callAnalysisService } from '../../../services';
 
 // Fallback Mock Data
 const MOCK_CALL_DATA = {
@@ -59,34 +60,10 @@ const itemVariants = {
 };
 
 export function CallBrief() {
-  const { calls, updateActionStatus, leads, selectedLeadId } = useIntelligence();
+  const { analysis, isAnalyzing, error } = useCallAnalysis();
 
-  // Find the selected lead to possibly generate transient view
-  const selectedLead = leads.find(l => l.id === selectedLeadId);
-
-  // 1. Try to find a call matching the selected lead (by name, as we don't have linked IDs in mock)
-  let activeCall = calls.find(c => c.leadName === selectedLead?.name);
-
-  // 2. If no call found but we selected a lead, generate a transient view
-  if (!activeCall && selectedLead) {
-    activeCall = {
-      ...MOCK_CALL_DATA,
-      id: `temp_${selectedLead.id}`,
-      leadName: selectedLead.name,
-      role: selectedLead.role,
-      company: selectedLead.company,
-      summary: `AI Generated Brief for ${selectedLead.name}. This is a simulated view based on CRM data as no direct call recording was found.`,
-      actions: [
-        { id: 1, text: "Schedule Discovery Call", owner: "System", date: "Today", status: "pending" },
-        { id: 2, text: "Research Company Background", owner: "AI Agent", date: "Tomorrow", status: "pending" }
-      ]
-    };
-  }
-
-  // 3. Fallback to first available call or mock
-  if (!activeCall) {
-    activeCall = calls.length > 0 ? calls[0] : MOCK_CALL_DATA;
-  }
+  // Use real analysis data or fallback to mock
+  const activeCall = analysis || MOCK_CALL_DATA;
 
   return (
     <div className="max-w-4xl mx-auto pb-20">

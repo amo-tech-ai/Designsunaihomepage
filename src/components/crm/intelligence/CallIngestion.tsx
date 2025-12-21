@@ -5,16 +5,15 @@ import { Card } from '../../ui/design-system/Card';
 import { Typography } from '../../ui/design-system/Typography';
 import { Button } from '../../ui/design-system/Button';
 import { cn } from '../../ui/design-system/utils';
-import { useIntelligence } from '../../../context/IntelligenceContext';
+import { useCallAnalysis } from '../../../hooks/useCallAnalysis';
 
 interface CallIngestionProps {
   onUploadComplete: () => void;
 }
 
 export function CallIngestion({ onUploadComplete }: CallIngestionProps) {
-  const { ingestCall } = useIntelligence();
+  const { analyzeCall, isAnalyzing, progress, currentStep, error } = useCallAnalysis();
   const [isDragging, setIsDragging] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -43,10 +42,10 @@ export function CallIngestion({ onUploadComplete }: CallIngestionProps) {
   };
 
   const startUpload = async (file: File) => {
-    setIsUploading(true);
-    // Use Context to ingest call (simulates API)
-    await ingestCall(file);
-    onUploadComplete();
+    await analyzeCall(file);
+    if (!error) {
+      onUploadComplete();
+    }
   };
 
   return (
@@ -70,7 +69,7 @@ export function CallIngestion({ onUploadComplete }: CallIngestionProps) {
           className={cn(
             "relative overflow-hidden transition-all duration-300 border-2 border-dashed p-12 flex flex-col items-center justify-center text-center group bg-white",
             isDragging ? "border-indigo-500 bg-indigo-50/50 scale-[1.02]" : "border-slate-200 hover:border-slate-300",
-            isUploading && "pointer-events-none opacity-50"
+            isAnalyzing && "pointer-events-none opacity-50"
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -88,7 +87,7 @@ export function CallIngestion({ onUploadComplete }: CallIngestionProps) {
             "w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-colors duration-300",
             isDragging ? "bg-indigo-100 text-indigo-600" : "bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-600"
           )}>
-            {isUploading ? (
+            {isAnalyzing ? (
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -101,7 +100,7 @@ export function CallIngestion({ onUploadComplete }: CallIngestionProps) {
           </div>
 
           <Typography variant="h4" className="font-semibold text-slate-900 mb-2">
-            {isUploading ? "Uploading..." : "Drag & Drop Recording"}
+            {isAnalyzing ? "Uploading..." : "Drag & Drop Recording"}
           </Typography>
           
           <Typography variant="body" className="text-slate-400 mb-8 max-w-xs mx-auto">
@@ -112,7 +111,7 @@ export function CallIngestion({ onUploadComplete }: CallIngestionProps) {
           <Button 
             variant="primary" 
             onClick={() => document.getElementById('file-upload')?.click()}
-            disabled={isUploading}
+            disabled={isAnalyzing}
           >
             Select File
           </Button>
