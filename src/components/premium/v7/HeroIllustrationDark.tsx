@@ -11,8 +11,8 @@ import {
   Cloud 
 } from 'lucide-react';
 
-// Use the globe asset provided by the user
-import globeImage from "figma:asset/f851eb49d9488a7fdcf4d178b6c2fbc8c2789f60.png";
+// Use the correct globe asset provided by the user
+import globeImage from "figma:asset/3fe5efdbb1ca08a49fe60ad32328c8af6e37c23e.png";
 
 export function HeroIllustrationDark() {
   const shouldReduceMotion = useReducedMotion();
