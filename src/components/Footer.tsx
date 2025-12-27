@@ -218,6 +218,11 @@ export function Footer() {
                 </h4>
                 <ul className="space-y-3">
                   <li>
+                    <Link to="/dashboard" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                      Client Dashboard
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/app/leads" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
                       Lead CRM
                     </Link>
