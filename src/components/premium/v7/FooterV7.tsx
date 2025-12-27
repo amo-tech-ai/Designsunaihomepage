@@ -61,6 +61,7 @@ export function FooterV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersionCha
                 <li><button onClick={() => handleNav('chatbot-real-estate')} className="hover:text-orange-500 transition-colors text-left">Real Estate</button></li>
                 <li><button onClick={() => handleNav('chatbot-b2b')} className="hover:text-orange-500 transition-colors text-left">B2B Services</button></li>
                 <li><button onClick={() => handleNav('chatbot-automotive')} className="hover:text-orange-500 transition-colors text-left">Automotive</button></li>
+                <li><button onClick={() => handleNav('chatbot-tourism')} className="hover:text-orange-500 transition-colors text-left">Tourism</button></li>
              </ul>
           </div>
 
