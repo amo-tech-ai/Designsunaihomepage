@@ -9,7 +9,7 @@
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         'react-hook-form@7.55.0': 'react-hook-form',
-        'figma:asset/f851eb49d9488a7fdcf4d178b6c2fbc8c2789f60.png': path.resolve(__dirname, './src/assets/f851eb49d9488a7fdcf4d178b6c2fbc8c2789f60.png'),
+        'figma:asset/bebfc543b5a4a848cfc04477ed1e523d0d7443a1.png': path.resolve(__dirname, './src/assets/bebfc543b5a4a848cfc04477ed1e523d0d7443a1.png'),
         'figma:asset/3fe5efdbb1ca08a49fe60ad32328c8af6e37c23e.png': path.resolve(__dirname, './src/assets/3fe5efdbb1ca08a49fe60ad32328c8af6e37c23e.png'),
         '@': path.resolve(__dirname, './src'),
       },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, MessageSquare, Zap, Shield, Globe2, Layers } from 'lucide-react';
-import { HeroIllustrationDark } from './HeroIllustrationDark';
+import { HeroGlobeIllustrationV7 } from './HeroGlobeIllustrationV7';
 import { Button } from '../../ui/design-system/Button';
 import { Badge } from '../../ui/design-system/Badge';
 
@@ -44,12 +44,12 @@ export function HeroV7({ onStartProject, onTalkToExpert }: HeroV7Props) {
   };
 
   return (
-    <section className="relative min-h-[90vh] lg:min-h-screen bg-slate-900 overflow-hidden pt-24 pb-16 md:pt-32 lg:pt-0 lg:pb-0 flex items-center">
+    <section className="relative min-h-[90vh] lg:min-h-screen bg-slate-50 overflow-hidden pt-24 pb-16 md:pt-32 lg:pt-0 lg:pb-0 flex items-center">
       
       {/* Background Decor (Subtle gradient mesh) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-[100px] opacity-40 will-change-transform" />
-        <div className="absolute top-[40%] -left-[10%] w-[600px] h-[600px] bg-gradient-to-tr from-indigo-500/10 to-transparent rounded-full blur-[100px] opacity-30 will-change-transform" />
+        <div className="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] bg-gradient-to-br from-orange-500/5 to-transparent rounded-full blur-[100px] opacity-50 will-change-transform" />
+        <div className="absolute top-[40%] -left-[10%] w-[600px] h-[600px] bg-gradient-to-tr from-indigo-500/5 to-transparent rounded-full blur-[100px] opacity-40 will-change-transform" />
       </div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
@@ -70,12 +70,12 @@ export function HeroV7({ onStartProject, onTalkToExpert }: HeroV7Props) {
               </Badge>
             </motion.div>
 
-            <motion.h1 variants={itemVariants} className="font-heading text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white mb-6 lg:mb-8 leading-[1.1]">
+            <motion.h1 variants={itemVariants} className="font-heading text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6 lg:mb-8 leading-[1.1]">
               AI Systems. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Designed to Convert.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">Designed to Convert.</span>
             </motion.h1>
             
-            <motion.p variants={itemVariants} className="font-body text-lg lg:text-xl text-slate-400 mb-8 lg:mb-10 leading-relaxed font-medium max-w-lg opacity-90">
+            <motion.p variants={itemVariants} className="font-body text-lg lg:text-xl text-slate-600 mb-8 lg:mb-10 leading-relaxed font-medium max-w-lg">
               We design and deploy intelligent AI products, automations, and agents that grow revenue.
             </motion.p>
 
@@ -93,7 +93,7 @@ export function HeroV7({ onStartProject, onTalkToExpert }: HeroV7Props) {
                 onClick={onTalkToExpert}
                 variant="outline"
                 size="md"
-                className="w-full sm:w-auto min-w-[180px] border-slate-700 text-white hover:border-[#FF6A3D] hover:bg-white/5"
+                className="w-full sm:w-auto min-w-[180px] border-slate-300 text-slate-900 hover:border-[#FF6A3D] hover:bg-orange-50"
                 leftIcon={<MessageSquare className="w-4 h-4" />}
               >
                 Talk to an Expert
@@ -101,30 +101,30 @@ export function HeroV7({ onStartProject, onTalkToExpert }: HeroV7Props) {
             </motion.div>
 
             {/* Trusted By - Hidden on Mobile */}
-            <motion.div variants={itemVariants} className="hidden lg:block pt-8 border-t border-white/10 w-full">
+            <motion.div variants={itemVariants} className="hidden lg:block pt-8 border-t border-slate-200 w-full">
                <p className="text-xs font-semibold text-slate-500 mb-6 uppercase tracking-widest text-left">Trusted by innovative teams</p>
-               <div className="flex flex-wrap gap-8 opacity-40 hover:opacity-100 transition-all duration-500">
+               <div className="flex flex-wrap gap-8 opacity-50 hover:opacity-100 transition-all duration-500">
                  <div className="flex items-center gap-2 group cursor-default">
-                   <Zap className="w-5 h-5 text-white" />
-                   <span className="font-bold text-white text-lg tracking-tight">Vortex</span>
+                   <Zap className="w-5 h-5 text-slate-700" />
+                   <span className="font-bold text-slate-900 text-lg tracking-tight">Vortex</span>
                  </div>
                  <div className="flex items-center gap-2 group cursor-default">
-                   <Shield className="w-5 h-5 text-white" />
-                   <span className="font-bold text-white text-lg tracking-tight">Guardian</span>
+                   <Shield className="w-5 h-5 text-slate-700" />
+                   <span className="font-bold text-slate-900 text-lg tracking-tight">Guardian</span>
                  </div>
                  <div className="flex items-center gap-2 group cursor-default">
-                   <Globe2 className="w-5 h-5 text-white" />
-                   <span className="font-bold text-white text-lg tracking-tight">Orbit</span>
+                   <Globe2 className="w-5 h-5 text-slate-700" />
+                   <span className="font-bold text-slate-900 text-lg tracking-tight">Orbit</span>
                  </div>
                  <div className="flex items-center gap-2 group hidden sm:flex cursor-default">
-                   <Layers className="w-5 h-5 text-white" />
-                   <span className="font-bold text-white text-lg tracking-tight">Stack</span>
+                   <Layers className="w-5 h-5 text-slate-700" />
+                   <span className="font-bold text-slate-900 text-lg tracking-tight">Stack</span>
                  </div>
                </div>
             </motion.div>
           </motion.div>
 
-          {/* Right Side: Premium AI Globe Illustration (Dark Mode) */}
+          {/* Right Side: Premium AI Globe Illustration */}
           <motion.div 
             variants={globeVariants}
             initial="hidden"
@@ -133,7 +133,7 @@ export function HeroV7({ onStartProject, onTalkToExpert }: HeroV7Props) {
           >
              {/* Mobile: Centered, Simplified. Desktop: Right aligned, Larger */}
              <div className="scale-[0.8] sm:scale-100 lg:scale-[1.1] origin-center lg:origin-right">
-               <HeroIllustrationDark />
+               <HeroGlobeIllustrationV7 theme="light" />
              </div>
           </motion.div>
 
