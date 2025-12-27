@@ -471,6 +471,119 @@ function ChatbotUseCases() {
   );
 }
 
+// --- Section 5.5: Industry Solutions ---
+
+function IndustryChatbots({ onNavigate }: { onNavigate?: (path: string) => void }) {
+  const industries = [
+    { 
+      title: "SaaS Chatbots",
+      path: "/services/chatbot/saas",
+      desc: "Onboarding, support deflection, Intercom integration",
+      icon: Sparkles,
+      stat: "60% deflection"
+    },
+    { 
+      title: "E-commerce Chatbots",
+      path: "/services/chatbot/ecommerce",
+      desc: "Product recommendations, cart recovery, Shopify integration",
+      icon: ShoppingBag,
+      stat: "$12k/mo saved"
+    },
+    { 
+      title: "Healthcare Chatbots",
+      path: "/services/chatbot/healthcare",
+      desc: "Appointment scheduling, symptom pre-screening, HIPAA compliance",
+      icon: Shield,
+      stat: "80% auto-booking"
+    },
+    { 
+      title: "Real Estate Chatbots",
+      path: "/services/chatbot/real-estate",
+      desc: "Property search, showing scheduling, lead qualification",
+      icon: HelpCircle,
+      stat: "70% qualification"
+    },
+    { 
+      title: "B2B Chatbots",
+      path: "/services/chatbot/b2b",
+      desc: "Enterprise lead qualification, BANT scoring, CRM sync",
+      icon: Users,
+      stat: "3x qualified leads"
+    },
+    { 
+      title: "Automotive Chatbots",
+      path: "/services/chatbot/automotive",
+      desc: "Test drive booking, inventory search, financing FAQs",
+      icon: Calendar,
+      stat: "30% increase"
+    },
+    { 
+      title: "Tourism Chatbots",
+      path: "/services/chatbot/tourism",
+      desc: "Hotel/tour booking, multi-language, itinerary planning",
+      icon: MessageSquare,
+      stat: "25% direct bookings"
+    }
+  ];
+
+  return (
+    <Section className="bg-white border-y border-slate-200">
+      <Container>
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[#FF6A3D] text-xs font-bold uppercase tracking-wide mb-6">
+            <Sparkles className="w-3 h-3" />
+            Industry Solutions
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+            Chatbots Built for Your Industry
+          </h2>
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+            Pre-configured solutions with industry-specific features, integrations, and workflows.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {industries.map((industry, i) => (
+            <motion.a
+              key={i}
+              href={industry.path}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate?.(industry.path);
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="group relative bg-slate-50 border border-slate-200 rounded-2xl p-6 hover:border-[#FF6A3D] hover:shadow-xl transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 bg-white rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 group-hover:text-[#FF6A3D] group-hover:border-[#FF6A3D] transition-all">
+                  <industry.icon className="w-6 h-6" />
+                </div>
+                <div className="px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-bold text-[#FF6A3D]">
+                  {industry.stat}
+                </div>
+              </div>
+              
+              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-[#FF6A3D] transition-colors">
+                {industry.title}
+              </h3>
+              <p className="text-slate-500 text-sm mb-4 leading-relaxed">
+                {industry.desc}
+              </p>
+              
+              <div className="flex items-center gap-2 text-sm font-medium text-[#FF6A3D] group-hover:gap-3 transition-all">
+                Learn More <ArrowRight className="w-4 h-4" />
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 // --- Section 6: Demo Flows ---
 
 function ChatbotDemos() {
@@ -630,6 +743,7 @@ export function AIChatbotsPageV7({ onNavigateToWhatsApp, onNavigateToAbout, onVe
       <ChatbotWorkflow />
       <ChatbotFeatures />
       <ChatbotUseCases />
+      <IndustryChatbots onNavigate={onVersionChange} />
       <ChatbotDemos />
       <ChatbotMetrics />
       <ChatbotFinalCTA onNavigateToWizard={handleWizard} onNavigateToContact={handleContact} />

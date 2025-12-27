@@ -31,13 +31,7 @@ export function HomeV1({ onNavigateToWizard, onNavigateToDashboard, onNavigateTo
       <Pricing />
       <BriefGenerator />
       <FinalCTA onNavigateToWizard={onNavigateToWizard} />
-      <Footer 
-        onNavigateToWizard={onNavigateToWizard} 
-        onNavigateToDashboard={onNavigateToDashboard}
-        onNavigateToWhatsApp={onNavigateToWhatsApp}
-        onNavigateToAbout={onNavigateToAbout}
-        onVersionChange={onVersionChange}
-      />
+      <Footer />
     </div>
   );
 }

@@ -43,13 +43,13 @@ function AppRoutes() {
   // Map URL path to version for SideMenu
   const getCurrentVersion = () => {
     const path = location.pathname;
-    if (path === '/' || path === '/v7') return 'v7';
+    if (path === '/' || path === '/v6') return 'v6'; // V6 is now default
     if (path === '/v1') return 'v1';
     if (path === '/v2') return 'v2';
     if (path === '/v3') return 'v3';
     if (path === '/v4') return 'v4';
     if (path === '/v5') return 'v5';
-    if (path === '/v6') return 'v6';
+    if (path === '/v7') return 'v7'; // V7 moved to archive
     if (path === '/wizard') return 'wizard';
     if (path === '/processing') return 'processing';
     if (path === '/proposal') return 'proposal';
@@ -60,7 +60,7 @@ function AppRoutes() {
     if (path === '/style-guide') return 'style-guide';
     if (path === '/sitemap') return 'sitemap';
     if (path === '/booking') return 'booking';
-    return 'v7'; // default
+    return 'v6'; // default to V6
   };
   
   return (

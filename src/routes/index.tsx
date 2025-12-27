@@ -46,17 +46,20 @@ const SettingsPage = lazy(() => import('../components/crm/SettingsPage').then(m 
 const AutomationMapPage = lazy(() => import('../components/ops/AutomationMapPage').then(m => ({ default: m.AutomationMapPage })));
 const AgentControlRoom = lazy(() => import('../components/ops/AgentControlRoom').then(m => ({ default: m.AgentControlRoom })));
 const CallBrief = lazy(() => import('../components/crm/intelligence/CallBrief').then(m => ({ default: m.CallBrief })));
+const PrivacyPage = lazy(() => import('../components/legal/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const TermsPage = lazy(() => import('../components/legal/TermsPage').then(m => ({ default: m.TermsPage })));
 const NotFound = lazy(() => import('../components/NotFound'));
 
 export const routes: RouteObject[] = [
   // Public Routes - Marketing
-  { path: '/', element: <HomePageV7Wrapper /> },
+  { path: '/', element: <HomePageV6Wrapper /> }, // V6 is now default homepage
   { path: '/v1', element: <HomeV1Wrapper /> },
   { path: '/v2', element: <HomeV2Wrapper /> },
   { path: '/v3', element: <HomeV3Wrapper /> },
   { path: '/v4', element: <HomePageV4Wrapper /> },
   { path: '/v5', element: <HomePageV5Wrapper /> },
-  { path: '/v6', element: <HomePageV6Wrapper /> },
+  { path: '/v6', element: <HomePageV6Wrapper /> }, // Same as / for consistency
+  { path: '/v7', element: <HomePageV7Wrapper /> }, // V7 moved to archive
   { path: '/projects', element: <ProjectsPageV7Wrapper /> },
   { path: '/process', element: <ProcessPageV2Wrapper /> },
   { path: '/services', element: <ServicesPageV2Wrapper /> },
@@ -81,6 +84,8 @@ export const routes: RouteObject[] = [
   { path: '/docs/startup-ai', element: <StartupAIArchitecturePageWrapper /> },
   { path: '/share/investor', element: <InvestorSharePageWrapper /> },
   { path: '/events', element: <EventHubPageWrapper /> },
+  { path: '/privacy', element: <PrivacyPage /> },
+  { path: '/terms', element: <TermsPage /> },
   
   // Wizard Flow
   { path: '/wizard', element: <BriefWizardWrapper /> },

@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight, MessageSquare } from 'lucide-react';
-import { HeroGlobeIllustrationV7 } from './HeroGlobeIllustrationV7';
+import { HeroGlobeIllustrationV6 } from './HeroGlobeIllustrationV6';
 
 export function HeroV6() {
   return (
@@ -76,7 +76,7 @@ export function HeroV6() {
           >
              {/* Scale down slightly on mobile to fit */}
              <div className="scale-[0.8] sm:scale-100 lg:scale-[1.1] origin-center lg:origin-right">
-               <HeroGlobeIllustrationV7 />
+               <HeroGlobeIllustrationV6 />
              </div>
           </motion.div>
 

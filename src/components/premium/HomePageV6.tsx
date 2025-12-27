@@ -9,7 +9,7 @@ import { TimelineV6 } from './v6/TimelineV6';
 import { PricingV6 } from './v6/PricingV6';
 import { ProjectBriefV6 } from './v6/ProjectBriefV6';
 import { FinalCTAV6 } from './v6/FinalCTAV6';
-import { FooterV6 } from './v6/FooterV6';
+import { Footer } from '../Footer';
 
 interface HomePageV6Props {
   onNavigateToWhatsApp?: () => void;
@@ -31,7 +31,7 @@ export function HomePageV6({ onNavigateToWhatsApp, onNavigateToAbout, onVersionC
       <PricingV6 />
       <ProjectBriefV6 />
       <FinalCTAV6 />
-      <FooterV6 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
+      <Footer />
     </main>
   );
 }

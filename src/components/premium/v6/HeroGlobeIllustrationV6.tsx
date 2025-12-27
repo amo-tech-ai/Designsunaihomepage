@@ -9,6 +9,7 @@ import {
   MessageSquareText, 
   Cloud 
 } from 'lucide-react';
+import globeImage from "figma:asset/55bb65b8f1d5ae1e85b49eafd1f5e6b1e2d6dc6e.png";
 
 export function HeroGlobeIllustrationV6() {
   const icons = [
@@ -30,18 +31,25 @@ export function HeroGlobeIllustrationV6() {
 
       <svg className="w-full h-full max-w-[800px] overflow-visible" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          {/* 3D Sphere Gradient */}
-          <radialGradient id="sphereGradient" cx="0.3" cy="0.3" r="0.8">
-            <stop offset="0%" stopColor="#0EA5E9" stopOpacity="0.8" />
-            <stop offset="40%" stopColor="#00334F" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#00111F" stopOpacity="1" />
+          {/* Radial Mask for Globe - Soft Fade */}
+          <radialGradient id="globeMask" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="70%" stopColor="white" stopOpacity="1" />
+            <stop offset="90%" stopColor="white" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
           </radialGradient>
-          
-          {/* Soft Glow for Rings */}
-          <radialGradient id="ringGlow" cx="0.5" cy="0.5" r="0.5">
-            <stop offset="80%" stopColor="#FF6B2C" stopOpacity="0" />
-            <stop offset="100%" stopColor="#FF6B2C" stopOpacity="0.15" />
+
+          {/* Soft Glow matching hero background */}
+          <radialGradient id="heroGlow" cx="0.5" cy="0.5" r="0.6">
+            <stop offset="0%" stopColor="#FDFDFD" stopOpacity="0" />
+            <stop offset="50%" stopColor="#E0F2FE" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="#FDFDFD" stopOpacity="0.1" />
           </radialGradient>
+
+          {/* Mask definition */}
+          <mask id="globeFadeMask">
+            <circle cx="0" cy="0" r="190" fill="url(#globeMask)" />
+          </mask>
 
           {/* Icon Card Shadow */}
           <filter id="cardShadow" x="-50%" y="-50%" width="200%" height="200%">
@@ -60,7 +68,7 @@ export function HeroGlobeIllustrationV6() {
             transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
           />
           
-          {/* Middle Tech Ring (Solid + Gradient) */}
+          {/* Middle Tech Ring (Solid) */}
           <motion.circle 
             r="220" 
             stroke="#00334F" strokeWidth="1.5" strokeOpacity="0.1"
@@ -93,36 +101,50 @@ export function HeroGlobeIllustrationV6() {
             })}
           </g>
 
-          {/* Central Globe Core */}
-          <g className="filter drop-shadow-2xl">
-            {/* Outer Glow Halo */}
+          {/* Central Globe - Transparent PNG with Perfect Blending */}
+          <g>
+            {/* STEP 1: Solid background circle matching hero - renders FIRST (behind everything) */}
+            <circle 
+              r="190" 
+              fill="#FDFDFD"
+            />
+
+            {/* Soft background glow matching hero */}
             <motion.circle 
-              r="90" 
-              fill="#0EA5E9" fillOpacity="0.1"
-              animate={{ r: [90, 100, 90], opacity: [0.1, 0.2, 0.1] }}
+              r="190" 
+              fill="url(#heroGlow)"
+              animate={{ r: [185, 195, 185], opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            {/* Outer animated halo */}
+            <motion.circle 
+              r="165" 
+              fill="#0EA5E9" fillOpacity="0.08"
+              animate={{ r: [160, 170, 160], opacity: [0.05, 0.12, 0.05] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             />
             
-            {/* The 3D Sphere */}
-            <circle r="80" fill="url(#sphereGradient)" />
-            
-            {/* Surface Details (Simulating Latitude/Longitude) */}
-            <g opacity="0.3" stroke="white" strokeWidth="0.5" fill="none">
-              <ellipse cx="0" cy="0" rx="80" ry="20" transform="rotate(20)" />
-              <ellipse cx="0" cy="0" rx="80" ry="40" transform="rotate(-10)" />
-              <ellipse cx="0" cy="0" rx="30" ry="80" transform="rotate(15)" />
-            </g>
-
-            {/* Core Label */}
-            <text 
-              y="5" 
-              textAnchor="middle" 
-              fill="white" 
-              className="text-3xl font-bold tracking-widest font-sans drop-shadow-md"
-              style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}
-            >
-              AI
-            </text>
+            {/* STEP 2: Globe Image - Transparent PNG, 300x300px, seamless blending */}
+            <motion.image
+              href={globeImage}
+              x="-150"
+              y="-150"
+              width="300"
+              height="300"
+              mask="url(#globeFadeMask)"
+              animate={{ 
+                scale: [1, 1.015, 1],
+              }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              style={{
+                filter: 'drop-shadow(0 0 40px rgba(14, 165, 233, 0.15))'
+              }}
+            />
           </g>
 
         </g>
