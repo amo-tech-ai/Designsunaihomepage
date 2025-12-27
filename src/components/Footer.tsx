@@ -13,7 +13,7 @@ export function Footer() {
     <footer className="bg-gradient-to-br from-[#0A1F2E] to-[#0F2A3D] border-t border-white/10">
       <div className="max-w-[1400px] mx-auto px-10 py-20">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-16">
           
           {/* Column 1: Brand & Social */}
           <div className="lg:col-span-1">
@@ -281,6 +281,35 @@ export function Footer() {
               <li>
                 <Link to="/sitemap" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
                   Help Center
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 6: Wizards */}
+          <div>
+            <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
+              Wizards
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/wizard" className="text-orange-500 font-medium hover:text-orange-400 hover:pl-1 transition-all text-[15px] block">
+                  Brief Wizard →
+                </Link>
+              </li>
+              <li>
+                <Link to="/processing" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  AI Processing
+                </Link>
+              </li>
+              <li>
+                <Link to="/proposal" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Proposal Ready
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Login
                 </Link>
               </li>
             </ul>
