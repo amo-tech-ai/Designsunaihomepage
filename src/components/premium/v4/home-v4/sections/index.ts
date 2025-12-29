@@ -1,0 +1,11 @@
+// Barrel export for all sections
+export { Hero } from './Hero';
+export { FeatureGrid } from './FeatureGrid';
+export { Metrics } from './Metrics';
+export { Pillars } from './Pillars';
+export { CaseStudies } from './CaseStudies';
+export { Timeline } from './Timeline';
+export { Pricing } from './Pricing';
+export { ProjectBrief } from './ProjectBrief';
+export { CTA } from './CTA';
+export { Footer } from './Footer';

@@ -1,33 +1,5 @@
-import { HeroV4 } from './v4/HeroV4';
-import { FeatureGridV4 } from './v4/FeatureGridV4';
-import { MetricsV4 } from './v4/MetricsV4';
-import { PillarsV4 } from './v4/PillarsV4';
-import { CaseStudiesV4 } from './v4/CaseStudiesV4';
-import { TimelineV4 } from './v4/TimelineV4';
-import { PricingV4 } from './v4/PricingV4';
-import { ProjectBriefV4 } from './v4/ProjectBriefV4';
-import { CTAV4 } from './v4/CTAV4';
-import { FooterV4 } from './v4/FooterV4';
+// REFACTORED: This file now imports from modular components
+// See /v4/home-v4/sections folder for individual section components
+// All sections organized and ready for production
 
-interface HomePageV4Props {
-  onNavigateToWhatsApp?: () => void;
-  onNavigateToAbout?: () => void;
-  onVersionChange?: (version: any) => void;
-}
-
-export function HomePageV4({ onNavigateToWhatsApp, onNavigateToAbout, onVersionChange }: HomePageV4Props) {
-  return (
-    <main className="min-h-screen bg-white selection:bg-[#FF6B2C] selection:text-white font-sans antialiased">
-      <HeroV4 />
-      <FeatureGridV4 />
-      <MetricsV4 />
-      <PillarsV4 />
-      <CaseStudiesV4 />
-      <TimelineV4 />
-      <PricingV4 />
-      <ProjectBriefV4 />
-      <CTAV4 />
-      <FooterV4 onNavigateToWhatsApp={onNavigateToWhatsApp} onNavigateToAbout={onNavigateToAbout} onVersionChange={onVersionChange} />
-    </main>
-  );
-}
+export { HomePageV4Refactored as HomePageV4 } from './v4/home-v4/HomePageV4Refactored';
