@@ -146,6 +146,8 @@
 | `16-booking.md` | Booking & scheduling page | 395 | ✅ Complete |
 | `17-about.md` | About/team page | 390 | ✅ Complete |
 | `18-home.md` | Home page v6 (primary landing) | 398 | ✅ Complete |
+| `19-home-v8.md` | Home page v8 "Sun AI Lux Edition" | 397 | ✅ Complete |
+| `20-version-menu.md` | Version menu & footer link verification | 210 | ✅ Complete |
 
 ---
 
