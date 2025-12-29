@@ -1,18 +1,22 @@
 # 00. Website Pages Summary
 
 **Complete sitemap for Luxury AI CRM website**  
-**Total Pages:** 17  
+**Total Pages:** 21  
 **Last Updated:** Dec 27, 2025
 
 ---
 
-## Main Pages (3)
+## Main Pages (7)
 
 | # | Page | Route | Purpose | Key Features | Content Type |
 |---|------|-------|---------|--------------|--------------|
-| 1 | **Home** | `/` | Primary landing, value prop | Hero, services overview, testimonials, CTA | Marketing |
-| 2 | **About** | `/about` | Company story, team, mission | Team bios, company values, timeline | Informational |
+| 1 | **Home** | `/` | Primary landing, value prop | Hero, services grid, process, projects, testimonials, stats, FAQ | Marketing |
+| 2 | **About** | `/about` | Company story, team, mission | Team bios, company values, timeline, stats | Informational |
 | 3 | **Contact** | `/contact` | Lead capture, inquiry form | Contact form, calendar booking, live chat | Conversion |
+| 4 | **Process** | `/process` | Development methodology | 7-phase model, deliverables, client involvement | Educational |
+| 5 | **Projects** | `/projects` | Portfolio & case studies | 12 projects, filterable grid, detail modals, metrics | Social Proof |
+| 6 | **Booking** | `/booking` | Schedule consultation | Calendar integration, brief wizard, confirmation | Conversion |
+| 7 | **Resources** | `/resources` | Blog, guides, tools (future) | Educational content, downloads | Content Hub |
 
 ---
 
@@ -20,12 +24,12 @@
 
 | # | Page | Route | Purpose | Key Features | Content Type |
 |---|------|-------|---------|--------------|--------------|
-| 4 | **AI Web Development** | `/services/ai-web-dev` | Full-stack React/Next.js + AI | Tech stack, 3 pricing tiers, case studies, FAQ | Service Detail |
-| 5 | **AI Development** | `/services/ai-development` | Custom AI integration & ML | 8 AI capabilities, model comparison, ROI calculator | Service Detail |
-| 6 | **AI Agents** | `/services/ai-agents` | Multi-agent autonomous systems | 6 agent types, workflow diagram, architecture | Service Detail |
-| 7 | **AI Chatbots** | `/services/ai-chatbots` | Multi-channel chatbot (web/WhatsApp/SMS) | 4 channels, live demo, customization options | Service Detail |
-| 8 | **AI MVP** | `/services/ai-mvp` | 8-week rapid MVP development | Timeline visualization, scope builder, checklist | Service Detail |
-| 9 | **Sales & Marketing AI** | `/services/ai-sales-marketing` | Sales funnel automation | 6 workflows, before/after comparison, ROI calc | Service Detail |
+| 8 | **AI Web Development** | `/services/ai-web-dev` | Full-stack React/Next.js + AI | Tech stack, 3 pricing tiers, case studies, FAQ | Service Detail |
+| 9 | **AI Development** | `/services/ai-development` | Custom AI integration & ML | 8 AI capabilities, model comparison, ROI calculator | Service Detail |
+| 10 | **AI Agents** | `/services/ai-agents` | Multi-agent autonomous systems | 6 agent types, workflow diagram, architecture | Service Detail |
+| 11 | **AI Chatbots** | `/services/ai-chatbots` | Multi-channel chatbot (web/WhatsApp/SMS) | 4 channels, live demo, customization options | Service Detail |
+| 12 | **AI MVP** | `/services/ai-mvp` | 8-week rapid MVP development | Timeline visualization, scope builder, checklist | Service Detail |
+| 13 | **Sales & Marketing AI** | `/services/ai-sales-marketing` | Sales funnel automation | 6 workflows, before/after comparison, ROI calc | Service Detail |
 
 ---
 
@@ -33,13 +37,13 @@
 
 | # | Industry | Route | Purpose | Key Features | Content Type |
 |---|----------|-------|---------|--------------|--------------|
-| 10 | **SaaS** | `/services/chatbot/saas` | Onboarding & churn prevention | User activation (68%), support automation, upgrade prompts | Industry Vertical |
-| 11 | **E-Commerce** | `/services/chatbot/ecommerce` | Shopping assistant & cart recovery | Product finder, 40% cart recovery, 32% AOV increase | Industry Vertical |
-| 12 | **Healthcare** | `/services/chatbot/healthcare` | HIPAA-compliant patient care | Appointment scheduling, symptom triage, prescription refills | Industry Vertical |
-| 13 | **Real Estate** | `/services/chatbot/real-estate` | Lead qualification & showings | BANT scoring, showing scheduler, MLS integration | Industry Vertical |
-| 14 | **B2B** | `/services/chatbot/b2b` | Lead qualification & demo booking | BANT framework, 4.2x meetings, pipeline calculator | Industry Vertical |
-| 15 | **Automotive** | `/services/chatbot/automotive` | Vehicle sales & service booking | Test drive scheduler, trade-in valuation, DMS integration | Industry Vertical |
-| 16 | **Tourism** | `/services/chatbot/tourism` | Travel planning & tour booking | 95+ languages, itinerary builder, destination recommender | Industry Vertical |
+| 14 | **SaaS** | `/services/chatbot/saas` | Onboarding & churn prevention | User activation (68%), support automation, upgrade prompts | Industry Vertical |
+| 15 | **E-Commerce** | `/services/chatbot/ecommerce` | Shopping assistant & cart recovery | Product finder, 40% cart recovery, 32% AOV increase | Industry Vertical |
+| 16 | **Healthcare** | `/services/chatbot/healthcare` | HIPAA-compliant patient care | Appointment scheduling, symptom triage, prescription refills | Industry Vertical |
+| 17 | **Real Estate** | `/services/chatbot/real-estate` | Lead qualification & showings | BANT scoring, showing scheduler, MLS integration | Industry Vertical |
+| 18 | **B2B** | `/services/chatbot/b2b` | Lead qualification & demo booking | BANT framework, 4.2x meetings, pipeline calculator | Industry Vertical |
+| 19 | **Automotive** | `/services/chatbot/automotive` | Vehicle sales & service booking | Test drive scheduler, trade-in valuation, DMS integration | Industry Vertical |
+| 20 | **Tourism** | `/services/chatbot/tourism` | Travel planning & tour booking | 95+ languages, itinerary builder, destination recommender | Industry Vertical |
 
 ---
 
@@ -123,7 +127,7 @@
 
 | File | Description | Lines | Status |
 |------|-------------|-------|--------|
-| `00-summary.md` | This file - complete sitemap | 250 | ✅ Current |
+| `00-summary.md` | This file - complete sitemap | 280 | ✅ Current |
 | `01-ai-web-dev.md` | AI Web Development service page | 380 | ✅ Complete |
 | `02-ai-development.md` | AI Development & Integration | 460 | ✅ Complete |
 | `03-ai-agents.md` | Multi-Agent Systems | 490 | ✅ Complete |
@@ -137,6 +141,11 @@
 | `11-chatbot-b2b.md` | B2B chatbot | 240 | ✅ Complete |
 | `12-chatbot-automotive.md` | Automotive chatbot | 330 | ✅ Complete |
 | `13-chatbot-tourism.md` | Tourism chatbot | 395 | ✅ Complete |
+| `14-process.md` | Development process page | 395 | ✅ Complete |
+| `15-projects.md` | Portfolio/case studies page | 390 | ✅ Complete |
+| `16-booking.md` | Booking & scheduling page | 395 | ✅ Complete |
+| `17-about.md` | About/team page | 390 | ✅ Complete |
+| `18-home.md` | Home page v6 (primary landing) | 398 | ✅ Complete |
 
 ---
 
@@ -144,7 +153,10 @@
 
 ### Phase 1: Core Pages
 - [ ] Home page (hero, services, testimonials)
-- [ ] About page (team, mission, values)
+- [ ] About page (`/about`) — Team, mission, values
+- [ ] Process page (`/process`) — 7-phase methodology
+- [ ] Projects page (`/projects`) — Portfolio showcase
+- [ ] Booking page (`/booking`) — Calendar scheduling
 - [ ] Contact page (form, calendar, chat)
 
 ### Phase 2: Service Pages
@@ -256,6 +268,6 @@ Contact
 
 ---
 
-**Total Documentation:** 14 files, 5,996 lines  
+**Total Documentation:** 18 files, 6,396 lines  
 **Ready for Implementation:** ✅  
 **Last Updated:** Dec 27, 2025
