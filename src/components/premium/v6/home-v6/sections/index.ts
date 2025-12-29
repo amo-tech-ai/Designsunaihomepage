@@ -1,0 +1,12 @@
+// Barrel export for all sections
+export { Hero } from './Hero';
+export { TrustedBy } from './TrustedBy';
+export { HowItWorks } from './HowItWorks';
+export { ServicesGrid } from './ServicesGrid';
+export { Transformation } from './Transformation';
+export { Results } from './Results';
+export { Pillars } from './Pillars';
+export { Timeline } from './Timeline';
+export { Pricing } from './Pricing';
+export { ProjectBrief } from './ProjectBrief';
+export { FinalCTA } from './FinalCTA';
