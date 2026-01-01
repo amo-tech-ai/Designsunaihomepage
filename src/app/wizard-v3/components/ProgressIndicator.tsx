@@ -9,7 +9,8 @@ export default function ProgressIndicator({ currentScreen, totalScreens }: Progr
   const screens = [
     { number: 1, label: 'Basics' },
     { number: 2, label: 'Build Type' },
-    { number: 3, label: 'Goals' },
+    { number: 3, label: 'AI Capabilities' },
+    { number: 4, label: 'Summary' },
   ];
 
   const progress = (currentScreen / totalScreens) * 100;

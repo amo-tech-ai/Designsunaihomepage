@@ -29,6 +29,7 @@ function AppRoutes() {
   // Define pages where chatbot should be hidden
   const hideChatbotPages = [
     '/wizard',
+    '/wizard-v3',
     '/processing', 
     '/proposal',
     '/dashboard',

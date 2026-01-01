@@ -57,6 +57,7 @@ const ProjectsPage = lazy(() => import('../app/dashboard-v2/projects/page'));
 const TasksPage = lazy(() => import('../app/dashboard-v2/tasks/page'));
 const AutomationsPage = lazy(() => import('../app/dashboard-v2/automations/page'));
 const SettingsPageV2 = lazy(() => import('../app/dashboard-v2/settings/page'));
+const WizardV3 = lazy(() => import('../app/wizard-v3/page'));
 
 export const routes: RouteObject[] = [
   // Public Routes - Marketing
@@ -111,6 +112,7 @@ export const routes: RouteObject[] = [
   { path: '/dashboard-v2/tasks', element: <TasksPage /> },
   { path: '/dashboard-v2/automations', element: <AutomationsPage /> },
   { path: '/dashboard-v2/settings', element: <SettingsPageV2 /> },
+  { path: '/wizard-v3', element: <WizardV3 /> },
   
   // Auth
   { path: '/login', element: <LoginPageWrapper /> },

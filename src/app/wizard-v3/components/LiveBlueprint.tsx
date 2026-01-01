@@ -1,6 +1,6 @@
 'use client';
 
-import { Layers, Sparkles } from 'lucide-react';
+import { Layers, Sparkles, Brain, Zap, Database, Image, Video, FileText } from 'lucide-react';
 
 interface LiveBlueprintProps {
   screen: number;
@@ -9,7 +9,9 @@ interface LiveBlueprintProps {
     buildTypes?: string[];
     industry?: string;
     projectDescription?: string;
-    goals?: string[];
+    aiServices?: string[];
+    generativeAI?: string[];
+    businessOutcomes?: string[];
   };
 }
 
@@ -100,23 +102,86 @@ export default function LiveBlueprint({ screen, data }: LiveBlueprintProps) {
     };
   };
 
-  const getPrimaryFocus = () => {
-    if (!data.goals || data.goals.length === 0) return null;
+  // NEW: Get AI Agent Layer based on Screen 3 selections
+  const getAIAgentLayer = () => {
+    if (!data.aiServices || data.aiServices.length === 0) return null;
 
-    if (data.goals.includes('Save time through automation')) {
+    const agents = [];
+    if (data.aiServices.includes('planning')) agents.push('Planning Agent');
+    if (data.aiServices.includes('agents')) agents.push('Task Execution Agent');
+    if (data.aiServices.includes('automation')) agents.push('Automation Agent');
+    if (data.aiServices.includes('intelligence')) agents.push('Analysis Agent');
+
+    if (agents.length === 0) return null;
+
+    return {
+      label: 'AI Agent Layer',
+      agents: agents,
+      description: agents.length > 0 ? agents.join(', ') : null,
+    };
+  };
+
+  // NEW: Get Intelligence & Reasoning
+  const getIntelligenceReasoning = () => {
+    if (!data.aiServices || data.aiServices.length === 0) return null;
+
+    const capabilities = [];
+    if (data.aiServices.includes('planning')) capabilities.push('Strategic planning');
+    if (data.aiServices.includes('agents')) capabilities.push('Task coordination');
+    if (data.aiServices.includes('intelligence')) capabilities.push('Context understanding');
+    if (data.aiServices.includes('automation')) capabilities.push('Decision logic');
+
+    if (capabilities.length === 0) return null;
+
+    return {
+      label: 'Intelligence & Reasoning',
+      description: capabilities.join(', '),
+    };
+  };
+
+  // NEW: Get Generative AI Capabilities
+  const getGenerativeAI = () => {
+    if (!data.generativeAI || data.generativeAI.length === 0) return null;
+
+    const capabilities = [];
+    if (data.generativeAI.includes('images')) capabilities.push('Image generation');
+    if (data.generativeAI.includes('video')) capabilities.push('Video creation');
+    if (data.generativeAI.includes('copy')) capabilities.push('Content writing');
+
+    return {
+      label: 'Generative AI',
+      capabilities: capabilities,
+      description: capabilities.join(', '),
+    };
+  };
+
+  // NEW: Get Automation Engine
+  const getAutomationEngine = () => {
+    if (!data.aiServices?.includes('automation')) return null;
+
+    return {
+      label: 'Automation Engine',
+      description: 'Triggers, workflows, background execution',
+    };
+  };
+
+  const getPrimaryFocus = () => {
+    if (!data.businessOutcomes || data.businessOutcomes.length === 0) return null;
+
+    if (data.businessOutcomes.includes('Save time through automation')) {
       return 'Operations & automation-focused system';
     }
-    if (data.goals.includes('Increase revenue')) {
+    if (data.businessOutcomes.includes('Increase revenue')) {
       return 'Revenue & growth-focused system';
     }
-    if (data.goals.includes('Launch a new product or MVP')) {
+    if (data.businessOutcomes.includes('Launch a new product or MVP')) {
       return 'MVP & product launch system';
     }
     return 'Multi-purpose business system';
   };
 
   const getSuggestedWorkflows = () => {
-    if (!data.goals || data.goals.length === 0) return null;
+    if (!data.businessOutcomes || data.businessOutcomes.length === 0) return null;
 
     const workflows = [];
     if (data.buildTypes?.includes('chatbot')) {
@@ -139,6 +204,15 @@ export default function LiveBlueprint({ screen, data }: LiveBlueprintProps) {
   const automations = getAutomations();
   const primaryFocus = getPrimaryFocus();
   const suggestedWorkflows = getSuggestedWorkflows();
+  
+  // NEW: Get AI-specific sections (Screen 3+)
+  const aiAgentLayer = getAIAgentLayer();
+  const intelligenceReasoning = getIntelligenceReasoning();
+  const generativeAI = getGenerativeAI();
+  const automationEngine = getAutomationEngine();
+
+  // On Screen 4, show finalized state
+  const isFinal = screen === 4;
 
   return (
     <div className="bg-white rounded-[40px] p-8 border border-zinc-200 shadow-sm sticky top-24">
@@ -147,12 +221,12 @@ export default function LiveBlueprint({ screen, data }: LiveBlueprintProps) {
         <div className="flex items-center gap-2 mb-2">
           <Layers className="w-5 h-5 text-indigo-500" />
           <h3 className="text-xs font-bold uppercase tracking-widest text-indigo-500">
-            Live Architecture Blueprint
+            {isFinal ? 'Final Architecture Blueprint' : 'Live Architecture Blueprint'}
           </h3>
         </div>
         {data.companyName && (
           <p className="text-sm text-zinc-600 font-light">
-            Personalized for {data.companyName}
+            {isFinal ? 'Finalized for' : 'Personalized for'} {data.companyName}
           </p>
         )}
       </div>
@@ -167,6 +241,80 @@ export default function LiveBlueprint({ screen, data }: LiveBlueprintProps) {
           <p className="text-xs text-zinc-500 leading-relaxed">{clientExperience.description}</p>
         </div>
       </div>
+
+      {/* AI Agent Layer (Screen 3+) */}
+      {(screen >= 3) && aiAgentLayer && (
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">
+            <Brain className="w-3 h-3 inline mr-1" />
+            AI Agent Layer
+          </p>
+          <div className="p-4 rounded-2xl bg-violet-50 border border-violet-200">
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {aiAgentLayer.agents.map((agent, index) => (
+                <span key={index} className="text-xs px-2 py-1 rounded-full bg-violet-100 text-violet-700 border border-violet-200">
+                  {agent}
+                </span>
+              ))}
+            </div>
+            <p className="text-xs text-violet-600 leading-relaxed">
+              Specialized AI agents performing tasks autonomously
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Intelligence & Reasoning (Screen 3+) */}
+      {(screen >= 3) && intelligenceReasoning && (
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">
+            <Sparkles className="w-3 h-3 inline mr-1" />
+            Intelligence & Reasoning
+          </p>
+          <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-200">
+            <p className="text-xs text-indigo-700 leading-relaxed">
+              {intelligenceReasoning.description}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Generative AI (Screen 3+) */}
+      {(screen >= 3) && generativeAI && (
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">
+            <Sparkles className="w-3 h-3 inline mr-1" />
+            Generative AI
+          </p>
+          <div className="p-4 rounded-2xl bg-purple-50 border border-purple-200">
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {generativeAI.capabilities.map((cap, index) => (
+                <span key={index} className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200">
+                  {cap}
+                </span>
+              ))}
+            </div>
+            <p className="text-xs text-purple-600 leading-relaxed">
+              AI-powered content generation capabilities
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Automation Engine (Screen 3+) */}
+      {(screen >= 3) && automationEngine && (
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">
+            <Zap className="w-3 h-3 inline mr-1" />
+            Automation Engine
+          </p>
+          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <p className="text-xs text-emerald-700 leading-relaxed">
+              {automationEngine.description}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Primary Focus (only on Screen 3) */}
       {screen === 3 && primaryFocus && (

@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import ProgressIndicator from './components/ProgressIndicator';
 import Screen1Basics from './components/Screen1Basics';
 import Screen2BuildType from './components/Screen2BuildType';
-import Screen3Goals from './components/Screen3Goals';
+import Screen3AICapabilities from './components/Screen3AICapabilities';
+import Screen4Summary from './components/Screen4Summary';
 import LiveBlueprint from './components/LiveBlueprint';
 
 interface WizardData {
@@ -21,11 +22,16 @@ interface WizardData {
   projectDescription: string;
   
   // Screen 3
-  goals: string[];
+  aiServices: string[];
+  generativeAI: string[];
+  businessOutcomes: string[];
+  
+  // Screen 4
+  summaryConfirmed: boolean;
 }
 
 export default function WizardV3Container() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [currentScreen, setCurrentScreen] = useState(1);
   const [wizardData, setWizardData] = useState<WizardData>({
     fullName: '',
@@ -35,7 +41,10 @@ export default function WizardV3Container() {
     industry: '',
     industryOther: '',
     projectDescription: '',
-    goals: [],
+    aiServices: [],
+    generativeAI: [],
+    businessOutcomes: [],
+    summaryConfirmed: false,
   });
 
   const updateWizardData = (data: Partial<WizardData>) => {
@@ -45,7 +54,7 @@ export default function WizardV3Container() {
   };
 
   const handleNext = () => {
-    if (currentScreen < 3) {
+    if (currentScreen < 4) {
       setCurrentScreen(prev => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
@@ -54,7 +63,7 @@ export default function WizardV3Container() {
       // For now, just show an alert
       alert('Wizard completed! Check console for data.');
       // In production, you'd navigate to next page:
-      // router.push('/wizard-v3/review');
+      // navigate('/wizard-v3/review');
     }
   };
 
@@ -70,13 +79,13 @@ export default function WizardV3Container() {
       <div className="max-w-7xl mx-auto">
         {/* Progress Indicator */}
         <div className="max-w-[640px] mx-auto">
-          <ProgressIndicator currentScreen={currentScreen} totalScreens={3} />
+          <ProgressIndicator currentScreen={currentScreen} totalScreens={4} />
         </div>
 
         {/* Main Content - Two Column Layout */}
-        <div className="grid lg:grid-cols-[640px_1fr] gap-8 items-start">
+        <div className={`grid ${currentScreen === 4 ? 'lg:grid-cols-[400px_1fr_380px]' : 'lg:grid-cols-[640px_1fr]'} gap-8 items-start`}>
           {/* Left Column - Screen Content */}
-          <div>
+          <div className={currentScreen === 4 ? '' : 'lg:col-span-1'}>
             {currentScreen === 1 && (
               <Screen1Basics
                 data={wizardData}
@@ -95,7 +104,16 @@ export default function WizardV3Container() {
             )}
             
             {currentScreen === 3 && (
-              <Screen3Goals
+              <Screen3AICapabilities
+                data={wizardData}
+                updateData={updateWizardData}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            
+            {currentScreen === 4 && (
+              <Screen4Summary
                 data={wizardData}
                 updateData={updateWizardData}
                 onNext={handleNext}
@@ -105,7 +123,7 @@ export default function WizardV3Container() {
           </div>
 
           {/* Right Column - Live Blueprint (Desktop Only) */}
-          <div className="hidden lg:block">
+          <div className={`hidden lg:block ${currentScreen === 4 ? 'lg:col-start-3' : ''}`}>
             <LiveBlueprint screen={currentScreen} data={wizardData} />
           </div>
         </div>

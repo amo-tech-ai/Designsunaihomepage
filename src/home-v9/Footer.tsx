@@ -17,6 +17,7 @@ const FOOTER_SECTIONS = [
     title: 'Platform',
     links: [
       { label: 'Start Project Wizard', href: '/wizard/step1' },
+      { label: 'Wizard V3 (New)', href: '/wizard-v3' },
       { label: 'CRM', href: '/crm' },
       { label: 'Projects', href: '/projects' },
       { label: 'Dashboard', href: '/dashboard' },
