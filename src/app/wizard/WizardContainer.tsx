@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProgressBar from './components/ProgressBar';
 import Step1Company from './components/Step1Company';
-import Step2TypeOfApp from './components/Step2TypeOfApp';
-import Step3Industry from './components/Step3Industry';
+import Step2BuildType from './components/Step2BuildType';
 import Step4Features from './components/Step4Features';
 import Step5Goals from './components/Step5Goals';
 import Step6Contact from './components/Step6Contact';
@@ -16,12 +15,12 @@ interface WizardData {
   // Step 1
   companyName: string;
   website: string;
+  contactName: string;
   
   // Step 2
-  appType: string;
-  
-  // Step 3
+  buildTypes: string[];
   industry: string;
+  industryOther: string;
   architecture?: {
     database_tables?: Array<{ name: string; description: string; fields_count: number }>;
     auth_type?: string;
@@ -30,19 +29,19 @@ interface WizardData {
     complexity_label?: string;
     estimated_weeks?: { min: number; max: number };
     team_composition?: Array<{ role: string; allocation: number }>;
+    team_size?: string;
   };
   
-  // Step 4
+  // Step 3 (was Step 4)
   selectedFeatures: string[];
   customRequests: string;
   
-  // Step 5
+  // Step 4 (was Step 5)
   selectedGoals: string[];
   challengesText: string;
   aiInsights?: any;
   
-  // Step 6
-  contactName: string;
+  // Step 5 (was Step 6)
   email: string;
   phone: string;
   role: string;
@@ -58,13 +57,14 @@ export default function WizardContainer() {
   const [wizardData, setWizardData] = useState<WizardData>({
     companyName: '',
     website: '',
-    appType: '',
+    contactName: '',
+    buildTypes: [],
     industry: '',
+    industryOther: '',
     selectedFeatures: [],
     customRequests: '',
     selectedGoals: [],
     challengesText: '',
-    contactName: '',
     email: '',
     phone: '',
     role: '',
@@ -80,7 +80,7 @@ export default function WizardContainer() {
   };
 
   const handleNext = () => {
-    if (currentStep < 6) {
+    if (currentStep < 5) {
       setCurrentStep(prev => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -116,14 +116,15 @@ export default function WizardContainer() {
     return <ProcessingScreen />;
   }
 
-  const showArchitecture = currentStep >= 3 && wizardData.architecture;
+  // Show architecture from step 1 onwards (always visible on right)
+  const showArchitecture = currentStep >= 1;
 
   return (
     <div className="min-h-screen bg-[#FCFCFC] py-12 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Progress Bar */}
         <div className="max-w-[640px] mx-auto mb-12">
-          <ProgressBar currentStep={currentStep} totalSteps={6} />
+          <ProgressBar currentStep={currentStep} totalSteps={5} />
         </div>
 
         {/* Main Content - Two Column Layout */}
@@ -139,7 +140,7 @@ export default function WizardContainer() {
             )}
             
             {currentStep === 2 && (
-              <Step2TypeOfApp
+              <Step2BuildType
                 data={wizardData}
                 updateData={updateWizardData}
                 onNext={handleNext}
@@ -148,15 +149,6 @@ export default function WizardContainer() {
             )}
             
             {currentStep === 3 && (
-              <Step3Industry
-                data={wizardData}
-                updateData={updateWizardData}
-                onNext={handleNext}
-                onBack={handleBack}
-              />
-            )}
-            
-            {currentStep === 4 && (
               <Step4Features
                 data={wizardData}
                 updateData={updateWizardData}
@@ -165,7 +157,7 @@ export default function WizardContainer() {
               />
             )}
             
-            {currentStep === 5 && (
+            {currentStep === 4 && (
               <Step5Goals
                 data={wizardData}
                 updateData={updateWizardData}
@@ -174,7 +166,7 @@ export default function WizardContainer() {
               />
             )}
             
-            {currentStep === 6 && (
+            {currentStep === 5 && (
               <Step6Contact
                 data={wizardData}
                 updateData={updateWizardData}
@@ -189,7 +181,7 @@ export default function WizardContainer() {
             <div className="hidden lg:block">
               <ArchitectureBlueprint
                 architecture={wizardData.architecture || null}
-                appType={wizardData.appType}
+                buildTypes={wizardData.buildTypes}
                 industry={wizardData.industry}
               />
             </div>
@@ -201,7 +193,7 @@ export default function WizardContainer() {
           <div className="lg:hidden mt-8 max-w-[640px] mx-auto">
             <ArchitectureBlueprint
               architecture={wizardData.architecture || null}
-              appType={wizardData.appType}
+              buildTypes={wizardData.buildTypes}
               industry={wizardData.industry}
             />
           </div>

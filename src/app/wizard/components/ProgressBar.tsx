@@ -7,12 +7,11 @@ interface ProgressBarProps {
 
 export default function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
   const steps = [
-    { number: 1, label: 'Company' },
-    { number: 2, label: 'Type' },
-    { number: 3, label: 'Industry' },
-    { number: 4, label: 'Features' },
-    { number: 5, label: 'Goals' },
-    { number: 6, label: 'Contact' },
+    { number: 1, label: 'Basics' },
+    { number: 2, label: 'Build Type' },
+    { number: 3, label: 'Features' },
+    { number: 4, label: 'Goals' },
+    { number: 5, label: 'Contact' },
   ];
 
   return (
