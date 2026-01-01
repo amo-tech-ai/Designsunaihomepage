@@ -8,9 +8,11 @@ interface ProgressBarProps {
 export default function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
   const steps = [
     { number: 1, label: 'Company' },
-    { number: 2, label: 'Goals' },
-    { number: 3, label: 'Services' },
-    { number: 4, label: 'Contact' },
+    { number: 2, label: 'Type' },
+    { number: 3, label: 'Industry' },
+    { number: 4, label: 'Features' },
+    { number: 5, label: 'Goals' },
+    { number: 6, label: 'Contact' },
   ];
 
   return (
@@ -23,14 +25,14 @@ export default function ProgressBar({ currentStep, totalSteps }: ProgressBarProp
       </div>
 
       {/* Progress Circles */}
-      <div className="flex items-center justify-between max-w-md mx-auto">
+      <div className="flex items-center justify-between max-w-3xl mx-auto">
         {steps.map((step, index) => (
           <div key={step.number} className="flex items-center flex-1">
             {/* Circle */}
             <div className="flex flex-col items-center flex-shrink-0">
               <div
                 className={`
-                  w-12 h-12 rounded-full flex items-center justify-center
+                  w-10 h-10 rounded-full flex items-center justify-center
                   border-2 transition-all duration-300
                   ${
                     step.number < currentStep
@@ -43,7 +45,7 @@ export default function ProgressBar({ currentStep, totalSteps }: ProgressBarProp
               >
                 <span
                   className={`
-                    text-sm font-bold
+                    text-xs font-bold
                     ${
                       step.number <= currentStep
                         ? 'text-white'

@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProgressBar from './components/ProgressBar';
 import Step1Company from './components/Step1Company';
-import Step2Goals from './components/Step2Goals';
-import Step3Services from './components/Step3Services';
-import Step4Contact from './components/Step4Contact';
+import Step2TypeOfApp from './components/Step2TypeOfApp';
+import Step3Industry from './components/Step3Industry';
+import Step4Features from './components/Step4Features';
+import Step5Goals from './components/Step5Goals';
+import Step6Contact from './components/Step6Contact';
 import ProcessingScreen from './components/ProcessingScreen';
+import ArchitectureBlueprint from './components/ArchitectureBlueprint';
 
 interface WizardData {
   // Step 1
@@ -15,20 +18,36 @@ interface WizardData {
   website: string;
   
   // Step 2
-  goals: string[];
-  challengesText: string;
-  aiExtractedGoals?: string[];
-  aiExtractedRisks?: string[];
+  appType: string;
   
   // Step 3
-  services: string[];
-  timeline: string;
-  budget: string;
+  industry: string;
+  architecture?: {
+    database_tables?: Array<{ name: string; description: string; fields_count: number }>;
+    auth_type?: string;
+    recommended_agents?: Array<{ name: string; purpose: string }>;
+    complexity_score?: number;
+    complexity_label?: string;
+    estimated_weeks?: { min: number; max: number };
+    team_composition?: Array<{ role: string; allocation: number }>;
+  };
   
   // Step 4
+  selectedFeatures: string[];
+  customRequests: string;
+  
+  // Step 5
+  selectedGoals: string[];
+  challengesText: string;
+  aiInsights?: any;
+  
+  // Step 6
   contactName: string;
   email: string;
   phone: string;
+  role: string;
+  timeline: string;
+  budgetRange: string;
   contactMethod: string;
 }
 
@@ -39,46 +58,38 @@ export default function WizardContainer() {
   const [wizardData, setWizardData] = useState<WizardData>({
     companyName: '',
     website: '',
-    goals: [],
+    appType: '',
+    industry: '',
+    selectedFeatures: [],
+    customRequests: '',
+    selectedGoals: [],
     challengesText: '',
-    services: [],
-    timeline: 'Flexible',
-    budget: '',
     contactName: '',
     email: '',
     phone: '',
+    role: '',
+    timeline: 'Flexible',
+    budgetRange: '',
     contactMethod: 'Email',
   });
 
   const updateWizardData = (data: Partial<WizardData>) => {
     setWizardData(prev => ({ ...prev, ...data }));
+    // Backup to sessionStorage
+    sessionStorage.setItem('wizardData', JSON.stringify({ ...wizardData, ...data }));
   };
 
-  const handleNext = async () => {
-    // Step 2: Extract insights with AI
-    if (currentStep === 2 && wizardData.challengesText.length > 20) {
-      try {
-        // Simulate AI insight extraction
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Mock AI extraction
-        updateWizardData({
-          aiExtractedGoals: ['Reduce manual work', 'Scale operations', 'Improve efficiency'],
-          aiExtractedRisks: ['Team capacity constraints', 'Timeline pressure'],
-        });
-      } catch (error) {
-        console.error('AI extraction failed:', error);
-      }
-    }
-
-    if (currentStep < 4) {
+  const handleNext = () => {
+    if (currentStep < 6) {
       setCurrentStep(prev => prev + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(prev => prev - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -86,8 +97,8 @@ export default function WizardContainer() {
     setIsProcessing(true);
 
     try {
-      // Simulate proposal generation (15-30 seconds)
-      await new Promise(resolve => setTimeout(resolve, 20000));
+      // Simulate proposal generation (25-35 seconds)
+      await new Promise(resolve => setTimeout(resolve, 30000));
 
       // Store data in sessionStorage for proposal page
       sessionStorage.setItem('wizardData', JSON.stringify(wizardData));
@@ -105,49 +116,96 @@ export default function WizardContainer() {
     return <ProcessingScreen />;
   }
 
+  const showArchitecture = currentStep >= 3 && wizardData.architecture;
+
   return (
     <div className="min-h-screen bg-[#FCFCFC] py-12 px-6">
-      <div className="max-w-[640px] mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Progress Bar */}
-        <ProgressBar currentStep={currentStep} totalSteps={4} />
+        <div className="max-w-[640px] mx-auto mb-12">
+          <ProgressBar currentStep={currentStep} totalSteps={6} />
+        </div>
 
-        {/* Step Content */}
-        <div className="mt-12">
-          {currentStep === 1 && (
-            <Step1Company
-              data={wizardData}
-              updateData={updateWizardData}
-              onNext={handleNext}
-            />
-          )}
-          
-          {currentStep === 2 && (
-            <Step2Goals
-              data={wizardData}
-              updateData={updateWizardData}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          
-          {currentStep === 3 && (
-            <Step3Services
-              data={wizardData}
-              updateData={updateWizardData}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          
-          {currentStep === 4 && (
-            <Step4Contact
-              data={wizardData}
-              updateData={updateWizardData}
-              onSubmit={handleSubmit}
-              onBack={handleBack}
-            />
+        {/* Main Content - Two Column Layout */}
+        <div className="grid lg:grid-cols-[640px_1fr] gap-8 items-start">
+          {/* Left Column - Step Content */}
+          <div>
+            {currentStep === 1 && (
+              <Step1Company
+                data={wizardData}
+                updateData={updateWizardData}
+                onNext={handleNext}
+              />
+            )}
+            
+            {currentStep === 2 && (
+              <Step2TypeOfApp
+                data={wizardData}
+                updateData={updateWizardData}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            
+            {currentStep === 3 && (
+              <Step3Industry
+                data={wizardData}
+                updateData={updateWizardData}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            
+            {currentStep === 4 && (
+              <Step4Features
+                data={wizardData}
+                updateData={updateWizardData}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            
+            {currentStep === 5 && (
+              <Step5Goals
+                data={wizardData}
+                updateData={updateWizardData}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            )}
+            
+            {currentStep === 6 && (
+              <Step6Contact
+                data={wizardData}
+                updateData={updateWizardData}
+                onSubmit={handleSubmit}
+                onBack={handleBack}
+              />
+            )}
+          </div>
+
+          {/* Right Column - Architecture Blueprint (Desktop Only) */}
+          {showArchitecture && (
+            <div className="hidden lg:block">
+              <ArchitectureBlueprint
+                architecture={wizardData.architecture || null}
+                appType={wizardData.appType}
+                industry={wizardData.industry}
+              />
+            </div>
           )}
         </div>
+
+        {/* Mobile Architecture Blueprint (Collapsible at bottom) */}
+        {showArchitecture && (
+          <div className="lg:hidden mt-8 max-w-[640px] mx-auto">
+            <ArchitectureBlueprint
+              architecture={wizardData.architecture || null}
+              appType={wizardData.appType}
+              industry={wizardData.industry}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -213,7 +213,7 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
               
               {/* Step 1: Overview */}
             {step === 1 && (
-              <WizardStep key="step1" title="Let's start with the basics" subtitle="We'll scan your site to understand your brand.">
+              <WizardStep key={1} title="Let's start with the basics" subtitle="We'll scan your site to understand your brand.">
                 <div className="space-y-6">
                   <InputGroup 
                     label="Your Name" 
@@ -275,7 +275,7 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
 
             {/* Step 2: Services */}
             {step === 2 && (
-              <WizardStep key="step2" title="What are you looking to build?" subtitle="Select all that apply.">
+              <WizardStep key={2} title="What are you looking to build?" subtitle="Select all that apply.">
                 {errors.services && (
                   <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
                     <AlertCircle className="w-4 h-4" /> {errors.services}
@@ -301,7 +301,7 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
 
             {/* Step 3: Goals */}
             {step === 3 && (
-              <WizardStep key="step3" title="Project Details" subtitle="Help our AI architect understand your vision.">
+              <WizardStep key={3} title="Project Details" subtitle="Help our AI architect understand your vision.">
                 <div className="space-y-6">
                   {errors.goals && (
                     <div className="p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
@@ -399,7 +399,7 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
 
             {/* Step 4: Constraints */}
             {step === 4 && (
-              <WizardStep key="step4" title="Budget & Timeline" subtitle="This helps us recommend the right solution.">
+              <WizardStep key={4} title="Budget & Timeline" subtitle="This helps us recommend the right solution.">
                  <div className="space-y-8">
                     <div>
                       <label className="flex justify-between text-sm font-bold text-slate-700 mb-4">
@@ -452,7 +452,7 @@ export function BriefWizard({ onClose, onSubmit }: BriefWizardProps) {
 
             {/* Step 5: Review */}
             {step === 5 && (
-              <WizardStep key="step5" title="Ready to generate proposal?" subtitle="Review your details below.">
+              <WizardStep key={5} title="Ready to generate proposal?" subtitle="Review your details below.">
                 <Card variant="solid" className="bg-slate-50 border-slate-200 p-6 space-y-4">
                    <ReviewItem label="Project" value={data.services.join(', ') || 'Not specified'} icon={<Target className="w-4 h-4" />} />
                    <ReviewItem label="Goal" value={data.goals[0] || 'Not specified'} icon={<Sparkles className="w-4 h-4" />} />
