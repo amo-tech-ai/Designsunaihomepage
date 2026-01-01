@@ -6,6 +6,7 @@ import { HomePageV4 } from '../../components/premium/HomePageV4';
 import { HomeV3 } from '../../components/HomeV3';
 import { HomeV2 } from '../../components/HomeV2';
 import { HomeV1 } from '../../components/HomeV1';
+import HomeV9 from '../../home-v9/HomeV9';
 import { ProjectsPageV7 } from '../../components/premium/v7/ProjectsPageV7';
 import { AIWebDevPageV7 } from '../../components/premium/v7/services/AIWebDevPageV7';
 import { AIDevelopmentPageV7 } from '../../components/premium/v7/services/AIDevelopmentPageV7';
@@ -107,6 +108,10 @@ export function HomeV2Wrapper() {
 export function HomeV1Wrapper() {
   const nav = useCommonNavigation();
   return <HomeV1 {...nav} />;
+}
+
+export function HomePageV9Wrapper() {
+  return <HomeV9 />;
 }
 
 // Service Page Wrappers

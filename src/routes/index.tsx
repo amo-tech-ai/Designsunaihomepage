@@ -1,7 +1,7 @@
 import type { RouteObject } from 'react-router-dom';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 import { AdminLayoutWrapper } from './wrappers/AdminLayoutWrapper';
-import { BriefWizardWrapper, AIProcessingScreenWrapper, ProposalReadyScreenWrapper } from './wrappers/WizardFlowWrappers';
+import { BriefWizardWrapper, AIProcessingScreenWrapper, ProposalReadyScreenWrapper, WizardStep1Wrapper, WizardStep2Wrapper, WizardStep3Wrapper, WizardStep4Wrapper } from './wrappers/WizardFlowWrappers';
 import { CallIngestionWrapper, AnalysisStateWrapper, SearchResultsWrapper } from './wrappers/IntelligenceWrappers';
 import { ProjectDashboardWrapper, DeckEditorWrapper } from './wrappers/DashboardWrapper';
 import { LoginPageWrapper } from './wrappers/AuthWrapper';
@@ -13,6 +13,7 @@ import {
   HomeV3Wrapper,
   HomeV2Wrapper,
   HomeV1Wrapper,
+  HomePageV9Wrapper,
   ProjectsPageV7Wrapper,
   AIWebDevPageV7Wrapper,
   AIDevelopmentPageV7Wrapper,
@@ -49,6 +50,13 @@ const CallBrief = lazy(() => import('../components/crm/intelligence/CallBrief').
 const PrivacyPage = lazy(() => import('../components/legal/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
 const TermsPage = lazy(() => import('../components/legal/TermsPage').then(m => ({ default: m.TermsPage })));
 const NotFound = lazy(() => import('../components/NotFound'));
+const ProjectIntelligenceDashboard = lazy(() => import('../app/dashboard-v2/page'));
+const MainDashboard = lazy(() => import('../app/dashboard-v2/main/page'));
+const BlueprintsPage = lazy(() => import('../app/dashboard-v2/blueprints/page'));
+const ProjectsPage = lazy(() => import('../app/dashboard-v2/projects/page'));
+const TasksPage = lazy(() => import('../app/dashboard-v2/tasks/page'));
+const AutomationsPage = lazy(() => import('../app/dashboard-v2/automations/page'));
+const SettingsPageV2 = lazy(() => import('../app/dashboard-v2/settings/page'));
 
 export const routes: RouteObject[] = [
   // Public Routes - Marketing
@@ -60,6 +68,7 @@ export const routes: RouteObject[] = [
   { path: '/v5', element: <HomePageV5Wrapper /> },
   { path: '/v6', element: <HomePageV6Wrapper /> }, // Same as / for consistency
   { path: '/v7', element: <HomePageV7Wrapper /> }, // V7 moved to archive
+  { path: '/v9', element: <HomePageV9Wrapper /> }, // V9 is the latest version
   { path: '/projects', element: <ProjectsPageV7Wrapper /> },
   { path: '/process', element: <ProcessPageV2Wrapper /> },
   { path: '/services', element: <ServicesPageV2Wrapper /> },
@@ -89,8 +98,19 @@ export const routes: RouteObject[] = [
   
   // Wizard Flow
   { path: '/wizard', element: <BriefWizardWrapper /> },
+  { path: '/wizard/step1', element: <WizardStep1Wrapper /> },
+  { path: '/wizard/step2', element: <WizardStep2Wrapper /> },
+  { path: '/wizard/step3', element: <WizardStep3Wrapper /> },
+  { path: '/wizard/step4', element: <WizardStep4Wrapper /> },
   { path: '/processing', element: <AIProcessingScreenWrapper /> },
   { path: '/proposal', element: <ProposalReadyScreenWrapper /> },
+  { path: '/dashboard-v2', element: <ProjectIntelligenceDashboard /> },
+  { path: '/dashboard-v2/main', element: <MainDashboard /> },
+  { path: '/dashboard-v2/blueprints', element: <BlueprintsPage /> },
+  { path: '/dashboard-v2/projects', element: <ProjectsPage /> },
+  { path: '/dashboard-v2/tasks', element: <TasksPage /> },
+  { path: '/dashboard-v2/automations', element: <AutomationsPage /> },
+  { path: '/dashboard-v2/settings', element: <SettingsPageV2 /> },
   
   // Auth
   { path: '/login', element: <LoginPageWrapper /> },

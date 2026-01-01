@@ -50,6 +50,7 @@ function AppRoutes() {
     if (path === '/v4') return 'v4';
     if (path === '/v5') return 'v5';
     if (path === '/v7') return 'v7'; // V7 moved to archive
+    if (path === '/v9') return 'v9'; // V9 Editorial Luxury
     if (path === '/wizard') return 'wizard';
     if (path === '/processing') return 'processing';
     if (path === '/proposal') return 'proposal';

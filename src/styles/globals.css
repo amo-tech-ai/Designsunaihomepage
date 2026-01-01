@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
   /* ... existing vars ... */
-  --font-heading: 'Manrope', sans-serif;
+  --font-heading: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
   
   /* Luxury System Colors */
   --slate-900: #0F172A;
   --orange-500: #FF6A3D;
   --warm-white: #FDFDFD;
+  --base-surface: #FCFCFC;
   
   --font-size: 16px;
   --background: #ffffff;

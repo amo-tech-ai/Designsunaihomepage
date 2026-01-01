@@ -2,8 +2,8 @@ import { Home, Menu, X, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 interface SideMenuProps {
-  currentVersion: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking';
-  onVersionChange: (version: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking') => void;
+  currentVersion: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v9' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking';
+  onVersionChange: (version: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v9' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking') => void;
 }
 
 export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
@@ -294,6 +294,41 @@ export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
                   </div>
                 </div>
                 {currentVersion === 'v7' && (
+                  <div className="w-2 h-2 rounded-full bg-[#FF6A3D]"></div>
+                )}
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                onVersionChange('v9');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'v9'
+                  ? 'bg-[#00334F] text-white shadow-md'
+                  : 'bg-[#F7F9FB] text-[#202020] hover:bg-[#E9EAEE]'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div
+                    className="text-[16px] mb-1"
+                    style={{ fontWeight: 600 }}
+                  >
+                    Version 9
+                  </div>
+                  <div
+                    className={`text-[13px] ${
+                      currentVersion === 'v9'
+                        ? 'text-white/80'
+                        : 'text-[#555]'
+                    }`}
+                  >
+                    Editorial Luxury Design
+                  </div>
+                </div>
+                {currentVersion === 'v9' && (
                   <div className="w-2 h-2 rounded-full bg-[#FF6A3D]"></div>
                 )}
               </div>

@@ -38,6 +38,7 @@
           "input-otp": "*",
           "lucide-react": "*",
           "motion": "*",
+          "next": "*",
           "next-themes": "*",
           "re-resizable": "*",
           "react": "^18.3.1",
