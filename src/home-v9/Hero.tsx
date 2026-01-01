@@ -58,7 +58,7 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Link to="/wizard/step1">
+              <Link to="/wizard">
                 <button className="group px-8 py-4 bg-[#0A1628] text-white rounded-full hover:bg-[#0A1628]/90 transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2 font-semibold">
                   <span>Start Your Project</span>
                   <ArrowRight

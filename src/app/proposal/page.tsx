@@ -1,198 +1,274 @@
 'use client';
 
-import { motion } from 'motion/react';
-import { useSearchParams, Link } from 'react-router-dom';
-import { Sparkles, Download, Calendar, Share2, FileText, CheckCircle2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Download, CheckCircle2, Calendar, DollarSign, Package } from 'lucide-react';
+
+interface ProposalData {
+  companyName: string;
+  services: string[];
+  budget: string;
+  timeline: string;
+  goals: string[];
+}
 
 export default function ProposalPage() {
-  const searchParams = useSearchParams();
-  const proposalId = searchParams.get('id');
+  const router = useRouter();
+  const [proposalData, setProposalData] = useState<ProposalData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch wizard data from sessionStorage
+    const wizardDataString = sessionStorage.getItem('wizardData');
+    
+    if (!wizardDataString) {
+      router.push('/wizard');
+      return;
+    }
+
+    const wizardData = JSON.parse(wizardDataString);
+    setProposalData(wizardData);
+    setIsLoading(false);
+  }, [router]);
+
+  const handleAcceptProposal = () => {
+    alert('Thank you! We will contact you shortly to get started.');
+    sessionStorage.removeItem('wizardData');
+    router.push('/');
+  };
+
+  const handleDownload = () => {
+    alert('PDF download functionality will be implemented');
+  };
+
+  if (isLoading || !proposalData) {
+    return (
+      <div className="min-h-screen bg-[#FCFCFC] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm text-zinc-600">Loading proposal...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const phases = [
+    {
+      name: 'Discovery & Planning',
+      duration: '2 weeks',
+      status: 'Pending',
+    },
+    {
+      name: 'Development',
+      duration: '4 weeks',
+      status: 'Pending',
+    },
+    {
+      name: 'Testing & Refinement',
+      duration: '2 weeks',
+      status: 'Pending',
+    },
+    {
+      name: 'Launch & Training',
+      duration: '1 week',
+      status: 'Pending',
+    },
+  ];
+
+  const deliverables = [
+    'Fully functional CRM system',
+    'WhatsApp automation integration',
+    'AI-powered lead scoring',
+    'Team training & documentation',
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50">
-      {/* Confetti Effect (Simple version) */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-orange-400 rounded-full"
-            initial={{ 
-              x: Math.random() * window.innerWidth,
-              y: -20,
-              opacity: 1 
-            }}
-            animate={{ 
-              y: window.innerHeight + 20,
-              opacity: 0,
-              rotate: 360
-            }}
-            transition={{ 
-              duration: 2 + Math.random() * 2,
-              delay: Math.random() * 0.5,
-              ease: "easeIn"
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto px-6 py-16">
-        {/* Celebration Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <CheckCircle2 className="w-12 h-12 text-white" />
-          </motion.div>
-
-          <h1 className="text-5xl font-bold text-slate-900 mb-4">
-            Your Blueprint is Ready! 🎉
-          </h1>
-          <p className="text-xl text-slate-600">
-            We've generated your custom architecture blueprint and proposal.
-          </p>
-        </motion.div>
-
-        {/* Quick Summary Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-8"
-        >
-          <h2 className="text-2xl font-bold text-slate-900 mb-6">Project Summary</h2>
-          
-          <div className="grid grid-cols-2 gap-6">
+    <div className="min-h-screen bg-[#FCFCFC] py-12 px-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="bg-white rounded-[40px] p-10 border border-zinc-200 shadow-sm mb-8">
+          <div className="flex items-start justify-between mb-6">
             <div>
-              <p className="text-sm text-slate-500 mb-1">Project Type</p>
-              <p className="text-base font-medium text-slate-900">Real Estate CRM</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500 mb-1">Complexity</p>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
-                Medium
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 mb-4">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2" />
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+                  Proposal Ready
+                </span>
               </div>
+              <h1 className="font-['Playfair_Display'] text-5xl font-light text-black mb-2">
+                Your Custom Proposal
+              </h1>
+              <p className="text-lg font-light text-zinc-600">
+                For {proposalData.companyName}
+              </p>
             </div>
-            <div>
-              <p className="text-sm text-slate-500 mb-1">Timeline</p>
-              <p className="text-base font-medium text-slate-900">8 weeks</p>
+            <button
+              onClick={handleDownload}
+              className="
+                flex items-center gap-2 px-6 py-3 rounded-full
+                border border-zinc-200 text-zinc-900 text-sm font-medium
+                hover:border-zinc-400 hover:bg-zinc-50 transition-all duration-200
+              "
+            >
+              <Download className="w-4 h-4" />
+              Download PDF
+            </button>
+          </div>
+
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl bg-zinc-50 border border-zinc-100">
+              <div className="flex items-center gap-3 mb-2">
+                <Calendar className="w-5 h-5 text-indigo-500" />
+                <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
+                  Timeline
+                </p>
+              </div>
+              <p className="font-['Playfair_Display'] text-2xl font-light text-black">
+                8-10 weeks
+              </p>
             </div>
-            <div>
-              <p className="text-sm text-slate-500 mb-1">Team Size</p>
-              <p className="text-base font-medium text-slate-900">2 Engineers</p>
+
+            <div className="p-5 rounded-xl bg-zinc-50 border border-zinc-100">
+              <div className="flex items-center gap-3 mb-2">
+                <DollarSign className="w-5 h-5 text-indigo-500" />
+                <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
+                  Investment
+                </p>
+              </div>
+              <p className="font-['Playfair_Display'] text-2xl font-light text-black">
+                {proposalData.budget === '<10k' && '$8,000 - $10,000'}
+                {proposalData.budget === '10k-25k' && '$15,000 - $25,000'}
+                {proposalData.budget === '25k-50k' && '$25,000 - $37,500'}
+                {proposalData.budget === '50k+' && '$50,000 - $75,000'}
+              </p>
             </div>
-            <div>
-              <p className="text-sm text-slate-500 mb-1">Budget</p>
-              <p className="text-base font-medium text-slate-900">$45,000</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500 mb-1">Delivery Model</p>
-              <p className="text-base font-medium text-slate-900">Phased MVP</p>
+
+            <div className="p-5 rounded-xl bg-zinc-50 border border-zinc-100">
+              <div className="flex items-center gap-3 mb-2">
+                <Package className="w-5 h-5 text-indigo-500" />
+                <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
+                  Deliverables
+                </p>
+              </div>
+              <p className="font-['Playfair_Display'] text-2xl font-light text-black">
+                {deliverables.length} items
+              </p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Primary CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <button
-            className="w-full h-16 bg-orange-500 text-white rounded-xl flex items-center justify-center gap-3
-              hover:bg-orange-600 transition-all hover:shadow-xl hover:scale-[1.02] group mb-4"
-          >
-            <FileText className="w-6 h-6" />
-            <span className="text-xl font-semibold">View Full Proposal</span>
-            <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-          </button>
-        </motion.div>
-
-        {/* Secondary CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="grid grid-cols-3 gap-4"
-        >
-          <button className="h-12 border border-slate-200 bg-white text-slate-700 rounded-lg 
-            flex items-center justify-center gap-2 hover:bg-slate-50 transition-all">
-            <Download className="w-4 h-4" />
-            <span className="text-sm font-medium">Download PDF</span>
-          </button>
+        {/* Project Summary */}
+        <div className="bg-white rounded-[40px] p-10 border border-zinc-200 shadow-sm mb-8">
+          <h2 className="font-['Playfair_Display'] text-3xl font-light text-black mb-6">
+            Project Summary
+          </h2>
+          <p className="text-sm font-light text-zinc-700 leading-relaxed mb-6">
+            Based on your requirements, we've designed a comprehensive solution to help {proposalData.companyName} achieve
+            its goals. This proposal outlines a {
+              proposalData.timeline === 'urgent' ? 'fast-track' :
+              proposalData.timeline === '1-2months' ? 'standard' :
+              'flexible'
+            } implementation approach that includes {proposalData.services.length} core service{proposalData.services.length > 1 ? 's' : ''}.
+          </p>
           
-          <button className="h-12 border border-slate-200 bg-white text-slate-700 rounded-lg 
-            flex items-center justify-center gap-2 hover:bg-slate-50 transition-all">
-            <Calendar className="w-4 h-4" />
-            <span className="text-sm font-medium">Schedule Call</span>
-          </button>
-          
-          <button className="h-12 border border-slate-200 bg-white text-slate-700 rounded-lg 
-            flex items-center justify-center gap-2 hover:bg-slate-50 transition-all">
-            <Share2 className="w-4 h-4" />
-            <span className="text-sm font-medium">Share Link</span>
-          </button>
-        </motion.div>
+          {proposalData.goals && proposalData.goals.length > 0 && (
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-3">
+                Your Goals
+              </h3>
+              <ul className="space-y-2">
+                {proposalData.goals.map((goal, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm font-light text-zinc-700">{goal}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
 
-        {/* Preview Snippet */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="mt-12 bg-white rounded-xl border border-slate-200 p-8"
-        >
-          <h3 className="text-lg font-bold text-slate-900 mb-4">Proposal Preview</h3>
-          <div className="space-y-4 text-sm text-slate-600">
-            <p>
-              <strong className="text-slate-900">Executive Summary:</strong> This proposal outlines 
-              the development of a comprehensive CRM system designed specifically for real estate operations, 
-              with a focus on automated lead follow-up and real-time conversion tracking.
-            </p>
-            <p>
-              <strong className="text-slate-900">Key Features:</strong> WhatsApp integration for automated 
-              messaging, real-time analytics dashboard, lead scoring and prioritization, conversion rate tracking, 
-              and seamless integration with existing tools.
-            </p>
-            <p>
-              <strong className="text-slate-900">Timeline:</strong> 8-week phased delivery approach with 
-              MVP launch in Week 6, followed by refinement and optimization phase.
-            </p>
+        {/* Project Phases */}
+        <div className="bg-white rounded-[40px] p-10 border border-zinc-200 shadow-sm mb-8">
+          <h2 className="font-['Playfair_Display'] text-3xl font-light text-black mb-6">
+            Project Phases
+          </h2>
+          <div className="space-y-4">
+            {phases.map((phase, index) => (
+              <div
+                key={index}
+                className="p-6 rounded-2xl border border-zinc-100 hover:border-indigo-200 transition-all duration-200"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    <div className="
+                      w-10 h-10 rounded-full bg-zinc-900 text-white
+                      flex items-center justify-center flex-shrink-0
+                      font-['Playfair_Display'] text-lg
+                    ">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-medium text-black mb-1">
+                        {phase.name}
+                      </h3>
+                      <div className="flex items-center gap-4 text-sm text-zinc-500">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {phase.duration}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wider">
+                    {phase.status}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Auto-redirect notice */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 3 }}
-          className="text-center mt-8"
-        >
-          <p className="text-sm text-slate-500">
-            Auto-redirecting to full proposal in <span className="font-medium">5 seconds</span>...
-          </p>
-        </motion.div>
+        {/* Deliverables */}
+        <div className="bg-white rounded-[40px] p-10 border border-zinc-200 shadow-sm mb-8">
+          <h2 className="font-['Playfair_Display'] text-3xl font-light text-black mb-6">
+            Deliverables
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {deliverables.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-3 p-4 rounded-xl bg-zinc-50 border border-zinc-100"
+              >
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                <span className="text-sm font-light text-zinc-900">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        {/* Proposal ID (for debugging) */}
-        {proposalId && (
-          <p className="text-center text-xs text-slate-400 mt-4">
-            Proposal ID: {proposalId}
-          </p>
-        )}
-
-        {/* Back to Dashboard */}
-        <div className="text-center mt-8">
-          <Link 
-            href="/"
-            className="text-sm text-slate-500 hover:text-slate-700 underline"
-          >
-            Return to Dashboard
-          </Link>
+        {/* Accept Proposal */}
+        <div className="bg-white rounded-[40px] p-10 border border-zinc-200 shadow-sm">
+          <div className="text-center">
+            <h2 className="font-['Playfair_Display'] text-3xl font-light text-black mb-4">
+              Ready to get started?
+            </h2>
+            <p className="text-sm font-light text-zinc-600 mb-8 max-w-xl mx-auto">
+              Accept this proposal and we'll schedule a kickoff call to begin planning your project.
+            </p>
+            <button
+              onClick={handleAcceptProposal}
+              className="
+                bg-black text-white rounded-full px-8 py-4 text-sm font-medium
+                hover:bg-zinc-900 transition-all duration-200 shadow-lg
+                inline-flex items-center gap-2
+              "
+            >
+              <CheckCircle2 className="w-5 h-5" />
+              Accept Proposal
+            </button>
+          </div>
         </div>
       </div>
     </div>

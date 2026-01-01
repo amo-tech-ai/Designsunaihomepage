@@ -33,6 +33,15 @@ const FOOTER_SECTIONS = [
       { label: 'Partners', href: '/partners' },
     ],
   },
+  {
+    title: 'V3',
+    links: [
+      { label: 'Lead Capture Wizard', href: '/wizard' },
+      { label: 'AI Proposal', href: '/proposal' },
+      { label: 'Leads Dashboard', href: '/app/leads' },
+      { label: 'WhatsApp Hub', href: '/whatsapp' },
+    ],
+  },
 ];
 
 const LOCATIONS = [
@@ -45,7 +54,7 @@ export function Footer() {
   return (
     <footer className="bg-[#0A1628] text-white px-8 py-16">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
           {/* Column 1: Brand */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2 mb-4">
