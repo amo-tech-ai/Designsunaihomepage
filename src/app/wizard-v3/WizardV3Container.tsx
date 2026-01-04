@@ -6,7 +6,8 @@ import ProgressIndicator from './components/ProgressIndicator';
 import Screen1Basics from './components/Screen1Basics';
 import Screen2BuildType from './components/Screen2BuildType';
 import Screen3AICapabilities from './components/Screen3AICapabilities';
-import Screen4Summary from './components/Screen4Summary';
+import Screen4SystemSummary from './components/Screen4SystemSummary';
+import Screen4PRDPreview from './components/Screen4PRDPreview';
 import LiveBlueprint from './components/LiveBlueprint';
 
 interface WizardData {
@@ -58,12 +59,9 @@ export default function WizardV3Container() {
       setCurrentScreen(prev => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      // Final screen - would normally submit or navigate
+      // Final screen - navigate to Client Dashboard
       console.log('Wizard completed:', wizardData);
-      // For now, just show an alert
-      alert('Wizard completed! Check console for data.');
-      // In production, you'd navigate to next page:
-      // navigate('/wizard-v3/review');
+      navigate('/dashboard-v3');
     }
   };
 
@@ -113,25 +111,39 @@ export default function WizardV3Container() {
             )}
             
             {currentScreen === 4 && (
-              <Screen4Summary
+              <Screen4SystemSummary data={wizardData} />
+            )}
+          </div>
+
+          {/* Middle Column - PRD Preview (Screen 4 only) */}
+          {currentScreen === 4 && (
+            <div className="hidden lg:block">
+              <Screen4PRDPreview
                 data={wizardData}
                 updateData={updateWizardData}
                 onNext={handleNext}
                 onBack={handleBack}
               />
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Right Column - Live Blueprint (Desktop Only) */}
-          <div className={`hidden lg:block ${currentScreen === 4 ? 'lg:col-start-3' : ''}`}>
+          <div className={`hidden lg:block ${currentScreen === 4 ? '' : ''}`}>
             <LiveBlueprint screen={currentScreen} data={wizardData} />
           </div>
         </div>
 
-        {/* Mobile Blueprint (Bottom) */}
-        <div className="lg:hidden mt-8 max-w-[640px] mx-auto">
-          <LiveBlueprint screen={currentScreen} data={wizardData} />
-        </div>
+        {/* Mobile View - Screen 4 PRD */}
+        {currentScreen === 4 && (
+          <div className="lg:hidden mt-8 max-w-[640px] mx-auto">
+            <Screen4PRDPreview
+              data={wizardData}
+              updateData={updateWizardData}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ interface Screen1Props {
 }
 
 export default function Screen1Basics({ data, updateData, onNext }: Screen1Props) {
-  const canProceed = data.fullName && data.companyName;
+  const canProceed = data.fullName && data.companyName && data.projectDescription;
 
   return (
     <div className="bg-white rounded-[40px] p-10 border border-zinc-200 shadow-sm">
@@ -84,6 +84,39 @@ export default function Screen1Basics({ data, updateData, onNext }: Screen1Props
           <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
             If provided, we'll use this to better understand your brand and industry. No data is stored.
           </p>
+        </div>
+
+        {/* Project Description */}
+        <div>
+          <label htmlFor="projectDescription" className="block text-sm font-medium text-zinc-700 mb-2">
+            What do you want to build? <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            id="projectDescription"
+            value={data.projectDescription || ''}
+            onChange={(e) => updateData({ projectDescription: e.target.value })}
+            placeholder="Example: An AI-powered dashboard to manage luxury fashion events, track customer relationships, and automate content planning for our brand..."
+            rows={5}
+            className="
+              w-full rounded-2xl px-6 py-4 text-base
+              border border-zinc-200 transition-all duration-200
+              focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20
+              placeholder:text-zinc-400
+              resize-none
+            "
+          />
+          <div className="flex items-center justify-between mt-2">
+            <p className="text-xs text-zinc-500 leading-relaxed">
+              Describe your vision in a few sentences. This helps us design the right system.
+            </p>
+            <span className={`text-xs ${
+              (data.projectDescription?.length || 0) >= 50 
+                ? 'text-emerald-600' 
+                : 'text-zinc-400'
+            }`}>
+              {data.projectDescription?.length || 0} characters
+            </span>
+          </div>
         </div>
       </div>
 

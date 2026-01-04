@@ -72,9 +72,7 @@ export default function Screen2BuildType({ data, updateData, onNext, onBack }: S
 
   const canProceed = 
     selectedBuildTypes.length > 0 && 
-    data.industry && 
-    data.projectDescription && 
-    data.projectDescription.length >= 20;
+    data.industry;
 
   return (
     <div className="bg-white rounded-[40px] p-10 border border-zinc-200 shadow-sm">
@@ -194,40 +192,6 @@ export default function Screen2BuildType({ data, updateData, onNext, onBack }: S
             "
           />
         )}
-      </div>
-
-      {/* Divider */}
-      <div className="border-t border-zinc-200 my-10"></div>
-
-      {/* Section 3: Project Description */}
-      <div className="mb-8">
-        <h2 className="font-['Playfair_Display'] text-4xl font-light text-black mb-4">
-          Describe the project
-        </h2>
-        <p className="text-sm font-light text-zinc-600 mb-6">
-          In a few sentences, explain what you want to build and how it will be used.
-        </p>
-
-        <textarea
-          value={data.projectDescription || ''}
-          onChange={(e) => updateData({ projectDescription: e.target.value })}
-          placeholder="We want to build an internal dashboard for our team to manage projects, automate follow-ups, and use AI to plan next steps."
-          className="
-            w-full h-40 rounded-2xl px-6 py-4 text-base
-            border border-zinc-200 transition-all duration-200
-            focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20
-            resize-none placeholder:text-zinc-400 leading-relaxed
-          "
-          maxLength={1000}
-        />
-        <div className="flex justify-between items-center mt-2">
-          <p className="text-xs text-zinc-500 italic">
-            Don't worry about being technical — just describe the idea.
-          </p>
-          <p className="text-xs text-zinc-400">
-            {data.projectDescription?.length || 0} / 1000
-          </p>
-        </div>
       </div>
 
       {/* Footer */}

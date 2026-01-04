@@ -33,6 +33,7 @@ function AppRoutes() {
     '/processing', 
     '/proposal',
     '/dashboard',
+    '/dashboard-v3',
     '/deck-editor',
     '/app/leads',
     '/app/ops',
