@@ -1,228 +1,79 @@
-import { useNavigate } from 'react-router-dom';
-import { HomePageV7 } from '../../components/premium/HomePageV7';
-import { HomePageV6 } from '../../components/premium/HomePageV6';
-import { HomePageV5 } from '../../components/premium/HomePageV5';
-import { HomePageV4 } from '../../components/premium/HomePageV4';
-import { HomeV3 } from '../../components/HomeV3';
-import { HomeV2 } from '../../components/HomeV2';
-import { HomeV1 } from '../../components/HomeV1';
-import HomeV9 from '../../home-v9/HomeV9';
-import { ProjectsPageV7 } from '../../components/premium/v7/ProjectsPageV7';
-import { AIWebDevPageV7 } from '../../components/premium/v7/services/AIWebDevPageV7';
-import { AIDevelopmentPageV7 } from '../../components/premium/v7/services/AIDevelopmentPageV7';
-import { ProcessPageV2 } from '../../components/premium/v7/process/ProcessPageV2';
-import { ServicesPageV2 } from '../../components/premium/v7/services/ServicesPageV2';
-import { AISalesMarketingPageV7 } from '../../components/premium/v7/services/AISalesMarketingPageV7';
-import { AIAgentsPageV7 } from '../../components/premium/v7/services/AIAgentsPageV7';
-import { AIMVPPageV7 } from '../../components/premium/v7/services/AIMVPPageV7';
-import { AIChatbotsPageV7 } from '../../components/premium/v7/services/AIChatbotsPageV7';
-import { IndustryChatbotPageV7 } from '../../components/premium/v7/services/IndustryChatbotPageV7';
-import { StyleGuideV6 } from '../../components/premium/v6/docs/StyleGuideV6';
-import { StartupAIArchitecturePage } from '../../components/premium/v7/docs/StartupAIArchitecturePage';
-import { InvestorSharePage } from '../../components/premium/v7/InvestorSharePage';
-import { EventHubPage } from '../../components/premium/v7/events/EventHubPage';
-import { SitemapV2 } from '../../components/docs/SitemapV2';
-import { BookingPage } from '../../components/booking/BookingPage';
+import { lazy } from 'react';
 
-// Create common navigation handlers
-function useCommonNavigation() {
-  const navigate = useNavigate();
-  
-  return {
-    onNavigateToWhatsApp: () => navigate('/whatsapp'),
-    onNavigateToAbout: () => navigate('/about'),
-    onNavigateToWizard: () => navigate('/wizard'),
-    onNavigateToDashboard: () => navigate('/dashboard'),
-    onNavigateToHome: () => navigate('/'),
-    onNavigateToBooking: () => navigate('/booking'),
-    onVersionChange: (version: string) => {
-      const versionRoutes: Record<string, string> = {
-        'v1': '/v1',
-        'v2': '/v2',
-        'v3': '/v3',
-        'v4': '/v4',
-        'v5': '/v5',
-        'v6': '/v6',
-        'v7': '/',
-        'wizard': '/wizard',
-        'dashboard': '/dashboard',
-        'leads': '/app/leads',
-        'ops': '/app/ops',
-        'workflow': '/app/workflow',
-        'settings': '/app/settings',
-        'whatsapp': '/whatsapp',
-        'about': '/about',
-        'booking': '/booking',
-        'projects': '/projects',
-        'services-v2': '/services',
-        'ai-web-dev': '/services/ai-web-dev',
-        'ai-development': '/services/ai-development',
-        'ai-sales-marketing': '/services/ai-sales-marketing',
-        'ai-agents': '/services/ai-agents',
-        'ai-mvp': '/services/ai-mvp',
-        'ai-chatbots': '/services/ai-chatbots',
-        'process': '/process',
-        'sitemap': '/sitemap',
-        'style-guide': '/style-guide',
-        'startup-ai-docs': '/docs/startup-ai',
-        'share-investor': '/share/investor',
-        'event-hub': '/events',
-        'deck-editor': '/deck-editor',
-      };
-      navigate(versionRoutes[version] || `/${version}`);
-    }
-  };
-}
+// Home Pages
+const HomePageV7 = lazy(() => import('../../components/premium/HomePageV7').then(m => ({ default: m.HomePageV7 })));
+const HomePageV11 = lazy(() => import('../../components/premium/v11/home-v11/HomePageV11Refactored').then(m => ({ default: m.HomePageV11Refactored })));
+const HomePageV6 = lazy(() => import('../../components/premium/v6/home-v6/HomePageV6Refactored').then(m => ({ default: m.HomePageV6Refactored })));
+const HomePageV5 = lazy(() => import('../../components/premium/v5/home-v5/HomePageV5Refactored').then(m => ({ default: m.HomePageV5Refactored })));
+const HomePageV4 = lazy(() => import('../../components/premium/v4/home-v4/HomePageV4Refactored').then(m => ({ default: m.HomePageV4Refactored })));
+const HomeV3 = lazy(() => import('../../components/HomeV3').then(m => ({ default: m.HomeV3 })));
+const HomeV2 = lazy(() => import('../../components/HomeV2').then(m => ({ default: m.HomeV2 })));
+const HomeV1 = lazy(() => import('../../components/HomeV1').then(m => ({ default: m.HomeV1 })));
+const HomePageV9 = lazy(() => import('../../home-v9/HomeV9'));
+const HomePageV10 = lazy(() => import('../../home-v10/HomePageV10'));
 
-// Home Page Wrappers
-export function HomePageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <HomePageV7 {...nav} />;
-}
+// Service Pages
+const ProjectsPageV7 = lazy(() => import('../../components/premium/v7/ProjectsPageV7').then(m => ({ default: m.ProjectsPageV7 })));
+const AIWebDevPageV7 = lazy(() => import('../../components/premium/v7/services/AIWebDevPageV7').then(m => ({ default: m.AIWebDevPageV7 })));
+const AIDevelopmentPageV7 = lazy(() => import('../../components/premium/v7/services/AIDevelopmentPageV7').then(m => ({ default: m.AIDevelopmentPageV7 })));
+const ProcessPageV2 = lazy(() => import('../../components/premium/v7/process/ProcessPageV2Refactored').then(m => ({ default: m.default })));
+const ServicesPageV2 = lazy(() => import('../../components/premium/v7/services/ServicesPageV2').then(m => ({ default: m.ServicesPageV2 })));
+const AISalesMarketingPageV7 = lazy(() => import('../../components/premium/v7/services/AISalesMarketingPageV7').then(m => ({ default: m.AISalesMarketingPageV7 })));
+const AIAgentsPageV7 = lazy(() => import('../../components/premium/v7/services/AIAgentsPageV7').then(m => ({ default: m.AIAgentsPageV7 })));
+const AIMVPPageV7 = lazy(() => import('../../components/premium/v7/services/AIMVPPageV7').then(m => ({ default: m.AIMVPPageV7 })));
+const AIChatbotsPageV7 = lazy(() => import('../../components/premium/v7/services/AIChatbotsPageV7').then(m => ({ default: m.AIChatbotsPageV7 })));
+const IndustryChatbotSaaS = lazy(() => import('../../components/premium/v7/services/IndustryChatbotPageV7').then(m => ({ default: m.IndustryChatbotPageV7 })));
+const IndustryChatbotEcommerce = lazy(() => import('../../components/premium/v7/services/IndustryChatbotPageV7').then(m => ({ default: m.IndustryChatbotPageV7 })));
+const IndustryChatbotHealthcare = lazy(() => import('../../components/premium/v7/services/IndustryChatbotPageV7').then(m => ({ default: m.IndustryChatbotPageV7 })));
+const IndustryChatbotRealEstate = lazy(() => import('../../components/premium/v7/services/IndustryChatbotPageV7').then(m => ({ default: m.IndustryChatbotPageV7 })));
+const IndustryChatbotB2B = lazy(() => import('../../components/premium/v7/services/IndustryChatbotPageV7').then(m => ({ default: m.IndustryChatbotPageV7 })));
+const IndustryChatbotAutomotive = lazy(() => import('../../components/premium/v7/services/IndustryChatbotPageV7').then(m => ({ default: m.IndustryChatbotPageV7 })));
+const IndustryChatbotTourism = lazy(() => import('../../components/premium/v7/services/IndustryChatbotPageV7').then(m => ({ default: m.IndustryChatbotPageV7 })));
 
-export function HomePageV6Wrapper() {
-  const nav = useCommonNavigation();
-  return <HomePageV6 {...nav} />;
-}
+// Industry Pages
+const SaaSIndustryPage = lazy(() => import('../../components/industries/SaaSIndustryPage').then(m => ({ default: m.SaaSIndustryPage })));
+const EcommerceIndustryPage = lazy(() => import('../../components/industries/EcommerceIndustryPage').then(m => ({ default: m.EcommerceIndustryPage })));
 
-export function HomePageV5Wrapper() {
-  const nav = useCommonNavigation();
-  return <HomePageV5 {...nav} />;
-}
+// Docs & Resources
+const StyleGuideV6 = lazy(() => import('../../components/premium/v6/docs/StyleGuideV6').then(m => ({ default: m.StyleGuideV6 })));
+const StartupAIArchitecturePage = lazy(() => import('../../components/premium/v7/docs/StartupAIArchitecturePage').then(m => ({ default: m.StartupAIArchitecturePage })));
+const InvestorSharePage = lazy(() => import('../../components/premium/v7/InvestorSharePage').then(m => ({ default: m.InvestorSharePage })));
+const EventHubPage = lazy(() => import('../../components/premium/v7/events/EventHubPage').then(m => ({ default: m.EventHubPage })));
+const SitemapV2 = lazy(() => import('../../components/docs/SitemapV2').then(m => ({ default: m.SitemapV2 })));
+const BookingPage = lazy(() => import('../../components/booking/BookingPage').then(m => ({ default: m.BookingPage })));
 
-export function HomePageV4Wrapper() {
-  const nav = useCommonNavigation();
-  return <HomePageV4 {...nav} />;
-}
-
-export function HomeV3Wrapper() {
-  const nav = useCommonNavigation();
-  return <HomeV3 {...nav} />;
-}
-
-export function HomeV2Wrapper() {
-  const nav = useCommonNavigation();
-  return <HomeV2 {...nav} />;
-}
-
-export function HomeV1Wrapper() {
-  const nav = useCommonNavigation();
-  return <HomeV1 {...nav} />;
-}
-
-export function HomePageV9Wrapper() {
-  return <HomeV9 />;
-}
-
-// Service Page Wrappers
-export function ProjectsPageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <ProjectsPageV7 {...nav} />;
-}
-
-export function AIWebDevPageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <AIWebDevPageV7 {...nav} />;
-}
-
-export function AIDevelopmentPageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <AIDevelopmentPageV7 {...nav} />;
-}
-
-export function ProcessPageV2Wrapper() {
-  const nav = useCommonNavigation();
-  return <ProcessPageV2 {...nav} />;
-}
-
-export function ServicesPageV2Wrapper() {
-  const nav = useCommonNavigation();
-  return <ServicesPageV2 {...nav} />;
-}
-
-export function AISalesMarketingPageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <AISalesMarketingPageV7 {...nav} />;
-}
-
-export function AIAgentsPageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <AIAgentsPageV7 {...nav} />;
-}
-
-export function AIMVPPageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <AIMVPPageV7 {...nav} />;
-}
-
-export function AIChatbotsPageV7Wrapper() {
-  const nav = useCommonNavigation();
-  return <AIChatbotsPageV7 {...nav} />;
-}
-
-// Industry Chatbot Wrappers
-export function IndustryChatbotSaaSWrapper() {
-  const nav = useCommonNavigation();
-  return <IndustryChatbotPageV7 industry="saas" {...nav} />;
-}
-
-export function IndustryChatbotEcommerceWrapper() {
-  const nav = useCommonNavigation();
-  return <IndustryChatbotPageV7 industry="ecommerce" {...nav} />;
-}
-
-export function IndustryChatbotHealthcareWrapper() {
-  const nav = useCommonNavigation();
-  return <IndustryChatbotPageV7 industry="healthcare" {...nav} />;
-}
-
-export function IndustryChatbotRealEstateWrapper() {
-  const nav = useCommonNavigation();
-  return <IndustryChatbotPageV7 industry="real-estate" {...nav} />;
-}
-
-export function IndustryChatbotB2BWrapper() {
-  const nav = useCommonNavigation();
-  return <IndustryChatbotPageV7 industry="b2b" {...nav} />;
-}
-
-export function IndustryChatbotAutomotiveWrapper() {
-  const nav = useCommonNavigation();
-  return <IndustryChatbotPageV7 industry="automotive" {...nav} />;
-}
-
-export function IndustryChatbotTourismWrapper() {
-  const nav = useCommonNavigation();
-  return <IndustryChatbotPageV7 industry="tourism" {...nav} />;
-}
-
-// Doc/Special Page Wrappers
-export function StyleGuideV6Wrapper() {
-  const nav = useCommonNavigation();
-  return <StyleGuideV6 {...nav} />;
-}
-
-export function StartupAIArchitecturePageWrapper() {
-  const nav = useCommonNavigation();
-  return <StartupAIArchitecturePage onVersionChange={nav.onVersionChange} />;
-}
-
-export function InvestorSharePageWrapper() {
-  const nav = useCommonNavigation();
-  return <InvestorSharePage {...nav} />;
-}
-
-export function EventHubPageWrapper() {
-  const nav = useCommonNavigation();
-  return <EventHubPage onNavigate={nav.onVersionChange} onVersionChange={nav.onVersionChange} />;
-}
-
-export function SitemapV2Wrapper() {
-  const nav = useCommonNavigation();
-  return <SitemapV2 onNavigate={nav.onVersionChange} />;
-}
-
-export function BookingPageWrapper() {
-  const nav = useCommonNavigation();
-  return <BookingPage {...nav} onConfirm={nav.onNavigateToDashboard} />;
-}
+// Wrapper Components
+export const HomePageV7Wrapper = () => <HomePageV7 />;
+export const HomePageV11Wrapper = () => <HomePageV11 />;
+export const HomePageV6Wrapper = () => <HomePageV6 />;
+export const HomePageV5Wrapper = () => <HomePageV5 />;
+export const HomePageV4Wrapper = () => <HomePageV4 />;
+export const HomeV3Wrapper = () => <HomeV3 />;
+export const HomeV2Wrapper = () => <HomeV2 />;
+export const HomeV1Wrapper = () => <HomeV1 />;
+export const HomePageV9Wrapper = () => <HomePageV9 />;
+export const HomePageV10Wrapper = () => <HomePageV10 />;
+export const ProjectsPageV7Wrapper = () => <ProjectsPageV7 />;
+export const AIWebDevPageV7Wrapper = () => <AIWebDevPageV7 />;
+export const AIDevelopmentPageV7Wrapper = () => <AIDevelopmentPageV7 />;
+export const ProcessPageV2Wrapper = () => <ProcessPageV2 />;
+export const ServicesPageV2Wrapper = () => <ServicesPageV2 />;
+export const AISalesMarketingPageV7Wrapper = () => <AISalesMarketingPageV7 />;
+export const AIAgentsPageV7Wrapper = () => <AIAgentsPageV7 />;
+export const AIMVPPageV7Wrapper = () => <AIMVPPageV7 />;
+export const AIChatbotsPageV7Wrapper = () => <AIChatbotsPageV7 />;
+export const IndustryChatbotSaaSWrapper = () => <IndustryChatbotSaaS industry="saas" />;
+export const IndustryChatbotEcommerceWrapper = () => <IndustryChatbotEcommerce industry="ecommerce" />;
+export const IndustryChatbotHealthcareWrapper = () => <IndustryChatbotHealthcare industry="healthcare" />;
+export const IndustryChatbotRealEstateWrapper = () => <IndustryChatbotRealEstate industry="real-estate" />;
+export const IndustryChatbotB2BWrapper = () => <IndustryChatbotB2B industry="b2b" />;
+export const IndustryChatbotAutomotiveWrapper = () => <IndustryChatbotAutomotive industry="automotive" />;
+export const IndustryChatbotTourismWrapper = () => <IndustryChatbotTourism industry="tourism" />;
+export const StyleGuideV6Wrapper = () => <StyleGuideV6 />;
+export const StartupAIArchitecturePageWrapper = () => <StartupAIArchitecturePage />;
+export const InvestorSharePageWrapper = () => <InvestorSharePage />;
+export const EventHubPageWrapper = () => <EventHubPage />;
+export const SitemapV2Wrapper = () => <SitemapV2 />;
+export const BookingPageWrapper = () => <BookingPage />;
+export const SaaSIndustryPageWrapper = () => <SaaSIndustryPage />;
+export const EcommerceIndustryPageWrapper = () => <EcommerceIndustryPage />;

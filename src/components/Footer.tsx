@@ -10,10 +10,10 @@ export function Footer() {
   const isClient = user?.role === 'client';
 
   return (
-    <footer className="bg-gradient-to-br from-[#0A1F2E] to-[#0F2A3D] border-t border-white/10">
+    <footer className="bg-black border-t border-white/10">
       <div className="max-w-[1400px] mx-auto px-10 py-20">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
           
           {/* Column 1: Brand & Social */}
           <div className="lg:col-span-1">
@@ -60,54 +60,25 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Company */}
+          {/* Column 2: Solutions */}
           <div>
             <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
-              Company
+              Solutions
             </h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/about" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  About
+                <Link to="/services" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  All Services
                 </Link>
               </li>
-              <li>
-                <Link to="/process" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Process
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link to="/booking" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Booking
-                </Link>
-              </li>
-              <li>
-                <Link to="/events" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Events
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Services */}
-          <div>
-            <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
-              Services
-            </h4>
-            <ul className="space-y-3">
               <li>
                 <Link to="/services/ai-web-dev" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  AI Web Development
+                  AI Web Design
                 </Link>
               </li>
               <li>
                 <Link to="/services/ai-development" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Custom AI Development
+                  App Development
                 </Link>
               </li>
               <li>
@@ -117,33 +88,101 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/services/ai-chatbots" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  AI Chatbots
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/ai-mvp" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  MVP Development
+                  Chatbots
                 </Link>
               </li>
               <li>
                 <Link to="/services/ai-sales-marketing" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Sales & Marketing AI
+                  Sales & CRM
                 </Link>
               </li>
               <li>
-                <Link to="/whatsapp" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  WhatsApp Automation
+                <Link to="/services/ai-mvp" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  MVP Builder
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Solutions (Conditional) */}
+          {/* Column 3: Industries */}
+          <div>
+            <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
+              Industries
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/services/chatbot/saas" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  SaaS
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/chatbot/ecommerce" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  E-commerce
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/chatbot/real-estate" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Real Estate
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/chatbot/b2b" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  B2B Services
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/chatbot/automotive" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Automotive
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/chatbot/tourism" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Tourism
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Company */}
+          <div>
+            <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
+              Company
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/about" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/projects" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Case Studies
+                </Link>
+              </li>
+              <li>
+                <Link to="/process" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Our Process
+                </Link>
+              </li>
+              <li>
+                <Link to="/booking" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Book a Call
+                </Link>
+              </li>
+              <li>
+                <Link to="/whatsapp" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                  Contact Support
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 5: Quick Links (Conditional) */}
           <div>
             {!isAuthenticated && (
               <>
                 <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
-                  Solutions
+                  Get Started
                 </h4>
                 <ul className="space-y-3">
                   <li>
@@ -155,8 +194,8 @@ export function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/proposal" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                      View Proposal Demo
+                    <Link to="/v11" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
+                      Home V11
                     </Link>
                   </li>
                   <li>
@@ -252,79 +291,6 @@ export function Footer() {
             )}
           </div>
 
-          {/* Column 5: Wizards */}
-          <div>
-            <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
-              Wizards
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/wizard" className="text-orange-500 font-medium hover:text-orange-400 hover:pl-1 transition-all text-[15px] block">
-                  Brief Wizard →
-                </Link>
-              </li>
-              <li>
-                <Link to="/processing" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  AI Processing
-                </Link>
-              </li>
-              <li>
-                <Link to="/proposal" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Proposal Ready
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Login
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 6: Industries */}
-          <div>
-            <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">
-              Industries
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/services/chatbot/saas" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  SaaS
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/chatbot/ecommerce" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  E-commerce
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/chatbot/healthcare" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Healthcare
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/chatbot/real-estate" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Real Estate
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/chatbot/b2b" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  B2B Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/chatbot/automotive" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Automotive
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/chatbot/tourism" className="text-slate-300 hover:text-orange-500 hover:pl-1 transition-all text-[15px] block">
-                  Tourism
-                </Link>
-              </li>
-            </ul>
-          </div>
-
         </div>
 
         {/* Bottom Bar */}
@@ -333,6 +299,12 @@ export function Footer() {
             © 2025 Sun AI. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
+            <Link to="/privacy" className="text-slate-500 hover:text-orange-500 transition-colors">
+              Privacy
+            </Link>
+            <Link to="/terms" className="text-slate-500 hover:text-orange-500 transition-colors">
+              Terms
+            </Link>
             <Link to="/sitemap" className="text-slate-500 hover:text-orange-500 transition-colors">
               Sitemap
             </Link>

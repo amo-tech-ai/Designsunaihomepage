@@ -2,8 +2,8 @@ import { Home, Menu, X, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 interface SideMenuProps {
-  currentVersion: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v9' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking';
-  onVersionChange: (version: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v9' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking') => void;
+  currentVersion: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v9' | 'v10' | 'v11' | 'projects' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking';
+  onVersionChange: (version: 'v1' | 'v2' | 'v3' | 'v4' | 'v5' | 'v6' | 'v7' | 'v9' | 'v10' | 'v11' | 'projects' | 'wizard' | 'processing' | 'proposal' | 'dashboard' | 'leads' | 'whatsapp' | 'about' | 'style-guide' | 'sitemap' | 'booking') => void;
 }
 
 export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
@@ -29,7 +29,7 @@ export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
 
       {/* Side Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-40 transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-40 transition-transform duration-300 overflow-y-auto ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -334,6 +334,76 @@ export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
               </div>
             </button>
 
+            <button
+              onClick={() => {
+                onVersionChange('v10');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'v10'
+                  ? 'bg-[#00334F] text-white shadow-md'
+                  : 'bg-[#F7F9FB] text-[#202020] hover:bg-[#E9EAEE]'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div
+                    className="text-[16px] mb-1"
+                    style={{ fontWeight: 600 }}
+                  >
+                    Version 10
+                  </div>
+                  <div
+                    className={`text-[13px] ${
+                      currentVersion === 'v10'
+                        ? 'text-white/80'
+                        : 'text-[#555]'
+                    }`}
+                  >
+                    Minimalist AI Interface
+                  </div>
+                </div>
+                {currentVersion === 'v10' && (
+                  <div className="w-2 h-2 rounded-full bg-[#FF6A3D]"></div>
+                )}
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                onVersionChange('v11');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'v11'
+                  ? 'bg-[#00334F] text-white shadow-md'
+                  : 'bg-[#F7F9FB] text-[#202020] hover:bg-[#E9EAEE]'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div
+                    className="text-[16px] mb-1"
+                    style={{ fontWeight: 600 }}
+                  >
+                    Version 11
+                  </div>
+                  <div
+                    className={`text-[13px] ${
+                      currentVersion === 'v11'
+                        ? 'text-white/80'
+                        : 'text-[#555]'
+                    }`}
+                  >
+                    Calm Luxury Editorial
+                  </div>
+                </div>
+                {currentVersion === 'v11' && (
+                  <div className="w-2 h-2 rounded-full bg-[#FF6A3D]"></div>
+                )}
+              </div>
+            </button>
+
             {/* Brief Wizard Button */}
             <button
               onClick={() => {
@@ -367,6 +437,42 @@ export function SideMenu({ currentVersion, onVersionChange }: SideMenuProps) {
                 </div>
                 {currentVersion === 'wizard' && (
                   <div className="w-2 h-2 rounded-full bg-white"></div>
+                )}
+              </div>
+            </button>
+
+            {/* Projects Page Button */}
+            <button
+              onClick={() => {
+                onVersionChange('projects');
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-6 py-4 rounded-xl transition-all ${
+                currentVersion === 'projects'
+                  ? 'bg-[#00334F] text-white shadow-md'
+                  : 'bg-[#F7F9FB] text-[#202020] hover:bg-[#E9EAEE]'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div
+                    className="text-[16px] mb-1"
+                    style={{ fontWeight: 600 }}
+                  >
+                    Projects
+                  </div>
+                  <div
+                    className={`text-[13px] ${
+                      currentVersion === 'projects'
+                        ? 'text-white/80'
+                        : 'text-[#555]'
+                    }`}
+                  >
+                    Case Studies & Portfolio
+                  </div>
+                </div>
+                {currentVersion === 'projects' && (
+                  <div className="w-2 h-2 rounded-full bg-[#FF6A3D]"></div>
                 )}
               </div>
             </button>

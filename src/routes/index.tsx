@@ -7,6 +7,7 @@ import { ProjectDashboardWrapper, DeckEditorWrapper } from './wrappers/Dashboard
 import { LoginPageWrapper } from './wrappers/AuthWrapper';
 import {
   HomePageV7Wrapper,
+  HomePageV11Wrapper,
   HomePageV6Wrapper,
   HomePageV5Wrapper,
   HomePageV4Wrapper,
@@ -14,6 +15,7 @@ import {
   HomeV2Wrapper,
   HomeV1Wrapper,
   HomePageV9Wrapper,
+  HomePageV10Wrapper,
   ProjectsPageV7Wrapper,
   AIWebDevPageV7Wrapper,
   AIDevelopmentPageV7Wrapper,
@@ -35,7 +37,9 @@ import {
   InvestorSharePageWrapper,
   EventHubPageWrapper,
   SitemapV2Wrapper,
-  BookingPageWrapper
+  BookingPageWrapper,
+  SaaSIndustryPageWrapper,
+  EcommerceIndustryPageWrapper
 } from './wrappers/MarketingPageWrappers';
 
 // Lazy load simple components (no props needed)
@@ -62,15 +66,17 @@ const DashboardV3 = lazy(() => import('../app/dashboard-v3/page'));
 
 export const routes: RouteObject[] = [
   // Public Routes - Marketing
-  { path: '/', element: <HomePageV6Wrapper /> }, // V6 is now default homepage
+  { path: '/', element: <HomePageV11Wrapper /> }, // V11 is now default homepage
   { path: '/v1', element: <HomeV1Wrapper /> },
   { path: '/v2', element: <HomeV2Wrapper /> },
   { path: '/v3', element: <HomeV3Wrapper /> },
   { path: '/v4', element: <HomePageV4Wrapper /> },
   { path: '/v5', element: <HomePageV5Wrapper /> },
-  { path: '/v6', element: <HomePageV6Wrapper /> }, // Same as / for consistency
-  { path: '/v7', element: <HomePageV7Wrapper /> }, // V7 moved to archive
-  { path: '/v9', element: <HomePageV9Wrapper /> }, // V9 is the latest version
+  { path: '/v6', element: <HomePageV6Wrapper /> },
+  { path: '/v7', element: <HomePageV7Wrapper /> },
+  { path: '/v11', element: <HomePageV11Wrapper /> },
+  { path: '/v9', element: <HomePageV9Wrapper /> },
+  { path: '/v10', element: <HomePageV10Wrapper /> }, // V10 Sun AI Agency
   { path: '/projects', element: <ProjectsPageV7Wrapper /> },
   { path: '/process', element: <ProcessPageV2Wrapper /> },
   { path: '/services', element: <ServicesPageV2Wrapper /> },
@@ -87,6 +93,8 @@ export const routes: RouteObject[] = [
   { path: '/services/chatbot/b2b', element: <IndustryChatbotB2BWrapper /> },
   { path: '/services/chatbot/automotive', element: <IndustryChatbotAutomotiveWrapper /> },
   { path: '/services/chatbot/tourism', element: <IndustryChatbotTourismWrapper /> },
+  { path: '/industries/saas', element: <SaaSIndustryPageWrapper /> },
+  { path: '/industries/ecommerce', element: <EcommerceIndustryPageWrapper /> },
   { path: '/about', element: <AboutUsPage /> },
   { path: '/whatsapp', element: <WhatsAppAutomationPage /> },
   { path: '/booking', element: <BookingPageWrapper /> },
