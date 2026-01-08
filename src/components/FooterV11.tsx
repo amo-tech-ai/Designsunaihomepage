@@ -62,6 +62,14 @@ export function FooterV11() {
                 </li>
                 <li>
                   <Link 
+                    to="/process/v12" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    Process V12
+                  </Link>
+                </li>
+                <li>
+                  <Link 
                     to="/projects" 
                     className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
                   >

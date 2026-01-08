@@ -1777,6 +1777,10 @@
     height: 250%;
   }
 
+  .h-\[280px\] {
+    height: 280px;
+  }
+
   .h-\[300px\] {
     height: 300px;
   }
@@ -2173,6 +2177,10 @@
     width: 250%;
   }
 
+  .w-\[280px\] {
+    width: 280px;
+  }
+
   .w-\[300px\] {
     width: 300px;
   }
@@ -2263,6 +2271,10 @@
 
   .max-w-\[260px\] {
     max-width: 260px;
+  }
+
+  .max-w-\[400px\] {
+    max-width: 400px;
   }
 
   .max-w-\[640px\] {
@@ -2896,6 +2908,10 @@
     border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
   }
 
+  :where(.divide-\[\#EFE9E4\] > :not(:last-child)) {
+    border-color: #efe9e4;
+  }
+
   :where(.divide-neutral-200 > :not(:last-child)) {
     border-color: var(--color-neutral-200);
   }
@@ -3439,6 +3455,10 @@
     border-color: var(--color-neutral-200);
   }
 
+  .border-neutral-700 {
+    border-color: var(--color-neutral-700);
+  }
+
   .border-orange-50 {
     border-color: var(--color-orange-50);
   }
@@ -3863,6 +3883,10 @@
 
   .bg-\[\#FFF0EB\] {
     background-color: #fff0eb;
+  }
+
+  .bg-\[\#FFF7ED\] {
+    background-color: #fff7ed;
   }
 
   .bg-\[\#FFFBEB\] {
@@ -8673,6 +8697,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:bg-\[\#FDFCFB\]:hover {
+      background-color: #fdfcfb;
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-\[\#FF5A2D\]:hover {
       background-color: #ff5a2d;
     }
@@ -9047,6 +9077,12 @@
   @media (hover: hover) {
     .hover\:text-\[\#0a0a0a\]:hover {
       color: #0a0a0a;
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:text-\[\#1A1A1A\]:hover {
+      color: #1a1a1a;
     }
   }
 
@@ -10002,6 +10038,12 @@
   }
 
   @media (width >= 48rem) {
+    .md\:gap-6 {
+      gap: calc(var(--spacing) * 6);
+    }
+  }
+
+  @media (width >= 48rem) {
     :where(.md\:divide-x > :not(:last-child)) {
       --tw-divide-x-reverse: 0;
       border-inline-style: var(--tw-border-style);
@@ -10067,6 +10109,12 @@
   @media (width >= 48rem) {
     .md\:px-12 {
       padding-inline: calc(var(--spacing) * 12);
+    }
+  }
+
+  @media (width >= 48rem) {
+    .md\:px-16 {
+      padding-inline: calc(var(--spacing) * 16);
     }
   }
 
@@ -10250,6 +10298,12 @@
   @media (width >= 64rem) {
     .lg\:col-span-2 {
       grid-column: span 2 / span 2;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .lg\:col-span-3 {
+      grid-column: span 3 / span 3;
     }
   }
 
