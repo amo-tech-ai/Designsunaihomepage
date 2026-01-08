@@ -20,6 +20,7 @@ import {
   AIWebDevPageV7Wrapper,
   AIDevelopmentPageV7Wrapper,
   ProcessPageV2Wrapper,
+  ProcessPageV11Wrapper,
   ServicesPageV2Wrapper,
   AISalesMarketingPageV7Wrapper,
   AIAgentsPageV7Wrapper,
@@ -79,6 +80,7 @@ export const routes: RouteObject[] = [
   { path: '/v10', element: <HomePageV10Wrapper /> }, // V10 Sun AI Agency
   { path: '/projects', element: <ProjectsPageV7Wrapper /> },
   { path: '/process', element: <ProcessPageV2Wrapper /> },
+  { path: '/process/v11', element: <ProcessPageV11Wrapper /> },
   { path: '/services', element: <ServicesPageV2Wrapper /> },
   { path: '/services/ai-web-dev', element: <AIWebDevPageV7Wrapper /> },
   { path: '/services/ai-development', element: <AIDevelopmentPageV7Wrapper /> },

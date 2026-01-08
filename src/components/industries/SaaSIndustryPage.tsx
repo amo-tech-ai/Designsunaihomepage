@@ -256,7 +256,7 @@ export function SaaSIndustryPage() {
                 
                 <div className="flex items-center lg:justify-end">
                   <Link
-                    to="/solutions/chatbots"
+                    to="/services/ai-chatbots"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all hover:shadow-lg hover:-translate-y-0.5"
                   >
                     View Solution
@@ -305,7 +305,7 @@ export function SaaSIndustryPage() {
                 
                 <div className="flex items-center lg:justify-end">
                   <Link
-                    to="/solutions/ai-agents"
+                    to="/services/ai-agents"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all hover:shadow-lg hover:-translate-y-0.5"
                   >
                     View Solution
@@ -354,7 +354,7 @@ export function SaaSIndustryPage() {
                 
                 <div className="flex items-center lg:justify-end">
                   <Link
-                    to="/solutions/sales-crm"
+                    to="/services/ai-sales-marketing"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all hover:shadow-lg hover:-translate-y-0.5"
                   >
                     View Solution
@@ -403,7 +403,7 @@ export function SaaSIndustryPage() {
                 
                 <div className="flex items-center lg:justify-end">
                   <Link
-                    to="/solutions/mvp-builder"
+                    to="/services/ai-mvp"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all hover:shadow-lg hover:-translate-y-0.5"
                   >
                     View Solution
@@ -452,7 +452,7 @@ export function SaaSIndustryPage() {
                 
                 <div className="flex items-center lg:justify-end">
                   <Link
-                    to="/solutions/ai-web-design"
+                    to="/services/ai-web-dev"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all hover:shadow-lg hover:-translate-y-0.5"
                   >
                     View Solution
