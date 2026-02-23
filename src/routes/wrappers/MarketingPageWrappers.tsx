@@ -1,9 +1,9 @@
 import { lazy } from 'react';
-import { StyleGuideV6 } from '../../components/premium/v6/StyleGuideV6';
+import { StyleGuideV6 } from '../../components/premium/v6/docs/StyleGuideV6';
 import { StyleGuideV11 } from '../../components/premium/v11/StyleGuideV11';
 import { StyleGuideV11A } from '../../components/premium/v11/StyleGuideV11A';
 import { StyleGuideV14 } from '../../components/premium/v14/StyleGuideV14';
-import { StartupAIArchitecturePage } from '../../components/premium/docs/StartupAIArchitecturePage';
+import { StartupAIArchitecturePage } from '../../components/premium/v7/docs/StartupAIArchitecturePage';
 
 // Home Pages
 const HomePageV7 = lazy(() => import('../../components/premium/HomePageV7').then(m => ({ default: m.HomePageV7 })));
