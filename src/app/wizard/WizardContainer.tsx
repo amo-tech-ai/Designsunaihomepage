@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router';
 import ProgressBar from './components/ProgressBar';
 import Step1Company from './components/Step1Company';
 import Step2BuildType from './components/Step2BuildType';
@@ -51,7 +51,7 @@ interface WizardData {
 }
 
 export default function WizardContainer() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [wizardData, setWizardData] = useState<WizardData>({
@@ -104,7 +104,7 @@ export default function WizardContainer() {
       sessionStorage.setItem('wizardData', JSON.stringify(wizardData));
       
       // Redirect to proposal page
-      router.push('/proposal');
+      navigate('/proposal');
     } catch (error) {
       console.error('Proposal generation failed:', error);
       setIsProcessing(false);

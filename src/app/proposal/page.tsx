@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router';
 import { Download, CheckCircle2, Calendar, DollarSign, Package } from 'lucide-react';
 
 interface ProposalData {
@@ -13,7 +13,7 @@ interface ProposalData {
 }
 
 export default function ProposalPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [proposalData, setProposalData] = useState<ProposalData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,19 +22,19 @@ export default function ProposalPage() {
     const wizardDataString = sessionStorage.getItem('wizardData');
     
     if (!wizardDataString) {
-      router.push('/wizard');
+      navigate('/wizard');
       return;
     }
 
     const wizardData = JSON.parse(wizardDataString);
     setProposalData(wizardData);
     setIsLoading(false);
-  }, [router]);
+  }, [navigate]);
 
   const handleAcceptProposal = () => {
     alert('Thank you! We will contact you shortly to get started.');
     sessionStorage.removeItem('wizardData');
-    router.push('/');
+    navigate('/');
   };
 
   const handleDownload = () => {
