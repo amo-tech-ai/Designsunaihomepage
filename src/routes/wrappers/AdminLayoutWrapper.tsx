@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { AdminLayout } from '../../components/crm/AdminLayout';
 
 type AdminPage = 'leads' | 'ops' | 'workflow' | 'settings';

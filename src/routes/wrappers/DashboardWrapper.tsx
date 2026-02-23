@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { ProjectDashboard } from '../../components/ProjectDashboard';
 import { DeckEditorPage } from '../../components/premium/v7/deck/DeckEditorPage';
 

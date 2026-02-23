@@ -1,0 +1,11 @@
+export { HeroV12 } from './HeroV12';
+export { TrustedByV12 } from './TrustedByV12';
+export { HowItWorksV12 } from './HowItWorksV12';
+export { ServicesGridV12 } from './ServicesGridV12';
+export { TransformationV12 } from './TransformationV12';
+export { ResultsV12 } from './ResultsV12';
+export { PillarsV12 } from './PillarsV12';
+export { TimelineV12 } from './TimelineV12';
+export { PricingV12 } from './PricingV12';
+export { ProjectBriefV12 } from './ProjectBriefV12';
+export { FinalCTAV12 } from './FinalCTAV12';

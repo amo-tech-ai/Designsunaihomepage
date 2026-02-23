@@ -6,7 +6,7 @@ import {
   ArrowLeft, ArrowRight, Edit2, Info, Sparkles, Save, 
   X, CheckCircle2, AlertTriangle, Lock 
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 
 // Sample data from all previous steps
 const wizardData = {

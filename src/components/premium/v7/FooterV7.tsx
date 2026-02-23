@@ -42,6 +42,7 @@ export function FooterV7({ onNavigateToWhatsApp, onNavigateToAbout, onVersionCha
              <h4 className="font-bold text-slate-900 mb-6 text-sm uppercase tracking-wider">Solutions</h4>
              <ul className="space-y-3 text-sm text-slate-600">
                 <li><button onClick={() => handleNav('services-v2')} className="hover:text-orange-500 transition-colors text-left">All Services</button></li>
+                <li><a href="/sunai/services" className="hover:text-orange-500 transition-colors text-left block">Premium Services</a></li>
                 <li><button onClick={() => handleNav('ai-web-dev')} className="hover:text-orange-500 transition-colors text-left">AI Web Design</button></li>
                 <li><button onClick={() => handleNav('ai-development')} className="hover:text-orange-500 transition-colors text-left">App Development</button></li>
                 <li><button onClick={() => handleNav('ai-agents')} className="hover:text-orange-500 transition-colors text-left">AI Agents</button></li>

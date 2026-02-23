@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { BriefWizard } from '../../components/BriefWizard';
 import { AIProcessingScreen } from '../../components/AIProcessingScreen';
 import { ProposalReadyScreen } from '../../components/ProposalReadyScreen';

@@ -1,7 +1,7 @@
 'use client';
 
 import { MapPin, Mail, Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const FOOTER_SECTIONS = [
   {

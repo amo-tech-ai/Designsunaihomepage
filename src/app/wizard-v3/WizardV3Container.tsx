@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import ProgressIndicator from './components/ProgressIndicator';
 import Screen1Basics from './components/Screen1Basics';
 import Screen2BuildType from './components/Screen2BuildType';

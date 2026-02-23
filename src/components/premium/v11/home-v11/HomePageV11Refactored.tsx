@@ -2,8 +2,8 @@ import { FooterV11 } from '../../../FooterV11';
 import {
   HeroV11,
   TrustedByV11,
-  HowItWorksV11,
-  ServicesGridV11,
+  HowItWorksV11Improved,
+  ServicesGridV11Enhanced,
   TransformationV11,
   ResultsV11,
   PillarsV11,
@@ -24,8 +24,8 @@ export function HomePageV11Refactored({ onNavigateToWhatsApp, onNavigateToAbout,
     <main className="min-h-screen bg-[#FDFCFB] font-sans antialiased selection:bg-[#F59E0B] selection:text-white">
       <HeroV11 />
       <TrustedByV11 />
-      <HowItWorksV11 />
-      <ServicesGridV11 />
+      <HowItWorksV11Improved />
+      <ServicesGridV11Enhanced />
       <TransformationV11 />
       <ResultsV11 />
       <PillarsV11 />

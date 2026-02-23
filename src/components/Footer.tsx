@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 

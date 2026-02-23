@@ -1,4 +1,4 @@
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 import { AdminLayoutWrapper } from './wrappers/AdminLayoutWrapper';
 import { BriefWizardWrapper, AIProcessingScreenWrapper, ProposalReadyScreenWrapper, WizardStep1Wrapper, WizardStep2Wrapper, WizardStep3Wrapper, WizardStep4Wrapper } from './wrappers/WizardFlowWrappers';
@@ -8,6 +8,7 @@ import { LoginPageWrapper } from './wrappers/AuthWrapper';
 import {
   HomePageV7Wrapper,
   HomePageV11Wrapper,
+  HomePageV12Wrapper,
   HomePageV6Wrapper,
   HomePageV5Wrapper,
   HomePageV4Wrapper,
@@ -25,8 +26,10 @@ import {
   ServicesPageV2Wrapper,
   AISalesMarketingPageV7Wrapper,
   AIAgentsPageV7Wrapper,
+  AIAgentsPageV11Wrapper,
   AIMVPPageV7Wrapper,
   AIChatbotsPageV7Wrapper,
+  AIChatbotsPageV11Wrapper,
   IndustryChatbotSaaSWrapper,
   IndustryChatbotEcommerceWrapper,
   IndustryChatbotHealthcareWrapper,
@@ -35,13 +38,23 @@ import {
   IndustryChatbotAutomotiveWrapper,
   IndustryChatbotTourismWrapper,
   StyleGuideV6Wrapper,
+  StyleGuideV11Wrapper,
+  StyleGuideV11AWrapper,
+  StyleGuideV14Wrapper,
   StartupAIArchitecturePageWrapper,
   InvestorSharePageWrapper,
   EventHubPageWrapper,
   SitemapV2Wrapper,
   BookingPageWrapper,
   SaaSIndustryPageWrapper,
-  EcommerceIndustryPageWrapper
+  EcommerceIndustryPageWrapper,
+  EcommerceServicesPageWrapper,
+  FashionServicesPageWrapper,
+  SunAIAgencyV12Wrapper,
+  SolutionCardsDemoWrapper,
+  ServicesPageSunAIWrapper,
+  DesignSystemPageWrapper,
+  DesignSystemPreviewWrapper
 } from './wrappers/MarketingPageWrappers';
 
 // Lazy load simple components (no props needed)
@@ -68,7 +81,7 @@ const DashboardV3 = lazy(() => import('../app/dashboard-v3/page'));
 
 export const routes: RouteObject[] = [
   // Public Routes - Marketing
-  { path: '/', element: <HomePageV11Wrapper /> }, // V11 is now default homepage
+  { path: '/', element: <SunAIAgencyV12Wrapper /> }, // SunAI Agency (Luxury) is now default homepage
   { path: '/v1', element: <HomeV1Wrapper /> },
   { path: '/v2', element: <HomeV2Wrapper /> },
   { path: '/v3', element: <HomeV3Wrapper /> },
@@ -77,8 +90,14 @@ export const routes: RouteObject[] = [
   { path: '/v6', element: <HomePageV6Wrapper /> },
   { path: '/v7', element: <HomePageV7Wrapper /> },
   { path: '/v11', element: <HomePageV11Wrapper /> },
+  { path: '/v12', element: <HomePageV12Wrapper /> },
   { path: '/v9', element: <HomePageV9Wrapper /> },
   { path: '/v10', element: <HomePageV10Wrapper /> }, // V10 Sun AI Agency
+  { path: '/sunai', element: <SunAIAgencyV12Wrapper /> }, // SunAI Agency V12 (Luxury)
+  { path: '/sunai/cards-demo', element: <SolutionCardsDemoWrapper /> }, // BCG-Style Solution Cards Demo
+  { path: '/sunai/services', element: <ServicesPageSunAIWrapper /> }, // Premium Services Page
+  { path: '/sunai/design-system', element: <DesignSystemPageWrapper /> }, // Design System Documentation
+  { path: '/sunai/design-system/preview', element: <DesignSystemPreviewWrapper /> }, // Design System Visual Reference
   { path: '/projects', element: <ProjectsPageV7Wrapper /> },
   { path: '/process', element: <ProcessPageV2Wrapper /> },
   { path: '/process/v11', element: <ProcessPageV11Wrapper /> },
@@ -88,8 +107,10 @@ export const routes: RouteObject[] = [
   { path: '/services/ai-development', element: <AIDevelopmentPageV7Wrapper /> },
   { path: '/services/ai-sales-marketing', element: <AISalesMarketingPageV7Wrapper /> },
   { path: '/services/ai-agents', element: <AIAgentsPageV7Wrapper /> },
+  { path: '/services/ai-agents/v11', element: <AIAgentsPageV11Wrapper /> },
   { path: '/services/ai-mvp', element: <AIMVPPageV7Wrapper /> },
   { path: '/services/ai-chatbots', element: <AIChatbotsPageV7Wrapper /> },
+  { path: '/services/ai-chatbots/v11', element: <AIChatbotsPageV11Wrapper /> },
   { path: '/services/chatbot/saas', element: <IndustryChatbotSaaSWrapper /> },
   { path: '/services/chatbot/ecommerce', element: <IndustryChatbotEcommerceWrapper /> },
   { path: '/services/chatbot/healthcare', element: <IndustryChatbotHealthcareWrapper /> },
@@ -99,11 +120,16 @@ export const routes: RouteObject[] = [
   { path: '/services/chatbot/tourism', element: <IndustryChatbotTourismWrapper /> },
   { path: '/industries/saas', element: <SaaSIndustryPageWrapper /> },
   { path: '/industries/ecommerce', element: <EcommerceIndustryPageWrapper /> },
+  { path: '/industries/ecommerce/services', element: <EcommerceServicesPageWrapper /> },
+  { path: '/industries/fashion', element: <FashionServicesPageWrapper /> },
   { path: '/about', element: <AboutUsPage /> },
   { path: '/whatsapp', element: <WhatsAppAutomationPage /> },
   { path: '/booking', element: <BookingPageWrapper /> },
   { path: '/sitemap', element: <SitemapV2Wrapper /> },
   { path: '/style-guide', element: <StyleGuideV6Wrapper /> },
+  { path: '/style-guide/v11', element: <StyleGuideV11Wrapper /> },
+  { path: '/style-guide/v11a', element: <StyleGuideV11AWrapper /> },
+  { path: '/style-guide/v14', element: <StyleGuideV14Wrapper /> },
   { path: '/docs/startup-ai', element: <StartupAIArchitecturePageWrapper /> },
   { path: '/share/investor', element: <InvestorSharePageWrapper /> },
   { path: '/events', element: <EventHubPageWrapper /> },

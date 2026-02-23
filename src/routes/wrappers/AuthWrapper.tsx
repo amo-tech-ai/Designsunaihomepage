@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router';
 import { LoginPage } from '../../components/auth/LoginPage';
 
 export function LoginPageWrapper() {

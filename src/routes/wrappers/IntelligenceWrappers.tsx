@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { CallIngestion } from '../../components/crm/intelligence/CallIngestion';
 import { AnalysisState } from '../../components/crm/intelligence/AnalysisState';
 import { SearchResults } from '../../components/crm/intelligence/SearchResults';

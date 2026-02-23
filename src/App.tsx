@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { BrowserRouter, useRoutes } from 'react-router-dom';
+import { BrowserRouter, useRoutes, useLocation, useNavigate } from 'react-router';
 import { routes } from './routes';
 import { LeadProvider } from './context/LeadContext';
 import { CommandBarProvider } from './context/CommandBarContext';
@@ -11,7 +11,6 @@ import { SideMenu } from './components/SideMenu';
 import { CommandBar } from './components/crm/intelligence/CommandBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { DevModeBanner } from './components/DevModeBanner';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 function Loading() {
   return (
@@ -45,7 +44,7 @@ function AppRoutes() {
   // Map URL path to version for SideMenu
   const getCurrentVersion = () => {
     const path = location.pathname;
-    if (path === '/' || path === '/v11') return 'v11'; // V11 is now default
+    if (path === '/' || path === '/sunai') return 'sunai'; // SunAI Agency (Luxury) is now default
     if (path === '/v1') return 'v1';
     if (path === '/v2') return 'v2';
     if (path === '/v3') return 'v3';
@@ -55,6 +54,7 @@ function AppRoutes() {
     if (path === '/v7') return 'v7';
     if (path === '/v9') return 'v9';
     if (path === '/v10') return 'v10';
+    if (path === '/v11') return 'v11';
     if (path === '/projects') return 'projects';
     if (path === '/wizard') return 'wizard';
     if (path === '/processing') return 'processing';
@@ -64,9 +64,10 @@ function AppRoutes() {
     if (path === '/whatsapp') return 'whatsapp';
     if (path === '/about') return 'about';
     if (path === '/style-guide') return 'style-guide';
+    if (path === '/style-guide/v14') return 'style-guide';
     if (path === '/sitemap') return 'sitemap';
     if (path === '/booking') return 'booking';
-    return 'v11'; // default to V11
+    return 'sunai'; // default to SunAI Agency (Luxury)
   };
   
   return (

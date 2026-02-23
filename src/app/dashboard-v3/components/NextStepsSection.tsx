@@ -1,7 +1,7 @@
 'use client';
 
 import { FileText, MessageSquare, CheckCircle2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 interface NextStepsSectionProps {
   data: any;

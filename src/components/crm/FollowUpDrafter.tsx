@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { X, Send, Copy, RefreshCw, Wand2, ChevronDown, Check, Mail } from 'lucide-react';
+import { X, Copy, Check, Mail, Sparkles } from 'lucide-react';
+import { copyToClipboard } from '../../utils/clipboard';
+
 import { Button } from '../ui/design-system/Button';
 import { Typography } from '../ui/design-system/Typography';
 import { Badge } from '../ui/design-system/Badge';
@@ -97,10 +98,12 @@ export function FollowUpDrafter({ leadName, companyName, onClose, onSend }: Foll
     return () => clearTimeout(timer);
   }, [scenario, tone, leadName, companyName]);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(`Subject: ${subject}\n\n${body}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    const success = await copyToClipboard(`Subject: ${subject}\n\n${body}`);
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -109,7 +112,7 @@ export function FollowUpDrafter({ leadName, companyName, onClose, onSend }: Foll
       <div className="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600">
-            <Wand2 className="w-4 h-4" />
+            <Sparkles className="w-4 h-4" />
           </div>
           <div>
             <Typography variant="h4" className="text-base font-bold">AI Follow-Up Assistant</Typography>

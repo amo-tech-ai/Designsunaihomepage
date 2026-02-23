@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Sparkles, Brain, Search, Heart, Mail, Ghost, FileCheck, Users, Lightbulb } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 interface Feature {
   id: string;

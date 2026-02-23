@@ -9,7 +9,7 @@ import {
   Zap, DollarSign, Rocket, Bot, Gem, BarChart3, CheckCircle2,
   Clock, Link as LinkIcon
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 // Types
 type AppType = 'web_app' | 'ai_app' | 'chatbot' | 'wizard' | 'dashboard' | 'workflows' | 'automations' | 'ai_agents' | 'mobile_first';

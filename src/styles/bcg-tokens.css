@@ -1,0 +1,357 @@
+/**
+ * BCG Design System Tokens
+ * Extracted from BCG.com for consulting-grade design
+ * Reference: BCG Style Guide (February 2026)
+ */
+
+:root {
+  /* ===== COLOR PALETTE ===== */
+  
+  /* Primary Colors */
+  --bcg-primary: #004E89;           /* Navy blue - headers, section titles */
+  --bcg-accent: #00A86B;            /* Muted green - accent lines, stat numbers, CTAs */
+  --bcg-accent-bright: #7EF473;     /* Bright green - alternative accent (from Firecrawl) */
+  
+  /* Text Colors */
+  --bcg-text-primary: #212427;      /* Headlines, body copy */
+  --bcg-text-secondary: #696969;    /* Muted labels, captions */
+  --bcg-text-inverse: #FFFFFF;      /* White text on dark backgrounds */
+  
+  /* Background Colors */
+  --bcg-bg-page: #FFFFFF;           /* Page background */
+  --bcg-bg-surface: #F8F9FA;        /* Cards, panels */
+  --bcg-bg-dark: #212427;           /* Footer, dark sections */
+  --bcg-bg-hover: #F8F9FA;          /* Hover state for cards */
+  
+  /* Border Colors */
+  --bcg-border: #E5E7EB;            /* Dividers, card borders */
+  --bcg-border-dark: #374151;       /* Dark section borders */
+  
+  /* Link Colors */
+  --bcg-link: #1D4ED8;              /* Standard hyperlinks */
+  --bcg-link-hover: #1E40AF;        /* Link hover state */
+  
+  /* ===== TYPOGRAPHY ===== */
+  
+  /* Font Family */
+  --bcg-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --bcg-font-serif: Georgia, 'Times New Roman', serif; /* For stat numbers if needed */
+  
+  /* Font Sizes */
+  --bcg-text-hero: 52px;            /* Hero headlines (H1) */
+  --bcg-text-section: 38px;         /* Section titles (H2) */
+  --bcg-text-subsection: 28px;      /* Subsections (H3) */
+  --bcg-text-large: 20px;           /* Large body text */
+  --bcg-text-body: 16px;            /* Standard paragraphs */
+  --bcg-text-small: 14px;           /* Small text */
+  --bcg-text-caption: 13px;         /* Labels, metadata, sources */
+  --bcg-text-tiny: 11px;            /* Legal, fine print */
+  
+  /* Line Heights */
+  --bcg-leading-tight: 1.2;         /* Headlines */
+  --bcg-leading-normal: 1.5;        /* Sub-headlines */
+  --bcg-leading-relaxed: 1.6;       /* Body copy */
+  --bcg-leading-loose: 1.8;         /* Spacious paragraphs */
+  
+  /* Font Weights */
+  --bcg-weight-normal: 400;
+  --bcg-weight-medium: 500;
+  --bcg-weight-semibold: 600;
+  --bcg-weight-bold: 700;
+  
+  /* Letter Spacing */
+  --bcg-tracking-tight: -0.01em;    /* Headlines */
+  --bcg-tracking-normal: 0;         /* Body */
+  --bcg-tracking-wide: 0.05em;      /* Small caps labels */
+  
+  /* ===== SPACING ===== */
+  
+  /* Base Unit: 4px */
+  --bcg-space-1: 4px;
+  --bcg-space-2: 8px;
+  --bcg-space-3: 12px;
+  --bcg-space-4: 16px;
+  --bcg-space-5: 20px;
+  --bcg-space-6: 24px;
+  --bcg-space-8: 32px;
+  --bcg-space-10: 40px;
+  --bcg-space-12: 48px;
+  --bcg-space-16: 64px;
+  --bcg-space-20: 80px;
+  --bcg-space-24: 96px;
+  
+  /* Section Spacing */
+  --bcg-section-gap: 96px;          /* Between major sections */
+  --bcg-section-gap-mobile: 48px;   /* Mobile section spacing */
+  
+  /* Card Padding */
+  --bcg-card-padding: 32px;         /* Standard card padding */
+  --bcg-card-padding-mobile: 24px;  /* Mobile card padding */
+  
+  /* ===== BORDERS & RADIUS ===== */
+  
+  /* Border Widths */
+  --bcg-border-thin: 1px;
+  --bcg-border-medium: 2px;
+  --bcg-border-thick: 3px;
+  
+  /* Border Radius */
+  --bcg-radius-none: 0px;           /* Default: sharp corners */
+  --bcg-radius-sm: 4px;             /* Rare: small elements only */
+  --bcg-radius-md: 8px;             /* Rare: buttons/inputs if needed */
+  --bcg-radius-full: 9999px;        /* Circular elements (avatars) */
+  
+  /* ===== SHADOWS ===== */
+  
+  /* BCG uses minimal shadows */
+  --bcg-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --bcg-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --bcg-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  
+  /* ===== LAYOUT ===== */
+  
+  /* Max Widths */
+  --bcg-max-width-content: 1200px;  /* Main content container */
+  --bcg-max-width-article: 800px;   /* Article content */
+  --bcg-max-width-wide: 1400px;     /* Wide layouts */
+  
+  /* Grid Columns */
+  --bcg-grid-cols: 12;              /* 12-column grid system */
+  
+  /* ===== ACCENTS & SPECIAL ELEMENTS ===== */
+  
+  /* Green Accent Line (signature BCG element) */
+  --bcg-accent-line-width: 48px;
+  --bcg-accent-line-height: 3px;
+  --bcg-accent-line-color: var(--bcg-accent);
+  
+  /* Numbered Circles */
+  --bcg-circle-size: 40px;
+  --bcg-circle-bg: var(--bcg-accent);
+  --bcg-circle-text: #FFFFFF;
+  
+  /* ===== TRANSITIONS ===== */
+  
+  --bcg-transition-fast: 150ms ease;
+  --bcg-transition-base: 200ms ease;
+  --bcg-transition-slow: 300ms ease;
+  
+  /* ===== Z-INDEX SCALE ===== */
+  
+  --bcg-z-base: 0;
+  --bcg-z-dropdown: 10;
+  --bcg-z-sticky: 20;
+  --bcg-z-header: 30;
+  --bcg-z-overlay: 40;
+  --bcg-z-modal: 50;
+  
+  /* ===== BREAKPOINTS ===== */
+  
+  --bcg-breakpoint-sm: 640px;
+  --bcg-breakpoint-md: 768px;
+  --bcg-breakpoint-lg: 1024px;
+  --bcg-breakpoint-xl: 1280px;
+  --bcg-breakpoint-2xl: 1536px;
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Typography */
+.bcg-text-hero {
+  font-size: var(--bcg-text-hero);
+  line-height: var(--bcg-leading-tight);
+  font-weight: var(--bcg-weight-normal);
+  letter-spacing: var(--bcg-tracking-tight);
+}
+
+.bcg-text-section {
+  font-size: var(--bcg-text-section);
+  line-height: var(--bcg-leading-normal);
+  font-weight: var(--bcg-weight-normal);
+}
+
+.bcg-text-body {
+  font-size: var(--bcg-text-body);
+  line-height: var(--bcg-leading-relaxed);
+  color: var(--bcg-text-primary);
+}
+
+.bcg-text-caption {
+  font-size: var(--bcg-text-caption);
+  line-height: var(--bcg-leading-normal);
+  color: var(--bcg-text-secondary);
+}
+
+.bcg-text-label {
+  font-size: var(--bcg-text-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--bcg-tracking-wide);
+  font-weight: var(--bcg-weight-semibold);
+}
+
+/* Accent Line */
+.bcg-accent-line {
+  width: var(--bcg-accent-line-width);
+  height: var(--bcg-accent-line-height);
+  background-color: var(--bcg-accent-line-color);
+  margin: var(--bcg-space-4) 0;
+}
+
+.bcg-accent-line-center {
+  width: var(--bcg-accent-line-width);
+  height: var(--bcg-accent-line-height);
+  background-color: var(--bcg-accent-line-color);
+  margin: var(--bcg-space-4) auto;
+}
+
+/* Cards */
+.bcg-card {
+  background: var(--bcg-bg-page);
+  border: var(--bcg-border-thin) solid var(--bcg-border);
+  border-radius: var(--bcg-radius-none);
+  padding: var(--bcg-card-padding);
+  transition: background-color var(--bcg-transition-base);
+}
+
+.bcg-card:hover {
+  background: var(--bcg-bg-hover);
+}
+
+/* Container */
+.bcg-container {
+  max-width: var(--bcg-max-width-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--bcg-space-6);
+  padding-right: var(--bcg-space-6);
+}
+
+.bcg-container-article {
+  max-width: var(--bcg-max-width-article);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--bcg-space-6);
+  padding-right: var(--bcg-space-6);
+}
+
+/* Section Spacing */
+.bcg-section {
+  padding-top: var(--bcg-section-gap);
+  padding-bottom: var(--bcg-section-gap);
+}
+
+@media (max-width: 768px) {
+  .bcg-section {
+    padding-top: var(--bcg-section-gap-mobile);
+    padding-bottom: var(--bcg-section-gap-mobile);
+  }
+}
+
+/* Stat Display */
+.bcg-stat-number {
+  font-size: 48px;
+  line-height: 1;
+  font-weight: var(--bcg-weight-normal);
+  color: var(--bcg-accent);
+}
+
+.bcg-stat-label {
+  font-size: var(--bcg-text-small);
+  color: var(--bcg-text-secondary);
+  margin-top: var(--bcg-space-2);
+}
+
+/* Numbered Circle */
+.bcg-numbered-circle {
+  width: var(--bcg-circle-size);
+  height: var(--bcg-circle-size);
+  border-radius: var(--bcg-radius-full);
+  background-color: var(--bcg-circle-bg);
+  color: var(--bcg-circle-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--bcg-weight-semibold);
+  font-size: var(--bcg-text-body);
+}
+
+/* Exhibit Label */
+.bcg-exhibit-label {
+  font-size: var(--bcg-text-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--bcg-tracking-wide);
+  color: var(--bcg-text-secondary);
+  font-weight: var(--bcg-weight-semibold);
+  margin-bottom: var(--bcg-space-2);
+}
+
+/* Source Note */
+.bcg-source-note {
+  font-size: var(--bcg-text-caption);
+  color: var(--bcg-text-secondary);
+  font-style: italic;
+  margin-top: var(--bcg-space-4);
+}
+
+/* Breadcrumb */
+.bcg-breadcrumb {
+  font-size: var(--bcg-text-small);
+  color: var(--bcg-text-secondary);
+  margin-bottom: var(--bcg-space-4);
+}
+
+.bcg-breadcrumb a {
+  color: var(--bcg-text-secondary);
+  text-decoration: none;
+  transition: color var(--bcg-transition-fast);
+}
+
+.bcg-breadcrumb a:hover {
+  color: var(--bcg-text-primary);
+}
+
+.bcg-breadcrumb-separator {
+  margin: 0 var(--bcg-space-2);
+}
+
+/* Button Styles */
+.bcg-btn-primary {
+  background-color: var(--bcg-accent);
+  color: var(--bcg-text-primary);
+  padding: var(--bcg-space-3) var(--bcg-space-6);
+  border: none;
+  border-radius: var(--bcg-radius-md);
+  font-size: var(--bcg-text-body);
+  font-weight: var(--bcg-weight-medium);
+  cursor: pointer;
+  transition: opacity var(--bcg-transition-base);
+}
+
+.bcg-btn-primary:hover {
+  opacity: 0.9;
+}
+
+.bcg-btn-secondary {
+  background-color: transparent;
+  color: var(--bcg-text-primary);
+  padding: var(--bcg-space-3) var(--bcg-space-6);
+  border: var(--bcg-border-thin) solid var(--bcg-border);
+  border-radius: var(--bcg-radius-none);
+  font-size: var(--bcg-text-body);
+  font-weight: var(--bcg-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--bcg-transition-base);
+}
+
+.bcg-btn-secondary:hover {
+  background-color: var(--bcg-bg-hover);
+}
+
+/* Reset Tailwind defaults that conflict with BCG */
+.bcg-reset-rounded {
+  border-radius: 0 !important;
+}
+
+.bcg-reset-shadow {
+  box-shadow: none !important;
+}

@@ -1,37 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
 
 export function FooterV11() {
   return (
     <footer className="bg-white border-t border-neutral-200">
-      {/* A. TOP STRATEGIC CTA STRIP */}
-      <div className="bg-neutral-900">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-12 md:py-16">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl md:text-3xl font-semibold text-white mb-3">
-              Ready to Build a Real AI System?
-            </h3>
-            <p className="text-neutral-400 mb-8 text-base md:text-lg">
-              From idea → proposal → production system in weeks, not months.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/wizard"
-                className="inline-flex items-center justify-center px-8 py-4 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all hover:shadow-lg hover:-translate-y-0.5"
-              >
-                Start Project
-              </Link>
-              <Link
-                to="/booking"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-all"
-              >
-                Book a Call
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* B. MAIN FOOTER (5 COLUMNS) */}
       <div className="bg-white">
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20">
@@ -114,6 +86,14 @@ export function FooterV11() {
                 </li>
                 <li>
                   <Link 
+                    to="/sunai/services" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    Premium Services
+                  </Link>
+                </li>
+                <li>
+                  <Link 
                     to="/services/ai-web-dev" 
                     className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
                   >
@@ -138,10 +118,26 @@ export function FooterV11() {
                 </li>
                 <li>
                   <Link 
+                    to="/services/ai-agents/v11" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    AI Agents V11
+                  </Link>
+                </li>
+                <li>
+                  <Link 
                     to="/services/ai-chatbots" 
                     className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
                   >
                     AI Chatbots
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/services/ai-chatbots/v11" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    AI Chatbots V11
                   </Link>
                 </li>
                 <li>
@@ -183,6 +179,14 @@ export function FooterV11() {
                     className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
                   >
                     E-commerce
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/industries/fashion" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    Fashion
                   </Link>
                 </li>
                 <li>
@@ -277,6 +281,28 @@ export function FooterV11() {
               <ul className="space-y-4">
                 <li>
                   <Link 
+                    to="/sunai" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block font-medium inline-flex items-center gap-2"
+                  >
+                    SunAI Agency (Luxury)
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-orange-100 text-orange-600 uppercase tracking-wider">
+                      New
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/sunai/design-system" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block font-medium inline-flex items-center gap-2"
+                  >
+                    SunAI Design System
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-orange-100 text-orange-600 uppercase tracking-wider">
+                      New
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link 
                     to="/process" 
                     className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
                   >
@@ -289,6 +315,46 @@ export function FooterV11() {
                     className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
                   >
                     Pricing & Timelines
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/sitemap" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block font-medium"
+                  >
+                    Visual Sitemap
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/style-guide/v14" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block font-medium"
+                  >
+                    V14 Design System
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/style-guide/v11" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    V11 Style Guide
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/style-guide/v11a" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    V11A Calm Palette
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/v12" 
+                    className="text-neutral-600 hover:text-orange-500 transition-colors text-[15px] block"
+                  >
+                    Home V12 (Calm)
                   </Link>
                 </li>
                 <li>

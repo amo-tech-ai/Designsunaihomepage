@@ -247,7 +247,7 @@ function ServicesFlowchart() {
          <div className="max-w-6xl mx-auto overflow-x-auto pb-8">
             <div className="flex justify-center min-w-max gap-4">
               {nodes.map((node, i) => (
-                <React.Fragment key={i}>
+                <div key={i} className="contents">
                    <div className="relative group">
                       <div className={`px-5 py-3 rounded-lg border-2 font-bold text-sm transition-all duration-300 ${
                         i === 0 || i === nodes.length - 1
@@ -262,7 +262,7 @@ function ServicesFlowchart() {
                        <ArrowRight className="w-4 h-4" />
                      </div>
                    )}
-                </React.Fragment>
+                </div>
               ))}
             </div>
          </div>
